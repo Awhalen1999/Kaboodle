@@ -1,4 +1,4 @@
-import 'package:copackr/home_page/home_page.dart';
+import 'package:copackr/router.dart';
 import 'package:copackr/theme/dark_mode.dart';
 import 'package:copackr/theme/light_mode.dart';
 import 'package:flutter/material.dart';
@@ -12,9 +12,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      routerConfig: router,
       theme: lightMode,
       darkTheme: darkMode,
     );
