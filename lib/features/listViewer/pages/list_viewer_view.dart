@@ -1,3 +1,4 @@
+import 'package:copackr/features/listViewer/widgets/list_viewer_body.dart';
 import 'package:copackr/shared/widgets/custom_scaffold.dart';
 import 'package:flutter/material.dart';
 
@@ -6,6 +7,6 @@ class ListViewerView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScaffold(body: ListViewerView());
+    return CustomScaffold(body: ListViewerBody());
   }
 }
