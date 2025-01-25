@@ -1,4 +1,5 @@
 import 'package:copackr/features/profile/widgets/profile_body.dart';
+import 'package:copackr/shared/widgets/custom_scaffold.dart';
 import 'package:flutter/material.dart';
 
 class ProfileView extends StatelessWidget {
@@ -6,10 +7,6 @@ class ProfileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: ProfileBody(),
-      ),
-    );
+    return CustomScaffold(body: ProfileBody());
   }
 }

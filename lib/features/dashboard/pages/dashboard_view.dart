@@ -1,4 +1,5 @@
 import 'package:copackr/features/dashboard/widgets/dashboard_body.dart';
+import 'package:copackr/shared/widgets/custom_scaffold.dart';
 import 'package:flutter/material.dart';
 
 class DashboardView extends StatelessWidget {
@@ -6,10 +7,8 @@ class DashboardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: DashboardBody(),
-      ),
+    return CustomScaffold(
+      body: DashboardBody(),
     );
   }
 }

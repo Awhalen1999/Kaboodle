@@ -6,9 +6,11 @@ import 'package:go_router/go_router.dart';
 class DashboardBody extends StatelessWidget {
   const DashboardBody({super.key});
 
-  void logout() {
+  void logout(BuildContext context) async {
     final authService = AuthService();
-    authService.signOut();
+    await authService.signOut();
+    // ignore: use_build_context_synchronously
+    context.go('/welcome');
   }
 
   @override
@@ -29,7 +31,7 @@ class DashboardBody extends StatelessWidget {
           const SizedBox(height: 16),
           CustomButton(
             buttonText: "Logout (Back to Welcome)",
-            onPressed: logout,
+            onPressed: () => logout(context),
             textColor: Theme.of(context).colorScheme.onSurface,
             isLoading: false,
           ),
