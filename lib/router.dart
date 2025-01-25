@@ -3,6 +3,7 @@ import 'package:copackr/features/auth/pages/signup_view.dart';
 import 'package:copackr/features/auth/pages/welcome_view.dart';
 import 'package:copackr/features/dashboard/pages/dashboard_view.dart';
 import 'package:copackr/features/profile/pages/profile_view.dart';
+import 'package:copackr/features/upcomingTrips/pages/upcoming_trips_view.dart';
 import 'package:copackr/services/auth/auth_gate.dart';
 import 'package:go_router/go_router.dart';
 
@@ -33,6 +34,10 @@ final router = GoRouter(
     GoRoute(
       path: '/profile',
       builder: (context, state) => ProfileView(),
+    ),
+    GoRoute(
+      path: '/upcoming-trips',
+      builder: (context, state) => UpcomingTripsView(),
     ),
   ],
 );
