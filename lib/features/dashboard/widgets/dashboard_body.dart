@@ -1,9 +1,15 @@
+import 'package:copackr/services/auth/auth_service.dart';
 import 'package:copackr/shared/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class DashboardBody extends StatelessWidget {
   const DashboardBody({super.key});
+
+  void logout() {
+    final authService = AuthService();
+    authService.signOut();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +29,7 @@ class DashboardBody extends StatelessWidget {
           const SizedBox(height: 16),
           CustomButton(
             buttonText: "Logout (Back to Welcome)",
-            onPressed: () => context.go('/'),
+            onPressed: logout,
             textColor: Theme.of(context).colorScheme.onSurface,
             isLoading: false,
           ),

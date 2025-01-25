@@ -20,13 +20,6 @@ class ProfileBody extends StatelessWidget {
             textColor: Theme.of(context).colorScheme.onSurface,
             isLoading: false,
           ),
-          const SizedBox(height: 16),
-          CustomButton(
-            buttonText: "Logout (Back to Welcome)",
-            onPressed: () => context.go('/'),
-            textColor: Theme.of(context).colorScheme.onSurface,
-            isLoading: false,
-          ),
         ],
       ),
     );

@@ -3,6 +3,7 @@ import 'package:copackr/features/auth/pages/signup_view.dart';
 import 'package:copackr/features/auth/pages/welcome_view.dart';
 import 'package:copackr/features/dashboard/pages/dashboard_view.dart';
 import 'package:copackr/features/profile/pages/profile_view.dart';
+import 'package:copackr/services/auth/auth_gate.dart';
 import 'package:go_router/go_router.dart';
 
 // GoRouter configuration
@@ -11,6 +12,10 @@ final router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
+      builder: (context, state) => AuthGate(),
+    ),
+    GoRoute(
+      path: '/welcome',
       builder: (context, state) => WelcomeView(),
     ),
     GoRoute(

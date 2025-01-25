@@ -1,17 +1,56 @@
+import 'package:copackr/services/auth/auth_service.dart';
 import 'package:copackr/shared/widgets/custom_button.dart';
 import 'package:copackr/shared/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class SignupBody extends StatelessWidget {
+class SignupBody extends StatefulWidget {
+  const SignupBody({super.key});
+
+  @override
+  State<SignupBody> createState() => _SignupBodyState();
+}
+
+class _SignupBodyState extends State<SignupBody> {
   final TextEditingController emailController = TextEditingController();
+
   final TextEditingController passwordController = TextEditingController();
+
   final TextEditingController confirmPasswordController =
       TextEditingController();
 
-  SignupBody({super.key});
+  void signup() async {
+    final _authService = AuthService();
 
-  void signup() {}
+    if (passwordController.text == confirmPasswordController.text) {
+      try {
+        await _authService.signUpWithEmailAndPassword(
+          emailController.text,
+          passwordController.text,
+        );
+        if (mounted) {
+          context.go('/dashboard');
+        }
+      } catch (e) {
+        // ignore: use_build_context_synchronously
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              e.toString(),
+            ),
+          ),
+        );
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Passwords do not match',
+          ),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

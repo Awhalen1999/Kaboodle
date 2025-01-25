@@ -1,15 +1,41 @@
+import 'package:copackr/services/auth/auth_service.dart';
 import 'package:copackr/shared/widgets/custom_button.dart';
 import 'package:copackr/shared/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class LoginBody extends StatelessWidget {
+class LoginBody extends StatefulWidget {
+  const LoginBody({super.key});
+
+  @override
+  State<LoginBody> createState() => _LoginBodyState();
+}
+
+class _LoginBodyState extends State<LoginBody> {
   final TextEditingController emailController = TextEditingController();
+
   final TextEditingController passwordController = TextEditingController();
 
-  LoginBody({super.key});
+  void login() async {
+    final _authService = AuthService();
 
-  void login() {}
+    try {
+      await _authService.signInWithEmailAndPassword(
+        emailController.text,
+        passwordController.text,
+      );
+      if (mounted) {
+        context.go('/dashboard');
+      }
+    } catch (e) {
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.toString()),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
