@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -8,6 +9,8 @@ class MenuDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser;
+
     return Drawer(
       child: SafeArea(
         child: Padding(
@@ -112,6 +115,13 @@ class MenuDrawer extends StatelessWidget {
                     ),
                     IconButton(
                       icon: const Icon(Icons.add),
+                      padding: EdgeInsets.only(left: 8.0),
+                      constraints:
+                          const BoxConstraints(), // override default min size of 48px
+                      style: const ButtonStyle(
+                        tapTargetSize:
+                            MaterialTapTargetSize.shrinkWrap, // the '2023' part
+                      ),
                       onPressed: () {
                         // Add functionality to add a new tag
                       },
@@ -120,9 +130,8 @@ class MenuDrawer extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16.0,
-                ),
+                padding:
+                    const EdgeInsets.only(left: 16.0, right: 16.0, top: 8.0),
                 child: Wrap(
                   spacing: 8.0,
                   children: [
@@ -173,25 +182,41 @@ class MenuDrawer extends StatelessWidget {
                   ],
                 ),
               ),
-              ListTile(
-                title: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text('Profile'),
-                    Text(
-                      'View and edit your profile',
-                      style: TextStyle(fontSize: 12),
+              const Spacer(),
+              Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                    top: BorderSide(
+                      color: Colors.grey,
                     ),
-                  ],
+                  ),
                 ),
-                leading: CircleAvatar(
-                  child: const Icon(Icons.person),
+                margin: const EdgeInsets.only(top: 8.0),
+                padding: const EdgeInsets.only(top: 8.0),
+                child: ListTile(
+                  visualDensity: const VisualDensity(
+                    horizontal: -2,
+                    vertical: -4,
+                  ),
+                  title: Text(
+                    user?.email ?? 'Profile',
+                    style: const TextStyle(
+                      fontSize: 14,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    softWrap: false,
+                  ),
+                  subtitle: const Text('View and edit'),
+                  leading: CircleAvatar(
+                    child: const Icon(Icons.person),
+                  ),
+                  trailing: const Icon(Icons.chevron_right_rounded),
+                  onTap: () {
+                    Navigator.pop(context);
+                    context.go('/profile');
+                  },
                 ),
-                trailing: const Icon(Icons.chevron_right_rounded),
-                onTap: () {
-                  Navigator.pop(context);
-                  context.go('/profile');
-                },
               ),
             ],
           ),
