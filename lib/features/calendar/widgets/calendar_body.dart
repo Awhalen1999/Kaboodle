@@ -15,8 +15,8 @@ class CalendarBody extends StatelessWidget {
         children: [
           Text('C A L E N D A R'),
           CustomButton(
-            buttonText: "Dashboard",
-            onPressed: () => context.go('/dashboard'),
+            buttonText: "My packing lists",
+            onPressed: () => context.go('/my-packing-lists'),
             textColor: Theme.of(context).colorScheme.onSurface,
             isLoading: false,
           ),

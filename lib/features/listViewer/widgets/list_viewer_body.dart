@@ -15,8 +15,8 @@ class ListViewerBody extends StatelessWidget {
         children: [
           Text('L I S T #'),
           CustomButton(
-            buttonText: "Dashboard",
-            onPressed: () => context.go('/dashboard'),
+            buttonText: "My packing lists",
+            onPressed: () => context.go('/my-packing-lists'),
             textColor: Theme.of(context).colorScheme.onSurface,
             isLoading: false,
           ),

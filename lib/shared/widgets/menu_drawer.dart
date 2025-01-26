@@ -1,3 +1,4 @@
+import 'package:copackr/shared/widgets/custom_chip.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -29,7 +30,7 @@ class MenuDrawer extends StatelessWidget {
                     ),
                   ),
                   IconButton(
-                    icon: const Icon(Icons.close),
+                    icon: const Icon(Icons.close_rounded),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
@@ -40,7 +41,7 @@ class MenuDrawer extends StatelessWidget {
               ListTile(
                 title: const Text('My packing lists'),
                 leading: const Icon(Icons.format_list_bulleted),
-                trailing: const Chip(label: Text('7')),
+                trailing: const CustomChip(),
                 onTap: () {
                   Navigator.pop(context);
                   context.go('/my-packing-lists');
@@ -49,7 +50,7 @@ class MenuDrawer extends StatelessWidget {
               ListTile(
                 title: const Text('Upcoming trips'),
                 leading: const Icon(Icons.double_arrow_rounded),
-                trailing: const Chip(label: Text('3')),
+                trailing: const CustomChip(),
                 onTap: () {
                   Navigator.pop(context);
                   context.go('/upcoming-trips');
@@ -73,7 +74,7 @@ class MenuDrawer extends StatelessWidget {
                 title: const Text('List 1'),
                 leading:
                     const Icon(Icons.square_rounded, color: Colors.pinkAccent),
-                trailing: const Chip(label: Text('17')),
+                trailing: const CustomChip(),
                 onTap: () {
                   Navigator.pop(context);
                   context.go('/list-viewer');
@@ -83,7 +84,7 @@ class MenuDrawer extends StatelessWidget {
                 title: const Text('List 2'),
                 leading:
                     const Icon(Icons.square_rounded, color: Colors.lightBlue),
-                trailing: const Chip(label: Text('9')),
+                trailing: const CustomChip(),
                 onTap: () {
                   Navigator.pop(context);
                   context.go('/list-viewer');
@@ -92,7 +93,7 @@ class MenuDrawer extends StatelessWidget {
               ListTile(
                 title: const Text('List 3'),
                 leading: const Icon(Icons.square_rounded, color: Colors.amber),
-                trailing: const Chip(label: Text('22')),
+                trailing: const CustomChip(),
                 onTap: () {
                   Navigator.pop(context);
                   context.go('/list-viewer');
@@ -114,7 +115,7 @@ class MenuDrawer extends StatelessWidget {
                       ),
                     ),
                     IconButton(
-                      icon: const Icon(Icons.add),
+                      icon: const Icon(Icons.add_rounded),
                       padding: EdgeInsets.only(left: 8.0),
                       constraints:
                           const BoxConstraints(), // override default min size of 48px

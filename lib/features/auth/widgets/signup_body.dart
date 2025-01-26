@@ -29,7 +29,7 @@ class _SignupBodyState extends State<SignupBody> {
           passwordController.text,
         );
         if (mounted) {
-          context.go('/dashboard');
+          context.go('/my-packing-lists');
         }
       } catch (e) {
         // ignore: use_build_context_synchronously

@@ -1,9 +1,14 @@
+import 'package:copackr/services/auth/auth_service.dart';
 import 'package:copackr/shared/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class ProfileBody extends StatelessWidget {
   const ProfileBody({super.key});
+
+  Future<void> logout() async {
+    await AuthService().signOut();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,11 +20,18 @@ class ProfileBody extends StatelessWidget {
         children: [
           Text('P R O F I L E'),
           CustomButton(
-            buttonText: "Dashboard",
-            onPressed: () => context.go('/dashboard'),
+            buttonText: "My packing lists",
+            onPressed: () => context.go('/my-packing-lists'),
             textColor: Theme.of(context).colorScheme.onSurface,
             isLoading: false,
           ),
+          const SizedBox(height: 24),
+          CustomButton(
+            buttonText: "Logout",
+            onPressed: logout,
+            textColor: Theme.of(context).colorScheme.onSurface,
+            isLoading: false,
+          )
         ],
       ),
     );

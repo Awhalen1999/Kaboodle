@@ -14,6 +14,7 @@ ThemeData darkMode = ThemeData(
     error: Color(0xFFFF3F3F),
     onError: Colors.white,
     shadow: Colors.grey,
+    surfaceContainer: Color(0xFF1E1E1E),
   ),
   textTheme: ThemeData.dark().textTheme.copyWith(
         displayLarge: TextStyle(

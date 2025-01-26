@@ -15,8 +15,8 @@ class UpcomingTripsBody extends StatelessWidget {
         children: [
           Text('U P C O M I N G T R I P S'),
           CustomButton(
-            buttonText: "Dashboard",
-            onPressed: () => context.go('/dashboard'),
+            buttonText: "My packing lists",
+            onPressed: () => context.go('/my-packing-lists'),
             textColor: Theme.of(context).colorScheme.onSurface,
             isLoading: false,
           ),

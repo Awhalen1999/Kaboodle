@@ -14,6 +14,7 @@ ThemeData lightMode = ThemeData(
     error: Color(0xFFFF3F3F),
     onError: Colors.white,
     shadow: Colors.grey,
+    surfaceContainer: Color.fromARGB(200, 210, 210, 210),
   ),
   textTheme: ThemeData.light().textTheme.copyWith(
         displayLarge: TextStyle(
