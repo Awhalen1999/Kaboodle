@@ -35,15 +35,6 @@ class MenuDrawer extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               ListTile(
-                title: const Text('Upcoming trips'),
-                leading: const Icon(Icons.double_arrow_rounded),
-                trailing: const Chip(label: Text('3')),
-                onTap: () {
-                  Navigator.pop(context);
-                  context.go('/upcoming-trips');
-                },
-              ),
-              ListTile(
                 title: const Text('My packing lists'),
                 leading: const Icon(Icons.format_list_bulleted),
                 trailing: const Chip(label: Text('7')),
@@ -53,11 +44,12 @@ class MenuDrawer extends StatelessWidget {
                 },
               ),
               ListTile(
-                title: const Text('Calendar'),
-                leading: const Icon(Icons.calendar_month_rounded),
+                title: const Text('Upcoming trips'),
+                leading: const Icon(Icons.double_arrow_rounded),
+                trailing: const Chip(label: Text('3')),
                 onTap: () {
                   Navigator.pop(context);
-                  context.go('/calendar');
+                  context.go('/upcoming-trips');
                 },
               ),
               const Divider(
@@ -102,6 +94,9 @@ class MenuDrawer extends StatelessWidget {
                   Navigator.pop(context);
                   context.go('/list-viewer');
                 },
+              ),
+              const Divider(
+                color: Colors.grey,
               ),
               Padding(
                 padding:
@@ -178,10 +173,26 @@ class MenuDrawer extends StatelessWidget {
                   ],
                 ),
               ),
-              const Divider(
-                color: Colors.grey,
+              ListTile(
+                title: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Text('Profile'),
+                    Text(
+                      'View and edit your profile',
+                      style: TextStyle(fontSize: 12),
+                    ),
+                  ],
+                ),
+                leading: CircleAvatar(
+                  child: const Icon(Icons.person),
+                ),
+                trailing: const Icon(Icons.chevron_right_rounded),
+                onTap: () {
+                  Navigator.pop(context);
+                  context.go('/profile');
+                },
               ),
-              // TODO:  add a profile tile to access settings / profile settings / logout
             ],
           ),
         ),

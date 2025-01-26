@@ -14,7 +14,7 @@ class CustomScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(),
-      drawer: const MenuDrawer(),
+      drawer: MenuDrawer(),
       body: SafeArea(child: body),
     );
   }
