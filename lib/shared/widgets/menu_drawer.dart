@@ -116,7 +116,9 @@ class MenuDrawer extends StatelessWidget {
                     ),
                     IconButton(
                       icon: const Icon(Icons.add_rounded),
-                      padding: EdgeInsets.only(left: 8.0),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 4,
+                      ),
                       constraints:
                           const BoxConstraints(), // override default min size of 48px
                       style: const ButtonStyle(
