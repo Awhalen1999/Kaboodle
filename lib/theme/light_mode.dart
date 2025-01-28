@@ -7,15 +7,15 @@ ThemeData lightMode = ThemeData(
     onPrimary: Colors.white,
     secondary: Color(0xFFF2BB98),
     onSecondary: Colors.black,
-    tertiary: Color(0xFFEEDCFF),
+    tertiary: Color(0xFFD685B1),
     onTertiary: Colors.black,
     surface: Color(0xFFFBFAED),
     onSurface: Colors.black,
-    onSurfaceVariant: Color.fromARGB(255, 55, 55, 55),
+    onSurfaceVariant: Color(0xFF373737),
     error: Color(0xFFFF3F3F),
     onError: Colors.white,
     shadow: Colors.grey,
-    surfaceContainer: Color.fromARGB(200, 210, 210, 210),
+    surfaceContainer: Color(0xC8D2D2D2),
   ),
   textTheme: ThemeData.light().textTheme.copyWith(
         displayLarge: TextStyle(
