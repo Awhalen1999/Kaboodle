@@ -5,25 +5,65 @@ class MainStepOneBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const Text(
-          'Step 1: Basic Info',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 16),
-        TextField(
-          decoration: const InputDecoration(
-            labelText: 'List Title',
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 8,
+        vertical: 12,
+      ),
+      child: Column(
+        children: [
+          TextField(
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: Theme.of(context).colorScheme.surfaceBright,
+              labelText: 'List name',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12), // Rounded corners
+                borderSide: BorderSide.none, // No visible border
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide.none,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(
+                  color: Theme.of(context)
+                      .colorScheme
+                      .primary, // Optional: Change color on focus
+                ),
+              ),
+            ),
           ),
-        ),
-        const SizedBox(height: 8),
-        TextField(
-          decoration: const InputDecoration(
-            labelText: 'Description',
+          const SizedBox(height: 24),
+          TextField(
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: Theme.of(context).colorScheme.surfaceBright,
+              labelText: 'Description',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12), // Rounded corners
+                borderSide: BorderSide.none, // No visible border
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide.none,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(
+                  color: Theme.of(context)
+                      .colorScheme
+                      .primary, // Optional: Change color on focus
+                ),
+              ),
+            ),
+            keyboardType: TextInputType.multiline, // Allows multiple lines
+            maxLines: 5, // Specifies the maximum number of lines
+            minLines: 1,
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
