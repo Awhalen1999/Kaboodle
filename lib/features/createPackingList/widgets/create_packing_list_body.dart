@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
-class MyPackingListsBody extends StatelessWidget {
-  const MyPackingListsBody({super.key});
+class CreatePackingListBody extends StatelessWidget {
+  const CreatePackingListBody({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,9 +11,7 @@ class MyPackingListsBody extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text('M Y P A C K I N G L I S T S'),
-          FloatingActionButton(
-              onPressed: () => context.go('/create-packing-list')),
+          Text('C R E A T E  P A C K I N G  L I S T'),
         ],
       ),
     );

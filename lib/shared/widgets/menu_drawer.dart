@@ -61,13 +61,41 @@ class MenuDrawer extends StatelessWidget {
               ),
               Padding(
                 padding:
-                    const EdgeInsets.only(left: 16.0, top: 8.0, bottom: 8.0),
-                child: const Text(
-                  "Lists",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                  ),
+                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                child: Row(
+                  children: [
+                    const Text(
+                      "Lists",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      "(5)",
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    const Spacer(),
+                    IconButton(
+                      icon: const Icon(Icons.add_rounded),
+                      padding: EdgeInsets.all(
+                        0,
+                      ),
+                      constraints: const BoxConstraints(),
+                      style: const ButtonStyle(
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                        context.go('/create-packing-list');
+                      },
+                    ),
+                  ],
                 ),
               ),
               ListTile(
@@ -104,7 +132,7 @@ class MenuDrawer extends StatelessWidget {
               ),
               Padding(
                 padding:
-                    const EdgeInsets.only(left: 16.0, top: 8.0, bottom: 8.0),
+                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 child: Row(
                   children: [
                     const Text(
@@ -114,20 +142,26 @@ class MenuDrawer extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
+                    const SizedBox(width: 4),
+                    Text(
+                      "(9)",
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    const Spacer(),
                     IconButton(
                       icon: const Icon(Icons.add_rounded),
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 4,
+                      padding: EdgeInsets.all(
+                        0,
                       ),
-                      constraints:
-                          const BoxConstraints(), // override default min size of 48px
+                      constraints: const BoxConstraints(),
                       style: const ButtonStyle(
-                        tapTargetSize:
-                            MaterialTapTargetSize.shrinkWrap, // the '2023' part
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
-                      onPressed: () {
-                        // Add functionality to add a new tag
-                      },
+                      onPressed: () {},
                     ),
                   ],
                 ),

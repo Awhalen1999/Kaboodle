@@ -11,6 +11,7 @@ ThemeData lightMode = ThemeData(
     onTertiary: Colors.black,
     surface: Color(0xFFFBFAED),
     onSurface: Colors.black,
+    onSurfaceVariant: Color.fromARGB(255, 55, 55, 55),
     error: Color(0xFFFF3F3F),
     onError: Colors.white,
     shadow: Colors.grey,
