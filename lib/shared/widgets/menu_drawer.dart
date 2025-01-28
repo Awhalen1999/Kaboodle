@@ -44,7 +44,7 @@ class MenuDrawer extends StatelessWidget {
                 trailing: const CustomChip(),
                 onTap: () {
                   Navigator.pop(context);
-                  context.go('/my-packing-lists');
+                  context.push('/my-packing-lists');
                 },
               ),
               ListTile(
@@ -53,7 +53,7 @@ class MenuDrawer extends StatelessWidget {
                 trailing: const CustomChip(),
                 onTap: () {
                   Navigator.pop(context);
-                  context.go('/upcoming-trips');
+                  context.push('/upcoming-trips');
                 },
               ),
               const Divider(
@@ -92,7 +92,7 @@ class MenuDrawer extends StatelessWidget {
                       ),
                       onPressed: () {
                         Navigator.pop(context);
-                        context.go('/create-packing-list');
+                        context.push('/create-packing-list');
                       },
                     ),
                   ],
@@ -105,7 +105,7 @@ class MenuDrawer extends StatelessWidget {
                 trailing: const CustomChip(),
                 onTap: () {
                   Navigator.pop(context);
-                  context.go('/list-viewer');
+                  context.push('/list-viewer');
                 },
               ),
               ListTile(
@@ -115,7 +115,7 @@ class MenuDrawer extends StatelessWidget {
                 trailing: const CustomChip(),
                 onTap: () {
                   Navigator.pop(context);
-                  context.go('/list-viewer');
+                  context.push('/list-viewer');
                 },
               ),
               ListTile(
@@ -124,7 +124,7 @@ class MenuDrawer extends StatelessWidget {
                 trailing: const CustomChip(),
                 onTap: () {
                   Navigator.pop(context);
-                  context.go('/list-viewer');
+                  context.push('/list-viewer');
                 },
               ),
               const Divider(
@@ -251,7 +251,7 @@ class MenuDrawer extends StatelessWidget {
                   trailing: const Icon(Icons.chevron_right_rounded),
                   onTap: () {
                     Navigator.pop(context);
-                    context.go('/profile');
+                    context.push('/profile');
                   },
                 ),
               ),

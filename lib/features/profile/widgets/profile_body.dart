@@ -22,7 +22,7 @@ class ProfileBody extends StatelessWidget {
           const Text('P R O F I L E'),
           CustomButton(
             buttonText: "My packing lists",
-            onPressed: () => context.go('/my-packing-lists'),
+            onPressed: () => context.push('/my-packing-lists'),
             textColor: Theme.of(context).colorScheme.onSurface,
             isLoading: false,
           ),

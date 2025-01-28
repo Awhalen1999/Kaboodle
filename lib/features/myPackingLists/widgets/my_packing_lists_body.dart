@@ -14,7 +14,8 @@ class MyPackingListsBody extends StatelessWidget {
         children: [
           Text('M Y P A C K I N G L I S T S'),
           FloatingActionButton(
-              onPressed: () => context.go('/create-packing-list')),
+            onPressed: () => context.push('/create-packing-list'),
+          ),
         ],
       ),
     );

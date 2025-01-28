@@ -16,14 +16,14 @@ class WelcomeBody extends StatelessWidget {
           Text('W E L C O M E'),
           CustomButton(
             buttonText: "Sign Up",
-            onPressed: () => context.go('/signup'),
+            onPressed: () => context.push('/signup'),
             textColor: Theme.of(context).colorScheme.onSurface,
             isLoading: false,
           ),
           const SizedBox(height: 16),
           CustomButton(
             buttonText: "Login",
-            onPressed: () => context.go('/login'),
+            onPressed: () => context.push('/login'),
             textColor: Theme.of(context).colorScheme.onSurface,
             isLoading: false,
           )

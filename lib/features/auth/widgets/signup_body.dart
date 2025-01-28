@@ -123,7 +123,7 @@ class _SignupBodyState extends State<SignupBody> {
                 ),
               ),
               TextButton(
-                onPressed: () => context.go('/login'),
+                onPressed: () => context.push('/login'),
                 child: Text(
                   'Log In',
                   style: TextStyle(
