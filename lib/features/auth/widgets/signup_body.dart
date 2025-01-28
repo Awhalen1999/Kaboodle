@@ -3,6 +3,7 @@ import 'package:copackr/shared/widgets/custom_button.dart';
 import 'package:copackr/shared/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class SignupBody extends StatefulWidget {
   const SignupBody({super.key});
@@ -12,56 +13,53 @@ class SignupBody extends StatefulWidget {
 }
 
 class _SignupBodyState extends State<SignupBody> {
-  final TextEditingController emailController = TextEditingController();
-
-  final TextEditingController passwordController = TextEditingController();
-
-  final TextEditingController confirmPasswordController =
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
       TextEditingController();
 
-  void signup() async {
-    final _authService = AuthService();
+  Future<void> _signup() async {
+    if (_passwordController.text != _confirmPasswordController.text) {
+      if (!mounted) return;
+      Fluttertoast.showToast(
+        msg: 'Passwords do not match',
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.SNACKBAR,
+        backgroundColor: Colors.black54,
+        textColor: Colors.white,
+        fontSize: 14.0,
+      );
+      return;
+    }
 
-    if (passwordController.text == confirmPasswordController.text) {
-      try {
-        await _authService.signUpWithEmailAndPassword(
-          emailController.text,
-          passwordController.text,
-        );
-        if (mounted) {
-          context.go('/my-packing-lists');
-        }
-      } catch (e) {
-        // ignore: use_build_context_synchronously
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              e.toString(),
-            ),
-          ),
-        );
-      }
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Passwords do not match',
-          ),
-        ),
+    try {
+      await AuthService().signup(
+        email: _emailController.text,
+        password: _passwordController.text,
+        context: context,
+      );
+    } catch (e) {
+      if (!mounted) return;
+      Fluttertoast.showToast(
+        msg: e.toString(),
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.SNACKBAR,
+        backgroundColor: Colors.black54,
+        textColor: Colors.white,
+        fontSize: 14.0,
       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(25.0),
+    return SingleChildScrollView(
+      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Icon(
-            Icons.person,
+            Icons.person_add,
             size: 80,
             color: Theme.of(context).colorScheme.onSurface,
           ),
@@ -71,51 +69,54 @@ class _SignupBodyState extends State<SignupBody> {
             style: Theme.of(context).textTheme.headlineSmall,
           ),
           const SizedBox(height: 24),
-          Text('Sign up', style: Theme.of(context).textTheme.headlineMedium),
+          Text(
+            'Register Account',
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
           const SizedBox(height: 24),
           CustomTextFormField(
-            hintText: "",
-            label: "email",
+            hintText: 'Email',
+            label: 'Email Address',
             isObscured: false,
             isDigit: false,
             isRequired: true,
-            controller: emailController,
+            controller: _emailController,
             borderRadius: 12,
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 20),
           CustomTextFormField(
-            hintText: "",
-            label: "password",
+            hintText: 'Password',
+            label: 'Password',
             isObscured: true,
             isDigit: false,
             isRequired: true,
-            controller: passwordController,
+            controller: _passwordController,
             borderRadius: 12,
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 20),
           CustomTextFormField(
-            hintText: "",
-            label: "confirm password",
+            hintText: 'Confirm Password',
+            label: 'Confirm Password',
             isObscured: true,
             isDigit: false,
             isRequired: true,
-            controller: confirmPasswordController,
+            controller: _confirmPasswordController,
             borderRadius: 12,
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 30),
           CustomButton(
-            buttonText: "Sign up",
-            onPressed: signup,
+            buttonText: "Sign Up",
+            onPressed: _signup,
             textColor: Theme.of(context).colorScheme.onSurface,
             isLoading: false,
             borderRadius: 12,
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Already have an account?',
+                'Already Have Account?',
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onSurface,
                   fontSize: 14,
@@ -124,7 +125,7 @@ class _SignupBodyState extends State<SignupBody> {
               TextButton(
                 onPressed: () => context.go('/login'),
                 child: Text(
-                  'Login',
+                  'Log In',
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.onSurface,
                     fontSize: 14,

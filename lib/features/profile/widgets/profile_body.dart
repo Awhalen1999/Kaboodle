@@ -6,8 +6,9 @@ import 'package:go_router/go_router.dart';
 class ProfileBody extends StatelessWidget {
   const ProfileBody({super.key});
 
-  Future<void> logout() async {
-    await AuthService().signOut();
+  // Use the new signout method, passing context
+  Future<void> _logout(BuildContext context) async {
+    await AuthService().signout(context: context);
   }
 
   @override
@@ -18,7 +19,7 @@ class ProfileBody extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text('P R O F I L E'),
+          const Text('P R O F I L E'),
           CustomButton(
             buttonText: "My packing lists",
             onPressed: () => context.go('/my-packing-lists'),
@@ -28,7 +29,7 @@ class ProfileBody extends StatelessWidget {
           const SizedBox(height: 24),
           CustomButton(
             buttonText: "Logout",
-            onPressed: logout,
+            onPressed: () => _logout(context),
             textColor: Theme.of(context).colorScheme.onSurface,
             isLoading: false,
           )

@@ -12,38 +12,30 @@ class LoginBody extends StatefulWidget {
 }
 
 class _LoginBodyState extends State<LoginBody> {
-  final TextEditingController emailController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
-  final TextEditingController passwordController = TextEditingController();
-
-  void login() async {
-    final _authService = AuthService();
-
+  Future<void> _login() async {
     try {
-      await _authService.signInWithEmailAndPassword(
-        emailController.text,
-        passwordController.text,
+      await AuthService().signin(
+        email: _emailController.text,
+        password: _passwordController.text,
+        context: context,
       );
-      if (mounted) {
-        context.go('/my-packing-lists');
-      }
     } catch (e) {
-      // ignore: use_build_context_synchronously
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(e.toString()),
-        ),
+        SnackBar(content: Text(e.toString())),
       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(25.0),
+    return SingleChildScrollView(
+      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Icon(
             Icons.person,
@@ -56,54 +48,55 @@ class _LoginBodyState extends State<LoginBody> {
             style: Theme.of(context).textTheme.headlineSmall,
           ),
           const SizedBox(height: 24),
-          Text('Login', style: Theme.of(context).textTheme.headlineMedium),
+          Text(
+            'Login',
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
           const SizedBox(height: 24),
           CustomTextFormField(
-            hintText: "",
-            label: "email",
+            hintText: '',
+            label: 'Email',
             isObscured: false,
             isDigit: false,
             isRequired: true,
-            controller: emailController,
+            controller: _emailController,
             borderRadius: 12,
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 20),
           CustomTextFormField(
-            hintText: "",
-            label: "password",
+            hintText: '',
+            label: 'Password',
             isObscured: true,
             isDigit: false,
             isRequired: true,
-            controller: passwordController,
+            controller: _passwordController,
             borderRadius: 12,
           ),
-          const SizedBox(height: 12),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Text(
-                'Forgot password?',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onSurface,
-                  fontSize: 14,
-                ),
+          const SizedBox(height: 10),
+          Align(
+            alignment: Alignment.centerRight,
+            child: Text(
+              'Forgot password?',
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurface,
+                fontSize: 14,
               ),
-            ],
+            ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 30),
           CustomButton(
             buttonText: "Login",
-            onPressed: login,
+            onPressed: _login,
             textColor: Theme.of(context).colorScheme.onSurface,
             isLoading: false,
             borderRadius: 12,
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Don\'t have an account?',
+                "Don't have an account?",
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onSurface,
                   fontSize: 14,
