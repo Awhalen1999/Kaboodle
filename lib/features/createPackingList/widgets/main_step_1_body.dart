@@ -53,10 +53,9 @@ class _MainStepOneBodyState extends State<MainStepOneBody> {
               children: [
                 Text(
                   "Title",
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyLarge!
-                      .copyWith(fontWeight: FontWeight.w500),
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        fontWeight: FontWeight.w500,
+                      ),
                 ),
                 const SizedBox(height: 12),
                 TextFormField(
@@ -107,10 +106,9 @@ class _MainStepOneBodyState extends State<MainStepOneBody> {
               children: [
                 Text(
                   "Description",
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyLarge!
-                      .copyWith(fontWeight: FontWeight.w500),
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        fontWeight: FontWeight.w500,
+                      ),
                 ),
                 const SizedBox(height: 12),
                 TextFormField(
@@ -180,10 +178,9 @@ class _MainStepOneBodyState extends State<MainStepOneBody> {
                     const SizedBox(width: 12),
                     Text(
                       "Tags",
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyLarge!
-                          .copyWith(fontWeight: FontWeight.w500),
+                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                            fontWeight: FontWeight.w500,
+                          ),
                     ),
                   ],
                 ),
@@ -211,10 +208,9 @@ class _MainStepOneBodyState extends State<MainStepOneBody> {
               children: [
                 Text(
                   "Select a travel date",
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyLarge!
-                      .copyWith(fontWeight: FontWeight.w500),
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        fontWeight: FontWeight.w500,
+                      ),
                 ),
                 const SizedBox(height: 12),
                 InkWell(
