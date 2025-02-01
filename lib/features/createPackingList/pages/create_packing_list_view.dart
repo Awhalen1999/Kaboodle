@@ -2,6 +2,7 @@ import 'package:copackr/features/createPackingList/widgets/main_step_1_body.dart
 import 'package:copackr/features/createPackingList/widgets/main_step_2_body.dart';
 import 'package:copackr/features/createPackingList/widgets/main_step_3_body.dart';
 import 'package:copackr/features/createPackingList/widgets/main_step_4_body.dart';
+import 'package:copackr/shared/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 
@@ -15,17 +16,33 @@ class CreatePackingListView extends StatefulWidget {
 class _CreatePackingListViewState extends State<CreatePackingListView> {
   int _currentStep = 1;
 
+  String _getAppBarTitle() {
+    switch (_currentStep) {
+      case 1:
+        return 'Add List';
+      case 2:
+        return 'List Details';
+      case 3:
+        return 'Choose Items';
+      case 4:
+      default:
+        return 'Overview List';
+    }
+  }
+
   void _nextStep() {
     if (_currentStep < 4) {
       setState(() => _currentStep++);
     } else {
-      // "Finish" action (save data, navigate, etc.)
+      // final step action
     }
   }
 
   void _previousStep() {
     if (_currentStep > 1) {
       setState(() => _currentStep--);
+    } else {
+      Navigator.pop(context);
     }
   }
 
@@ -34,7 +51,24 @@ class _CreatePackingListViewState extends State<CreatePackingListView> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        title: Text('Create Packing List'),
+        automaticallyImplyLeading: false,
+        centerTitle: false,
+        titleSpacing: 4,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_rounded),
+          onPressed: _previousStep,
+        ),
+        title: Text(_getAppBarTitle()),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: IconButton(
+              icon: const Icon(Icons.close_rounded),
+              iconSize: 28,
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ),
+        ],
       ),
       body: SafeArea(
         child: Padding(
@@ -50,37 +84,27 @@ class _CreatePackingListViewState extends State<CreatePackingListView> {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    Theme.of(context).colorScheme.tertiary,
-                    Theme.of(context).primaryColor,
+                    Theme.of(context).colorScheme.secondary,
+                    Theme.of(context).colorScheme.primary,
                   ],
                 ),
                 roundedEdges: const Radius.circular(10),
               ),
               const SizedBox(height: 16),
-              Expanded(child: _buildStepContent(_currentStep)),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  if (_currentStep > 1)
-                    IconButton(
-                      icon: const Icon(Icons.arrow_back_ios_rounded),
-                      color: Theme.of(context).colorScheme.onSurface,
-                      onPressed: _previousStep,
-                      tooltip: 'Back',
-                    )
-                  else
-                    const Spacer(),
-                  IconButton(
-                    icon: Icon(
-                      _currentStep < 4
-                          ? Icons.arrow_forward_ios_rounded
-                          : Icons.done_rounded,
-                    ),
-                    color: Theme.of(context).colorScheme.onSurface,
-                    onPressed: _nextStep,
-                    tooltip: _currentStep < 4 ? 'Next' : 'Finish',
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Container(
+                    child: _buildStepContent(_currentStep),
                   ),
-                ],
+                ),
+              ),
+              CustomButton(
+                buttonText: "Next",
+                onPressed: _nextStep,
+                textColor: Theme.of(context).colorScheme.onPrimary,
+                buttonColor: Theme.of(context).colorScheme.primary,
+                isLoading: false,
+                borderRadius: 12,
               ),
             ],
           ),

@@ -2,21 +2,21 @@ import 'package:flutter/material.dart';
 
 ThemeData lightMode = ThemeData(
   brightness: Brightness.light,
-  colorScheme: const ColorScheme.light(
+  colorScheme: ColorScheme.light(
     primary: Color(0xFF7A52F4),
     onPrimary: Colors.white,
-    secondary: Color(0xFFF2BB98),
+    secondary: Color(0xFFD685B1),
     onSecondary: Colors.black,
-    tertiary: Color(0xFFD685B1),
+    tertiary: Color(0xFFF2BB98),
     onTertiary: Colors.black,
     surface: Color.fromARGB(255, 245, 245, 245),
     surfaceBright: Colors.white,
     onSurface: Colors.black,
-    onSurfaceVariant: Color(0xFF373737),
+    onSurfaceVariant: Colors.grey[800],
     error: Color(0xFFFF3F3F),
     onError: Colors.white,
-    shadow: Colors.grey,
-    surfaceContainer: Color(0xC8D2D2D2),
+    shadow: Color.fromARGB(30, 210, 210, 210),
+    surfaceContainer: Color.fromARGB(199, 222, 222, 222),
   ),
   textTheme: ThemeData.light().textTheme.copyWith(
         displayLarge: TextStyle(
