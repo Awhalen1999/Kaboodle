@@ -1,3 +1,4 @@
+import 'package:copackr/features/createPackingList/widgets/trip_length_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -121,6 +122,8 @@ class MainStepTwoBody extends StatelessWidget {
               ],
             ),
           ),
+          const SizedBox(height: 16),
+          TripLengthSlider(),
           const SizedBox(height: 16),
           Container(
             width: double.infinity,
