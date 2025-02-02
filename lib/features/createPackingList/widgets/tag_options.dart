@@ -33,11 +33,11 @@ class TagOptions extends StatelessWidget {
           value: 'business',
           decorations: MultiSelectItemDecorations(
             decoration: BoxDecoration(
-              color: Colors.grey.withOpacity(0.3),
+              color: Colors.grey.withOpacity(0.25),
               borderRadius: BorderRadius.circular(25),
             ),
             selectedDecoration: BoxDecoration(
-              color: Colors.grey.withOpacity(0.6),
+              color: Colors.grey.withOpacity(0.7),
               borderRadius: BorderRadius.circular(25),
             ),
           ),
@@ -59,11 +59,11 @@ class TagOptions extends StatelessWidget {
           value: 'vacation',
           decorations: MultiSelectItemDecorations(
             decoration: BoxDecoration(
-              color: Colors.red.withOpacity(0.3),
+              color: Colors.red.withOpacity(0.25),
               borderRadius: BorderRadius.circular(25),
             ),
             selectedDecoration: BoxDecoration(
-              color: Colors.red.withOpacity(0.6),
+              color: Colors.red.withOpacity(0.7),
               borderRadius: BorderRadius.circular(25),
             ),
           ),
@@ -85,11 +85,11 @@ class TagOptions extends StatelessWidget {
           value: 'personal',
           decorations: MultiSelectItemDecorations(
             decoration: BoxDecoration(
-              color: Colors.lightBlue.withOpacity(0.3),
+              color: Colors.lightBlue.withOpacity(0.25),
               borderRadius: BorderRadius.circular(25),
             ),
             selectedDecoration: BoxDecoration(
-              color: Colors.lightBlue.withOpacity(0.6),
+              color: Colors.lightBlue.withOpacity(0.7),
               borderRadius: BorderRadius.circular(25),
             ),
           ),
@@ -111,11 +111,11 @@ class TagOptions extends StatelessWidget {
           value: 'family',
           decorations: MultiSelectItemDecorations(
             decoration: BoxDecoration(
-              color: Colors.orangeAccent.withOpacity(0.3),
+              color: Colors.orangeAccent.withOpacity(0.25),
               borderRadius: BorderRadius.circular(25),
             ),
             selectedDecoration: BoxDecoration(
-              color: Colors.orangeAccent.withOpacity(0.6),
+              color: Colors.orangeAccent.withOpacity(0.7),
               borderRadius: BorderRadius.circular(25),
             ),
           ),
@@ -137,11 +137,11 @@ class TagOptions extends StatelessWidget {
           value: 'adventure',
           decorations: MultiSelectItemDecorations(
             decoration: BoxDecoration(
-              color: Colors.lightGreen.withOpacity(0.3),
+              color: Colors.lightGreen.withOpacity(0.25),
               borderRadius: BorderRadius.circular(25),
             ),
             selectedDecoration: BoxDecoration(
-              color: Colors.lightGreen.withOpacity(0.6),
+              color: Colors.lightGreen.withOpacity(0.7),
               borderRadius: BorderRadius.circular(25),
             ),
           ),
@@ -163,11 +163,11 @@ class TagOptions extends StatelessWidget {
           value: 'health',
           decorations: MultiSelectItemDecorations(
             decoration: BoxDecoration(
-              color: Colors.purpleAccent.withOpacity(0.3),
+              color: Colors.purpleAccent.withOpacity(0.25),
               borderRadius: BorderRadius.circular(25),
             ),
             selectedDecoration: BoxDecoration(
-              color: Colors.purpleAccent.withOpacity(0.6),
+              color: Colors.purpleAccent.withOpacity(0.7),
               borderRadius: BorderRadius.circular(25),
             ),
           ),
