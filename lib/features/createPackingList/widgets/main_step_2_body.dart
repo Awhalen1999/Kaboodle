@@ -1,7 +1,7 @@
+import 'package:copackr/features/createPackingList/widgets/svg_button_column.dart';
+import 'package:copackr/features/createPackingList/widgets/svg_button_row.dart';
 import 'package:copackr/features/createPackingList/widgets/trip_length_slider.dart';
-import 'package:copackr/shared/widgets/custom_checkbox_list_tile.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class MainStepTwoBody extends StatelessWidget {
   const MainStepTwoBody({Key? key}) : super(key: key);
@@ -13,6 +13,49 @@ class MainStepTwoBody extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surfaceBright,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Theme.of(context).colorScheme.shadow,
+                  blurRadius: 10,
+                ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Purpose of the trip",
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyLarge!
+                      .copyWith(fontWeight: FontWeight.w500),
+                ),
+                const SizedBox(height: 12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    SvgButtonRow(
+                      svgAsset: 'assets/svg/business.svg',
+                      label: "Business",
+                      onPressed: () {},
+                    ),
+                    SvgButtonRow(
+                      svgAsset: 'assets/svg/vacation.svg',
+                      label: "Vacation",
+                      onPressed: () {},
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
           Container(
             width: double.infinity,
             padding: const EdgeInsets.all(16),
@@ -50,73 +93,22 @@ class MainStepTwoBody extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    ElevatedButton.icon(
+                    SvgButtonRow(
+                      svgAsset: 'assets/svg/warm.svg',
+                      label: "Hot",
                       onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context).colorScheme.surface,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 12,
-                        ),
-                      ),
-                      icon: SvgPicture.asset(
-                        'assets/svg/hot.svg',
-                        height: 24,
-                        width: 24,
-                      ),
-                      label: Text(
-                        "Hot",
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
                     ),
-                    ElevatedButton.icon(
+                    SvgButtonRow(
+                      svgAsset: 'assets/svg/cool.svg',
+                      label: "Cold",
                       onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context).colorScheme.surface,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 12,
-                        ),
-                      ),
-                      icon: SvgPicture.asset(
-                        'assets/svg/cold.svg',
-                        height: 24,
-                        width: 24,
-                      ),
-                      label: Text(
-                        "Cold",
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
                     ),
-                    ElevatedButton.icon(
+                    SvgButtonRow(
+                      svgAsset: 'assets/svg/mild.svg',
+                      label: "Mild",
                       onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context).colorScheme.surface,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 12,
-                        ),
-                      ),
-                      icon: SvgPicture.asset(
-                        'assets/svg/cloud-fog.svg',
-                        height: 24,
-                        width: 24,
-                      ),
-                      label: Text(
-                        "Mild",
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
                     ),
                   ],
                 ),
@@ -143,14 +135,74 @@ class MainStepTwoBody extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Purpose of the trip",
+                  "Accommodations",
                   style: Theme.of(context)
                       .textTheme
                       .bodyLarge!
                       .copyWith(fontWeight: FontWeight.w500),
                 ),
                 const SizedBox(height: 12),
-                // Todo: Add 2 inkwells with icons and text (Business, Leisure)
+                Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Expanded(
+                          child: SvgButtonColumn(
+                            svgAsset: 'assets/svg/hotel.svg',
+                            label: 'Hotel',
+                            onPressed: () {},
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: SvgButtonColumn(
+                            svgAsset: 'assets/svg/cabin.svg',
+                            label: 'Rental Home',
+                            onPressed: () {},
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: SvgButtonColumn(
+                            svgAsset: 'assets/svg/home.svg',
+                            label: 'Friends/Family',
+                            onPressed: () {},
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 18),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Expanded(
+                          child: SvgButtonColumn(
+                            svgAsset: 'assets/svg/camping.svg',
+                            label: 'Camping',
+                            onPressed: () {},
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: SvgButtonColumn(
+                            svgAsset: 'assets/svg/cruise.svg',
+                            label: 'Cruise',
+                            onPressed: () {},
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: SvgButtonColumn(
+                            svgAsset: 'assets/svg/camper-van.svg',
+                            label: 'Road Trip',
+                            onPressed: () {},
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                )
               ],
             ),
           ),
@@ -172,43 +224,16 @@ class MainStepTwoBody extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Accommodations",
+                  "Items/Activities",
                   style: Theme.of(context)
                       .textTheme
                       .bodyLarge!
                       .copyWith(fontWeight: FontWeight.w500),
                 ),
                 const SizedBox(height: 12),
-                CustomCheckboxListTile(
-                  iconData: Icons.business_rounded,
-                  text: "Hotel",
-                  value: false,
-                  onChanged: (val) {},
-                ),
-                CustomCheckboxListTile(
-                  iconData: Icons.home_rounded,
-                  text: "Rental Home",
-                  value: false,
-                  onChanged: (val) {},
-                ),
-                CustomCheckboxListTile(
-                  iconData: Icons.group_rounded,
-                  text: "Friends/Family Home",
-                  value: false,
-                  onChanged: (val) {},
-                ),
-                CustomCheckboxListTile(
-                  iconData: Icons.outdoor_grill_rounded,
-                  text: "Camping",
-                  value: false,
-                  onChanged: (val) {},
-                ),
-                CustomCheckboxListTile(
-                  iconData: Icons.directions_boat_rounded,
-                  text: "Cruise",
-                  value: false,
-                  onChanged: (val) {},
-                ),
+                Column(
+                  children: [],
+                )
               ],
             ),
           ),
