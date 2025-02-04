@@ -211,7 +211,12 @@ class MainStepTwoBody extends StatelessWidget {
           const SizedBox(height: 16),
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.only(
+              top: 16,
+              left: 16,
+              right: 16,
+              bottom: 8,
+            ),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.surfaceBright,
               borderRadius: BorderRadius.circular(12),
@@ -277,6 +282,7 @@ class MainStepTwoBody extends StatelessWidget {
                       value: false,
                       onChanged: (val) {},
                     ),
+                    // Todo: Add more items
                   ],
                 )
               ],
