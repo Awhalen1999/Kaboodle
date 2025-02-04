@@ -42,20 +42,20 @@ ThemeData lightMode = ThemeData(
         bodyLarge: TextStyle(
           fontFamily: 'Poppins',
           fontWeight: FontWeight.w400,
-          color: Colors.grey[800],
+          color: Colors.grey[900],
           fontSize: 16,
         ),
         bodyMedium: TextStyle(
           fontFamily: 'Poppins',
-          fontWeight: FontWeight.w300,
+          fontWeight: FontWeight.w400,
           color: Colors.grey[800],
           fontSize: 14,
         ),
         bodySmall: TextStyle(
           fontFamily: 'Poppins',
-          fontWeight: FontWeight.w200,
+          fontWeight: FontWeight.w400,
           color: Colors.grey[800],
-          fontSize: 12,
+          fontSize: 13,
         ),
       ),
 );

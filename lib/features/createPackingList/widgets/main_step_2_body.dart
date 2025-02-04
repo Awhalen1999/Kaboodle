@@ -1,7 +1,6 @@
 import 'package:copackr/features/createPackingList/widgets/svg_button_column.dart';
 import 'package:copackr/features/createPackingList/widgets/svg_button_row.dart';
 import 'package:copackr/features/createPackingList/widgets/trip_length_slider.dart';
-import 'package:copackr/shared/widgets/custom_checkbox_list_tile.dart';
 import 'package:copackr/shared/widgets/custom_svg_checkbox_list_tile.dart';
 import 'package:flutter/material.dart';
 
