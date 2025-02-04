@@ -38,21 +38,10 @@ class CustomSvgCheckboxListTile extends StatelessWidget {
         ),
         title: Row(
           children: [
-            Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              padding: const EdgeInsets.all(8),
-              child: SvgPicture.asset(
-                svgAsset,
-                height: 32,
-                width: 32,
-                colorFilter: ColorFilter.mode(
-                  Theme.of(context).colorScheme.primary,
-                  BlendMode.srcIn,
-                ),
-              ),
+            SvgPicture.asset(
+              svgAsset,
+              height: 35,
+              width: 35,
             ),
             const SizedBox(width: 12),
             Text(text),

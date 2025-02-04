@@ -1,6 +1,8 @@
 import 'package:copackr/features/createPackingList/widgets/svg_button_column.dart';
 import 'package:copackr/features/createPackingList/widgets/svg_button_row.dart';
 import 'package:copackr/features/createPackingList/widgets/trip_length_slider.dart';
+import 'package:copackr/shared/widgets/custom_checkbox_list_tile.dart';
+import 'package:copackr/shared/widgets/custom_svg_checkbox_list_tile.dart';
 import 'package:flutter/material.dart';
 
 class MainStepTwoBody extends StatelessWidget {
@@ -232,7 +234,50 @@ class MainStepTwoBody extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 Column(
-                  children: [],
+                  children: [
+                    CustomSvgCheckboxListTile(
+                      svgAsset: "assets/svg/checklist.svg",
+                      text: "Essential items",
+                      value: false,
+                      onChanged: (val) {},
+                    ),
+                    CustomSvgCheckboxListTile(
+                      svgAsset: "assets/svg/hawaiian-shirt.svg",
+                      text: "Clothes",
+                      value: false,
+                      onChanged: (val) {},
+                    ),
+                    CustomSvgCheckboxListTile(
+                      svgAsset: "assets/svg/toothbrush.svg",
+                      text: "Toiletries",
+                      value: false,
+                      onChanged: (val) {},
+                    ),
+                    CustomSvgCheckboxListTile(
+                      svgAsset: "assets/svg/laptop.svg",
+                      text: "Electronics",
+                      value: false,
+                      onChanged: (val) {},
+                    ),
+                    CustomSvgCheckboxListTile(
+                      svgAsset: "assets/svg/gym.svg",
+                      text: "Gym",
+                      value: false,
+                      onChanged: (val) {},
+                    ),
+                    CustomSvgCheckboxListTile(
+                      svgAsset: "assets/svg/umbrella.svg",
+                      text: "Beach",
+                      value: false,
+                      onChanged: (val) {},
+                    ),
+                    CustomSvgCheckboxListTile(
+                      svgAsset: "assets/svg/bow-tie.svg",
+                      text: "Formal Event",
+                      value: false,
+                      onChanged: (val) {},
+                    ),
+                  ],
                 )
               ],
             ),

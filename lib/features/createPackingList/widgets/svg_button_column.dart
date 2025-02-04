@@ -16,7 +16,7 @@ class SvgButtonColumn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: const BoxConstraints(minHeight: 120),
+      constraints: const BoxConstraints(minHeight: 105),
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
