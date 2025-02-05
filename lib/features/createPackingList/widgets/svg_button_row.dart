@@ -6,19 +6,28 @@ class SvgButtonRow extends StatelessWidget {
   final String label;
   final VoidCallback? onPressed;
 
+  // Indicates whether this button is selected and should be highlighted.
+  final bool isSelected;
+
   const SvgButtonRow({
     Key? key,
     required this.svgAsset,
     required this.label,
     this.onPressed,
+    this.isSelected = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    // change the background color based on the selection state
+    final bgColor = isSelected
+        ? Theme.of(context).colorScheme.primary.withOpacity(0.2)
+        : Theme.of(context).colorScheme.surface;
+
     return ElevatedButton.icon(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: Theme.of(context).colorScheme.surface,
+        backgroundColor: bgColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),

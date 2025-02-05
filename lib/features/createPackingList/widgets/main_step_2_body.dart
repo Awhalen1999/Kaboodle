@@ -1,3 +1,4 @@
+import 'package:copackr/features/createPackingList/widgets/purpose_of_trip_selector.dart';
 import 'package:copackr/features/createPackingList/widgets/svg_button_column.dart';
 import 'package:copackr/features/createPackingList/widgets/svg_button_row.dart';
 import 'package:copackr/features/createPackingList/widgets/trip_length_slider.dart';
@@ -51,21 +52,7 @@ class MainStepTwoBody extends StatelessWidget {
                       .copyWith(fontWeight: FontWeight.w500),
                 ),
                 const SizedBox(height: 12),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    SvgButtonRow(
-                      svgAsset: 'assets/svg/business.svg',
-                      label: "Business",
-                      onPressed: () {},
-                    ),
-                    SvgButtonRow(
-                      svgAsset: 'assets/svg/vacation.svg',
-                      label: "Vacation",
-                      onPressed: () {},
-                    ),
-                  ],
-                ),
+                const PurposeOfTripSelector(),
               ],
             ),
           ),
