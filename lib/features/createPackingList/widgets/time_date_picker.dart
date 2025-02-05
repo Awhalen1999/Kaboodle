@@ -1,4 +1,6 @@
+import 'package:copackr/features/createPackingList/provider/create_packing_list_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class TravelDatePicker extends StatefulWidget {
   const TravelDatePicker({Key? key}) : super(key: key);
@@ -8,90 +10,82 @@ class TravelDatePicker extends StatefulWidget {
 }
 
 class _TravelDatePickerState extends State<TravelDatePicker> {
-  DateTime? _selectedDate;
-
   Future<void> _openCalendar() async {
     final now = DateTime.now();
+    final provider = context.read<CreatePackingListProvider>();
+
     final pickedDate = await showDatePicker(
       context: context,
-      initialDate: _selectedDate ?? now,
+      initialDate: provider.travelDate ?? now,
       firstDate: DateTime(now.year - 10),
       lastDate: DateTime(now.year + 10),
     );
     if (pickedDate != null) {
-      setState(() {
-        _selectedDate = pickedDate;
-      });
+      provider.updateTravelDate(pickedDate);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceBright,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Theme.of(context).colorScheme.shadow,
-            blurRadius: 10,
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Text(
-                "Select a travel date",
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge!
-                    .copyWith(fontWeight: FontWeight.w500),
-              ),
-              const Spacer(),
-              InkWell(
-                onTap: () {},
-                child: Text(
-                  "Not sure yet",
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          InkWell(
-            onTap: _openCalendar,
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: Theme.of(context).colorScheme.surfaceContainer,
-                ),
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              height: 56,
-              child: Row(
-                children: [
-                  Text(
-                    _selectedDate == null
-                        ? "Select a date..."
-                        : "${_selectedDate!.month}/${_selectedDate!.day}/${_selectedDate!.year}",
-                  ),
-                  const Spacer(),
-                  Icon(
-                    Icons.calendar_today_rounded,
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
-                ],
+    final provider = context.watch<CreatePackingListProvider>();
+    final dateText = provider.travelDate == null
+        ? "Select a date..."
+        : "${provider.travelDate!.month}/${provider.travelDate!.day}/${provider.travelDate!.year}";
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Text(
+              "Select a travel date",
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyLarge!
+                  .copyWith(fontWeight: FontWeight.w500),
+            ),
+            const Spacer(),
+            InkWell(
+              onTap: () => provider.updateTravelDate(null),
+              child: Text(
+                "Not sure yet",
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontWeight: provider.travelDate == null
+                          ? FontWeight.w600
+                          : FontWeight.normal,
+                      color: provider.travelDate == null
+                          ? Theme.of(context).colorScheme.primary
+                          : null,
+                    ),
               ),
             ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        InkWell(
+          onTap: _openCalendar,
+          child: Container(
+            height: 56,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: Theme.of(context).colorScheme.surfaceContainer,
+              ),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              children: [
+                Text(dateText),
+                const Spacer(),
+                Icon(
+                  Icons.calendar_today_rounded,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
+              ],
+            ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

@@ -154,7 +154,21 @@ class MainStepOneBody extends StatelessWidget {
           //   ),
           // ),
           const SizedBox(height: 16),
-          const TravelDatePicker(),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surfaceBright,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Theme.of(context).colorScheme.shadow,
+                  blurRadius: 10,
+                ),
+              ],
+            ),
+            child: const TravelDatePicker(),
+          ),
         ],
       ),
     );
