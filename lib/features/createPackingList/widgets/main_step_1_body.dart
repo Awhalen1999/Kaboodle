@@ -1,6 +1,8 @@
-import 'package:copackr/features/createPackingList/widgets/color_widget.dart';
+import 'package:copackr/features/createPackingList/widgets/color_picker.dart';
+import 'package:copackr/features/createPackingList/widgets/description_field.dart';
 import 'package:copackr/features/createPackingList/widgets/tag_options.dart';
 import 'package:copackr/features/createPackingList/widgets/time_date_picker.dart';
+import 'package:copackr/features/createPackingList/widgets/title_field.dart';
 import 'package:flutter/material.dart';
 
 class MainStepOneBody extends StatelessWidget {
@@ -8,9 +10,6 @@ class MainStepOneBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController titleController = TextEditingController();
-    final TextEditingController descriptionController = TextEditingController();
-
     return SingleChildScrollView(
       padding: const EdgeInsets.only(left: 4, right: 4, bottom: 8),
       child: Column(
@@ -53,32 +52,7 @@ class MainStepOneBody extends StatelessWidget {
                       .copyWith(fontWeight: FontWeight.w500),
                 ),
                 const SizedBox(height: 12),
-                TextFormField(
-                  controller: titleController,
-                  obscureText: false,
-                  maxLines: 1,
-                  decoration: InputDecoration(
-                    labelText: "Add a title...",
-                    filled: true,
-                    fillColor: Theme.of(context).colorScheme.surfaceBright,
-                    alignLabelWithHint: true,
-                    floatingLabelStyle: TextStyle(
-                      color: Theme.of(context).colorScheme.onSurface,
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(
-                        color: Theme.of(context).colorScheme.surfaceContainer,
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(
-                        color: Theme.of(context).colorScheme.surfaceContainer,
-                      ),
-                    ),
-                  ),
-                ),
+                TitleField(),
               ],
             ),
           ),
@@ -107,33 +81,7 @@ class MainStepOneBody extends StatelessWidget {
                       .copyWith(fontWeight: FontWeight.w500),
                 ),
                 const SizedBox(height: 12),
-                TextFormField(
-                  controller: descriptionController,
-                  obscureText: false,
-                  minLines: 3,
-                  maxLines: 5,
-                  decoration: InputDecoration(
-                    labelText: "Add a description...",
-                    filled: true,
-                    fillColor: Theme.of(context).colorScheme.surfaceBright,
-                    alignLabelWithHint: true,
-                    floatingLabelStyle: TextStyle(
-                      color: Theme.of(context).colorScheme.onSurface,
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(
-                        color: Theme.of(context).colorScheme.surfaceContainer,
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(
-                        color: Theme.of(context).colorScheme.surfaceContainer,
-                      ),
-                    ),
-                  ),
-                ),
+                DescriptionField(),
               ],
             ),
           ),
