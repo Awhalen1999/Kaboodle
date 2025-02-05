@@ -1,13 +1,15 @@
+import 'package:copackr/features/createPackingList/provider/create_packing_list_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_multi_select_items/flutter_multi_select_items.dart';
+import 'package:provider/provider.dart';
 
 class TagOptions extends StatelessWidget {
-  const TagOptions({
-    super.key,
-  });
+  const TagOptions({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final provider = context.watch<CreatePackingListProvider>();
+
     return MultiSelectContainer(
       prefix: MultiSelectPrefix(
         selectedPrefix: Padding(
@@ -185,7 +187,10 @@ class TagOptions extends StatelessWidget {
           ),
         ),
       ],
-      onChange: (allSelectedItems, selectedItem) {},
+      onChange: (allSelectedItems, selectedItem) {
+        // This updates the provider with the newly selected items
+        provider.updateTags(allSelectedItems);
+      },
     );
   }
 }

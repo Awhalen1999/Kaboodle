@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:copackr/features/createPackingList/provider/create_packing_list_provider.dart';
 
 class ColorPicker extends StatefulWidget {
-  final Function(Color)? onColorSelected;
-  const ColorPicker({Key? key, this.onColorSelected}) : super(key: key);
+  const ColorPicker({Key? key}) : super(key: key);
 
   @override
   State<ColorPicker> createState() => _ColorPickerState();
@@ -10,11 +11,15 @@ class ColorPicker extends StatefulWidget {
 
 class _ColorPickerState extends State<ColorPicker> {
   int _selectedIndex = 0;
+  late List<Color> _colors;
 
   @override
-  Widget build(BuildContext context) {
-    final List<Color> colors = [
-      Theme.of(context).colorScheme.surfaceContainer,
+  void initState() {
+    super.initState();
+
+    // We'll define the color list once here
+    _colors = [
+      Colors.grey,
       Colors.red,
       Colors.pink,
       Colors.lightBlue,
@@ -22,20 +27,37 @@ class _ColorPickerState extends State<ColorPicker> {
       Colors.orange,
     ];
 
+    // Check the provider's current color and find which index matches
+    final model = context.read<CreatePackingListProvider>();
+    final currentColor = model.listColor;
+
+    // If the current color is in our list, pick that index. Otherwise default to 0.
+    final index = _colors.indexOf(currentColor);
+    if (index != -1) {
+      _selectedIndex = index;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final model = context.watch<CreatePackingListProvider>();
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: List.generate(colors.length, (index) {
+      children: List.generate(_colors.length, (index) {
+        final color = _colors[index];
         return IconButton(
           icon: Icon(
             Icons.circle,
-            color: colors[index],
+            color: color,
             size: _selectedIndex == index ? 32 : 22,
           ),
           onPressed: () {
             setState(() {
               _selectedIndex = index;
             });
-            widget.onColorSelected?.call(colors[index]);
+            // Update the provider with the new color
+            model.updateListColor(_colors[index]);
           },
         );
       }),
