@@ -10,10 +10,23 @@ class MainStepTwoBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 12),
+      padding: const EdgeInsets.only(left: 4, right: 4, bottom: 8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Text(
+            "Let's personalize your list",
+            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            "Tell us a bit more about your plans so we can tailor our recommendations.",
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
+          const SizedBox(height: 16),
           Container(
             width: double.infinity,
             padding: const EdgeInsets.all(16),
@@ -135,12 +148,24 @@ class MainStepTwoBody extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  "Accommodations",
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyLarge!
-                      .copyWith(fontWeight: FontWeight.w500),
+                Row(
+                  children: [
+                    Text(
+                      "Accommodations",
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyLarge!
+                          .copyWith(fontWeight: FontWeight.w500),
+                    ),
+                    const Spacer(),
+                    InkWell(
+                      onTap: () {},
+                      child: Text(
+                        "Other",
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 12),
                 Column(
@@ -264,8 +289,8 @@ class MainStepTwoBody extends StatelessWidget {
                       onChanged: (val) {},
                     ),
                     CustomSvgCheckboxListTile(
-                      svgAsset: "assets/svg/gym.svg",
-                      text: "Gym",
+                      svgAsset: "assets/svg/camera.svg",
+                      text: "Photography",
                       value: false,
                       onChanged: (val) {},
                     ),
@@ -276,8 +301,38 @@ class MainStepTwoBody extends StatelessWidget {
                       onChanged: (val) {},
                     ),
                     CustomSvgCheckboxListTile(
+                      svgAsset: "assets/svg/dumbbell.svg",
+                      text: "Gym",
+                      value: false,
+                      onChanged: (val) {},
+                    ),
+                    CustomSvgCheckboxListTile(
                       svgAsset: "assets/svg/bow-tie.svg",
                       text: "Formal Event",
+                      value: false,
+                      onChanged: (val) {},
+                    ),
+                    CustomSvgCheckboxListTile(
+                      svgAsset: "assets/svg/bicycle.svg",
+                      text: "Cycling",
+                      value: false,
+                      onChanged: (val) {},
+                    ),
+                    CustomSvgCheckboxListTile(
+                      svgAsset: "assets/svg/mountain-route.svg",
+                      text: "Hiking",
+                      value: false,
+                      onChanged: (val) {},
+                    ),
+                    CustomSvgCheckboxListTile(
+                      svgAsset: "assets/svg/winter-hat.svg",
+                      text: "Winter Sports",
+                      value: false,
+                      onChanged: (val) {},
+                    ),
+                    CustomSvgCheckboxListTile(
+                      svgAsset: "assets/svg/rod.svg",
+                      text: "Fishing",
                       value: false,
                       onChanged: (val) {},
                     ),
