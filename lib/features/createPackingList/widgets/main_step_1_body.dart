@@ -1,4 +1,4 @@
-import 'package:copackr/features/createPackingList/widgets/color_widger.dart';
+import 'package:copackr/features/createPackingList/widgets/color_widget.dart';
 import 'package:copackr/features/createPackingList/widgets/tag_options.dart';
 import 'package:copackr/features/createPackingList/widgets/time_date_picker.dart';
 import 'package:flutter/material.dart';
