@@ -167,7 +167,19 @@ class MainStepOneBody extends StatelessWidget {
                 ),
               ],
             ),
-            child: const TravelDatePicker(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Select a date",
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.w500,
+                      ),
+                ),
+                const SizedBox(height: 12),
+                const TravelDatePicker(),
+              ],
+            ),
           ),
         ],
       ),

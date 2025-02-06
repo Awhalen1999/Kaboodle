@@ -7,6 +7,7 @@ class CreatePackingListProvider extends ChangeNotifier {
   List<String> _tags = [];
   DateTime? _travelDate;
   String? _tripPurpose;
+  String? _weatherCondition;
 
   String get title => _title;
   String get description => _description;
@@ -14,6 +15,7 @@ class CreatePackingListProvider extends ChangeNotifier {
   List<String> get tags => _tags;
   DateTime? get travelDate => _travelDate;
   String? get tripPurpose => _tripPurpose;
+  String? get weatherCondition => _weatherCondition;
 
   void updateTitle(String newTitle) {
     debugPrint("[Provider] Changing title to $newTitle");
@@ -49,6 +51,12 @@ class CreatePackingListProvider extends ChangeNotifier {
   void updateTripPurpose(String? purpose) {
     debugPrint("[Provider] Changing trip purpose to $purpose");
     _tripPurpose = purpose;
+    notifyListeners();
+  }
+
+  void updateWeatherCondition(String? condition) {
+    debugPrint("[Provider] Changing weather condition to $condition");
+    _weatherCondition = condition;
     notifyListeners();
   }
 }

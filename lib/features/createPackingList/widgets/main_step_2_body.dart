@@ -1,7 +1,7 @@
 import 'package:copackr/features/createPackingList/widgets/purpose_of_trip_selector.dart';
 import 'package:copackr/features/createPackingList/widgets/svg_button_column.dart';
-import 'package:copackr/features/createPackingList/widgets/svg_button_row.dart';
 import 'package:copackr/features/createPackingList/widgets/trip_length_slider.dart';
+import 'package:copackr/features/createPackingList/widgets/weather_condition_selector.dart';
 import 'package:copackr/shared/widgets/custom_svg_checkbox_list_tile.dart';
 import 'package:flutter/material.dart';
 
@@ -73,46 +73,14 @@ class MainStepTwoBody extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    Text(
-                      "Weather conditions",
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyLarge!
-                          .copyWith(fontWeight: FontWeight.w500),
-                    ),
-                    const Spacer(),
-                    InkWell(
-                      onTap: () {},
-                      child: Text(
-                        "Not sure yet",
-                        style: Theme.of(context).textTheme.bodyMedium,
+                Text(
+                  "Weather conditions",
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.w500,
                       ),
-                    ),
-                  ],
                 ),
                 const SizedBox(height: 12),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    SvgButtonRow(
-                      svgAsset: 'assets/svg/warm.svg',
-                      label: "Hot",
-                      onPressed: () {},
-                    ),
-                    SvgButtonRow(
-                      svgAsset: 'assets/svg/cool.svg',
-                      label: "Cold",
-                      onPressed: () {},
-                    ),
-                    SvgButtonRow(
-                      svgAsset: 'assets/svg/mild.svg',
-                      label: "Mild",
-                      onPressed: () {},
-                    ),
-                  ],
-                ),
+                const WeatherConditionSelector(),
               ],
             ),
           ),
