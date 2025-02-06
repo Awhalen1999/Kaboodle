@@ -61,6 +61,7 @@ class _LoginBodyState extends State<LoginBody> {
             isRequired: true,
             controller: _emailController,
             borderRadius: 12,
+            textInputAction: TextInputAction.next,
           ),
           const SizedBox(height: 20),
           CustomTextFormField(
@@ -71,6 +72,8 @@ class _LoginBodyState extends State<LoginBody> {
             isRequired: true,
             controller: _passwordController,
             borderRadius: 12,
+            textInputAction: TextInputAction.done,
+            onEditingComplete: _login,
           ),
           const SizedBox(height: 10),
           Align(

@@ -82,6 +82,7 @@ class _SignupBodyState extends State<SignupBody> {
             isRequired: true,
             controller: _emailController,
             borderRadius: 12,
+            textInputAction: TextInputAction.next,
           ),
           const SizedBox(height: 20),
           CustomTextFormField(
@@ -92,6 +93,7 @@ class _SignupBodyState extends State<SignupBody> {
             isRequired: true,
             controller: _passwordController,
             borderRadius: 12,
+            textInputAction: TextInputAction.next,
           ),
           const SizedBox(height: 20),
           CustomTextFormField(
@@ -102,6 +104,8 @@ class _SignupBodyState extends State<SignupBody> {
             isRequired: true,
             controller: _confirmPasswordController,
             borderRadius: 12,
+            textInputAction: TextInputAction.done,
+            onEditingComplete: _signup,
           ),
           const SizedBox(height: 30),
           CustomButton(
