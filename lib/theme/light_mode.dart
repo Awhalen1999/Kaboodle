@@ -5,6 +5,7 @@ ThemeData lightMode = ThemeData(
   colorScheme: ColorScheme.light(
     primary: Color(0xFF7A52F4),
     onPrimary: Colors.white,
+    primaryContainer: Color.fromARGB(50, 123, 82, 244),
     secondary: Color(0xFFE91E63),
     onSecondary: Colors.black,
     tertiary: Color(0xFFF2BB98),

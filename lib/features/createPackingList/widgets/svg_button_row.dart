@@ -21,7 +21,7 @@ class SvgButtonRow extends StatelessWidget {
   Widget build(BuildContext context) {
     // change the background color based on the selection state
     final bgColor = isSelected
-        ? Theme.of(context).colorScheme.primary.withOpacity(0.2)
+        ? Theme.of(context).colorScheme.primaryContainer
         : Theme.of(context).colorScheme.surface;
 
     return ElevatedButton.icon(

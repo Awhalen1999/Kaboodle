@@ -51,11 +51,11 @@ class _TravelDatePickerState extends State<TravelDatePicker> {
                 "Not sure yet",
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       fontWeight: provider.travelDate == null
-                          ? FontWeight.w600
+                          ? FontWeight.w500
                           : FontWeight.normal,
                       color: provider.travelDate == null
-                          ? Theme.of(context).colorScheme.primary
-                          : null,
+                          ? Theme.of(context).colorScheme.onSurface
+                          : Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
               ),
             ),
