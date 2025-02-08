@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 
-/// Model for each packing item.
 class PackingItem {
   final String id;
   final String label;
   final int baseQuantity;
-  final List<String> requiredWeathers; // e.g. ['hot', 'cold', 'mild']
-  final List<String>
-      requiredPurposes; // e.g. ['business', 'vacation', 'leisure']
-  final List<String>
-      requiredAccommodations; // e.g. ['hotel', 'camping', 'roadTrip']
-  final List<String> applicableProfiles; // e.g. ['male'], ['female'], ['all']
+  final List<String> requiredWeathers;
+  final List<String> requiredPurposes;
+  final List<String> requiredAccommodations;
+  final List<String> applicableProfiles;
   final IconData iconData;
 
   const PackingItem({
@@ -25,7 +22,7 @@ class PackingItem {
   });
 }
 
-/// A master list mapping section keys to packing items.
+// A master list mapping section keys to packing items
 final Map<String, List<PackingItem>> packingItemsBySection = {
   'commonItems': [
     PackingItem(
@@ -697,7 +694,7 @@ final Map<String, List<PackingItem>> packingItemsBySection = {
     ),
   ],
 
-  // Uncomment the following sections for future use:
+  // Uncomment when ready to fill these out
   /*
   'cycling': [],
   'hiking': [],
@@ -706,7 +703,7 @@ final Map<String, List<PackingItem>> packingItemsBySection = {
   */
 };
 
-/// Helper function that returns whether an item should be included based on the criteria.
+// Helper function that returns whether an item should be included based on the criteria
 bool itemMatchesCriteria(
   PackingItem item, {
   required String gender,

@@ -12,7 +12,7 @@ class MainStepThreeBody extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            "Let's personalize your list",
+            "Almost Ready to Go!",
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).colorScheme.primary,
@@ -20,7 +20,7 @@ class MainStepThreeBody extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            "Tell us a bit more about your plans so we can tailor our recommendations.",
+            "Check out our recommendations and choose the items you want to pack.",
             style: Theme.of(context).textTheme.bodyLarge,
           ),
           const SizedBox(height: 8),

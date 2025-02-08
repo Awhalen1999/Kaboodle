@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class CustomCheckboxListTile extends StatelessWidget {
   final IconData iconData;
   final String text;
+  final int quantity; // New property to hold the number of items
   final bool value;
   final ValueChanged<bool?>? onChanged;
 
@@ -10,6 +11,7 @@ class CustomCheckboxListTile extends StatelessWidget {
     Key? key,
     required this.iconData,
     required this.text,
+    this.quantity = 1,
     required this.value,
     required this.onChanged,
   }) : super(key: key);
@@ -50,11 +52,21 @@ class CustomCheckboxListTile extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 12),
-            Text(
-              text,
-              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface,
+            // Combine the main text with the quantity display using RichText.
+            RichText(
+              text: TextSpan(
+                text: text,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                children: [
+                  // Add extra spaces before rendering the quantity
+                  TextSpan(
+                    text: "   x$quantity",
+                    style: Theme.of(context).textTheme.bodySmall,
                   ),
+                ],
+              ),
             ),
           ],
         ),
