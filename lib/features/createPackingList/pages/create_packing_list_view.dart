@@ -46,6 +46,12 @@ class _CreatePackingListViewState extends State<CreatePackingListView> {
     }
   }
 
+  String _getButtonText() {
+    if (_currentStep == 2) return 'Build List';
+    if (_currentStep == 4) return 'Finish';
+    return 'Next';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,7 +105,7 @@ class _CreatePackingListViewState extends State<CreatePackingListView> {
                 ),
               ),
               CustomButton(
-                buttonText: "Next",
+                buttonText: _getButtonText(),
                 onPressed: _nextStep,
                 textColor: Theme.of(context).colorScheme.onPrimary,
                 buttonColor: Theme.of(context).colorScheme.primary,
