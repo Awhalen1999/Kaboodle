@@ -8,6 +8,9 @@ class CreatePackingListProvider extends ChangeNotifier {
   DateTime? _travelDate;
   String? _tripPurpose;
   String? _weatherCondition;
+  double _tripLength = 1.0;
+  String? _accommodation;
+  final List<String> _itemsActivities = [];
 
   String get title => _title;
   String get description => _description;
@@ -16,29 +19,32 @@ class CreatePackingListProvider extends ChangeNotifier {
   DateTime? get travelDate => _travelDate;
   String? get tripPurpose => _tripPurpose;
   String? get weatherCondition => _weatherCondition;
+  double get tripLength => _tripLength;
+  String? get accommodation => _accommodation;
+  List<String> get itemsActivities => List.unmodifiable(_itemsActivities);
 
-  void updateTitle(String newTitle) {
-    debugPrint("[Provider] Changing title to $newTitle");
-    _title = newTitle;
+  void updateTitle(String title) {
+    debugPrint("[Provider] Changing title to $title");
+    _title = title;
     notifyListeners();
   }
 
-  void updateDescription(String newDesc) {
-    debugPrint("[Provider] Changing description to $newDesc");
-    _description = newDesc;
+  void updateDescription(String desc) {
+    debugPrint("[Provider] Changing description to $desc");
+    _description = desc;
     notifyListeners();
   }
 
-  void updateListColor(Color newColor) {
-    debugPrint("[Provider] Changing list color to $newColor");
-    _listColor = newColor;
+  void updateListColor(Color color) {
+    debugPrint("[Provider] Changing list color to $color");
+    _listColor = color;
     notifyListeners();
   }
 
 // * this is temporarily remove due to the state management with the selected params
-  void updateTags(List<String> newTags) {
-    debugPrint("[Provider] Changing tags to $newTags");
-    _tags = newTags;
+  void updateTags(List<String> tags) {
+    debugPrint("[Provider] Changing tags to $tags");
+    _tags = tags;
     notifyListeners();
   }
 
@@ -59,4 +65,29 @@ class CreatePackingListProvider extends ChangeNotifier {
     _weatherCondition = condition;
     notifyListeners();
   }
+
+  void updateTripLength(double length) {
+    debugPrint("[Provider] Changing trip length to $length");
+    _tripLength = length;
+    notifyListeners();
+  }
+
+  void updateAccommodation(String? accommodation) {
+    debugPrint("[Provider] Changing accommodation to $accommodation");
+    _accommodation = accommodation;
+    notifyListeners();
+  }
+
+  void toggleItemActivity(String item) {
+    if (_itemsActivities.contains(item)) {
+      _itemsActivities.remove(item);
+      debugPrint("[Provider] Removed item: $item");
+    } else {
+      _itemsActivities.add(item);
+      debugPrint("[Provider] Added item: $item");
+    }
+    notifyListeners();
+  }
+
+  bool isItemSelected(String itemId) => _itemsActivities.contains(itemId);
 }

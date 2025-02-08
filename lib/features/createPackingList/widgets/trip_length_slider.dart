@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:copackr/features/createPackingList/provider/create_packing_list_provider.dart';
 
 class TripLengthSlider extends StatefulWidget {
   const TripLengthSlider({Key? key}) : super(key: key);
@@ -8,8 +10,6 @@ class TripLengthSlider extends StatefulWidget {
 }
 
 class _TripLengthSliderState extends State<TripLengthSlider> {
-  double _value = 1.0;
-
   String _formatValue(double value) {
     if (value == 0.0) {
       return "1-3 days";
@@ -26,49 +26,31 @@ class _TripLengthSliderState extends State<TripLengthSlider> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceBright,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Theme.of(context).colorScheme.shadow,
-            blurRadius: 10,
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            "Trip length",
-            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+    final provider = context.watch<CreatePackingListProvider>();
+    final currentValue = provider.tripLength;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Center(
+          child: Text(
+            _formatValue(currentValue),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.w500,
                 ),
           ),
-          const SizedBox(height: 8),
-          Center(
-            child: Text(
-              _formatValue(_value),
-              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    fontWeight: FontWeight.w500,
-                  ),
-            ),
-          ),
-          Slider(
-            value: _value,
-            min: 0.0,
-            max: 4.0,
-            divisions: 8,
-            onChanged: (newValue) {
-              setState(() => _value = newValue);
-            },
-          ),
-        ],
-      ),
+        ),
+        Slider(
+          value: currentValue,
+          min: 0.0,
+          max: 4.0,
+          divisions: 8,
+          onChanged: (newValue) {
+            provider.updateTripLength(newValue);
+          },
+        ),
+      ],
     );
   }
 }

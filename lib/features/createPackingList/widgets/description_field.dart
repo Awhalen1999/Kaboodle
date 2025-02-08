@@ -29,6 +29,7 @@ class _DescriptionFieldState extends State<DescriptionField> {
       controller: _controller,
       minLines: 3,
       maxLines: 5,
+      textInputAction: TextInputAction.done,
       decoration: InputDecoration(
         labelText: "Add a description...",
         filled: true,
