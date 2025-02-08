@@ -1,4 +1,5 @@
 import 'package:copackr/features/createPackingList/widgets/accommodation_selector.dart';
+import 'package:copackr/features/createPackingList/widgets/gender_selector.dart';
 import 'package:copackr/features/createPackingList/widgets/items_activities_selector.dart';
 import 'package:copackr/features/createPackingList/widgets/purpose_of_trip_selector.dart';
 import 'package:copackr/features/createPackingList/widgets/trip_length_slider.dart';
@@ -26,6 +27,35 @@ class MainStepTwoBody extends StatelessWidget {
           Text(
             "Tell us a bit more about your plans so we can tailor our recommendations.",
             style: Theme.of(context).textTheme.bodyLarge,
+          ),
+          const SizedBox(height: 16),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surfaceBright,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Theme.of(context).colorScheme.shadow,
+                  blurRadius: 10,
+                ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Select your packing profile",
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyLarge!
+                      .copyWith(fontWeight: FontWeight.w500),
+                ),
+                const SizedBox(height: 12),
+                const GenderSelector(),
+              ],
+            ),
           ),
           const SizedBox(height: 16),
           Container(

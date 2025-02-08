@@ -9,8 +9,8 @@ class ItemsActivitiesSelector extends StatelessWidget {
   // Define your items here (ID, label, and SVG path)
   static final List<_ActivityItem> _allItems = [
     _ActivityItem(
-      id: "essential",
-      label: "Essential items",
+      id: "commonItems",
+      label: "Common items",
       svgPath: "assets/svg/checklist.svg",
     ),
     _ActivityItem(

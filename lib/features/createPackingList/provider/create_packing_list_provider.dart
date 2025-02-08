@@ -6,6 +6,7 @@ class CreatePackingListProvider extends ChangeNotifier {
   Color _listColor = Colors.grey;
   List<String> _tags = [];
   DateTime? _travelDate;
+  String? _gender;
   String? _tripPurpose;
   String? _weatherCondition;
   double _tripLength = 1.0;
@@ -17,6 +18,7 @@ class CreatePackingListProvider extends ChangeNotifier {
   Color get listColor => _listColor;
   List<String> get tags => _tags;
   DateTime? get travelDate => _travelDate;
+  String? get gender => _gender;
   String? get tripPurpose => _tripPurpose;
   String? get weatherCondition => _weatherCondition;
   double get tripLength => _tripLength;
@@ -51,6 +53,12 @@ class CreatePackingListProvider extends ChangeNotifier {
   void updateTravelDate(DateTime? date) {
     debugPrint("[Provider] Changing travel date to $date");
     _travelDate = date;
+    notifyListeners();
+  }
+
+  void updateGender(String? gender) {
+    debugPrint("[Provider] Changing trip gender to $gender");
+    _gender = gender;
     notifyListeners();
   }
 
