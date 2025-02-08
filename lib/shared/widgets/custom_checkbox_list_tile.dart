@@ -50,7 +50,12 @@ class CustomCheckboxListTile extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 12),
-            Text(text),
+            Text(
+              text,
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+            ),
           ],
         ),
         value: value,

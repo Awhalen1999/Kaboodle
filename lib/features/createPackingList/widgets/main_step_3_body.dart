@@ -1,6 +1,5 @@
-import 'package:copackr/features/createPackingList/provider/create_packing_list_provider.dart';
+import 'package:copackr/features/createPackingList/widgets/packing_list_builder.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class MainStepThreeBody extends StatelessWidget {
   const MainStepThreeBody({Key? key}) : super(key: key);
@@ -8,34 +7,24 @@ class MainStepThreeBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 8,
-        vertical: 12,
-      ),
+      padding: const EdgeInsets.only(left: 4, right: 4, bottom: 16),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Text(
-            'Step 3: build list',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          Text(
+            "Let's personalize your list",
+            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
           ),
-          ElevatedButton(
-            onPressed: () {
-              final provider = context.read<CreatePackingListProvider>();
-
-              debugPrint("---- CURRENT PACKING LIST STATE ----");
-              debugPrint("Title: ${provider.title}");
-              debugPrint("Description: ${provider.description}");
-              debugPrint("List Color: ${provider.listColor}");
-              debugPrint("Tags: ${provider.tags}");
-              debugPrint("Travel Date: ${provider.travelDate}");
-              debugPrint("Trip Purpose: ${provider.tripPurpose}");
-              debugPrint("Weather Condition: ${provider.weatherCondition}");
-              debugPrint("Trip Length: ${provider.tripLength}");
-              debugPrint("Accommodation: ${provider.accommodation}");
-              debugPrint("Items/Activities: ${provider.itemsActivities}");
-            },
-            child: const Text("Log Current Selections"),
+          const SizedBox(height: 8),
+          Text(
+            "Tell us a bit more about your plans so we can tailor our recommendations.",
+            style: Theme.of(context).textTheme.bodyLarge,
           ),
+          const SizedBox(height: 8),
+          const PackingListBuilder(),
         ],
       ),
     );
