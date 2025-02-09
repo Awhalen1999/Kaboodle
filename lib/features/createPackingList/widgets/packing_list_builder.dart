@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:copackr/shared/widgets/custom_checkbox_list_tile.dart';
 import 'package:copackr/features/createPackingList/widgets/items_builder.dart';
 import 'package:copackr/features/createPackingList/provider/create_packing_list_provider.dart';
-import 'package:provider/provider.dart';
+import 'edit_items_modal.dart'; // Updated import
 
 class PackingListBuilder extends StatefulWidget {
   const PackingListBuilder({Key? key}) : super(key: key);
@@ -14,6 +15,9 @@ class PackingListBuilder extends StatefulWidget {
 class _PackingListBuilderState extends State<PackingListBuilder> {
   // Checkbox state for each item (keyed by unique id)
   Map<String, bool> checkedItems = {};
+
+  // Custom quantities that override calculated quantities (if edited)
+  Map<String, int> customQuantities = {};
 
   // Helper function that calculates the final quantity based on tripLength.
   // For fixed items we return the baseQuantity.
@@ -57,27 +61,43 @@ class _PackingListBuilderState extends State<PackingListBuilder> {
       'mouse',
       'camera',
       'camera_charger',
-      // Add more fixed items here
     };
 
     if (fixedItems.contains(item.id)) {
       return item.baseQuantity;
     }
-    // Multiply the baseQuantity by tripLength.
     return (item.baseQuantity * tripLength).round();
+  }
+
+  // Opens the custom modal widget for editing quantity.
+  void _openCustomizationSheet(PackingItem item, int currentQuantity) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return EditItemsModal(
+          label: item.label,
+          initialQuantity: currentQuantity,
+          onSave: (newQuantity) {
+            setState(() {
+              customQuantities[item.id] = newQuantity;
+            });
+          },
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    // Read packing requirements from provider state to build list
+    // Read current criteria from the provider.
     final provider = context.watch<CreatePackingListProvider>();
     final String gender = provider.gender ?? '';
     final String tripPurpose = provider.tripPurpose ?? '';
     final String weather = provider.weatherCondition ?? '';
     final String accommodation = provider.accommodation ?? '';
-    // The Items/Activities sections are stored as a list of section keys
+    // The user-selected sections (Items/Activities) are stored as a list of section keys.
     final List<String> selectedSections = provider.itemsActivities;
-    // Trip length for calculating quantities
+    // Trip length for calculating quantities.
     final double tripLength = provider.tripLength;
 
     // Build a list of widgets (section headers and item checkboxes)
@@ -98,10 +118,9 @@ class _PackingListBuilderState extends State<PackingListBuilder> {
           accommodation: accommodation,
         );
       }).toList();
-
       if (filteredItems.isEmpty) continue;
 
-      // Section header
+      // Section header.
       listWidgets.add(
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -114,24 +133,25 @@ class _PackingListBuilderState extends State<PackingListBuilder> {
         ),
       );
 
-      // Add each filtered item as a checkbox tile
+      // Add each filtered item as a checkbox tile.
       for (var item in filteredItems) {
-        // Initialize state for the item as false
         if (!checkedItems.containsKey(item.id)) {
           checkedItems[item.id] = false;
         }
-        // Custom checkbox with required values
+        final int quantity = customQuantities[item.id] ??
+            getCalculatedQuantity(item, tripLength);
         listWidgets.add(
           CustomCheckboxListTile(
             iconData: item.iconData,
             text: item.label,
-            quantity: getCalculatedQuantity(item, tripLength),
+            quantity: quantity,
             value: checkedItems[item.id]!,
             onChanged: (bool? newValue) {
               setState(() {
                 checkedItems[item.id] = newValue ?? false;
               });
             },
+            onEdit: () => _openCustomizationSheet(item, quantity),
           ),
         );
       }

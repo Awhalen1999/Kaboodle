@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 class CustomCheckboxListTile extends StatelessWidget {
   final IconData iconData;
   final String text;
-  final int quantity; // New property to hold the number of items
+  final int quantity;
   final bool value;
   final ValueChanged<bool?>? onChanged;
+  final VoidCallback? onEdit;
 
   const CustomCheckboxListTile({
     Key? key,
@@ -14,6 +15,7 @@ class CustomCheckboxListTile extends StatelessWidget {
     this.quantity = 1,
     required this.value,
     required this.onChanged,
+    this.onEdit,
   }) : super(key: key);
 
   @override
@@ -26,52 +28,75 @@ class CustomCheckboxListTile extends StatelessWidget {
           color: Theme.of(context).colorScheme.surfaceContainer,
         ),
       ),
-      child: CheckboxListTile(
-        contentPadding: const EdgeInsets.only(left: 12),
-        visualDensity: VisualDensity.compact,
-        checkboxScaleFactor: 1.2,
-        checkboxShape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(4),
-        ),
-        side: BorderSide(
-          color: Theme.of(context).colorScheme.surfaceContainer,
-          width: 1.4,
-        ),
-        title: Row(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
-                borderRadius: BorderRadius.circular(8),
+      child: Row(
+        children: [
+          Expanded(
+            child: InkWell(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(12),
+                bottomLeft: Radius.circular(12),
               ),
-              padding: const EdgeInsets.all(4),
-              child: Icon(
-                iconData,
-                size: 22,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-            ),
-            const SizedBox(width: 12),
-            // Combine the main text with the quantity display using RichText.
-            RichText(
-              text: TextSpan(
-                text: text,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurface,
+              onTap: () {
+                onChanged?.call(!value);
+              },
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                child: Row(
+                  children: [
+                    Checkbox(
+                      value: value,
+                      onChanged: onChanged,
+                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     ),
-                children: [
-                  // Add extra spaces before rendering the quantity
-                  TextSpan(
-                    text: "   x$quantity",
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                ],
+                    const SizedBox(width: 8),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .primary
+                            .withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      padding: const EdgeInsets.all(4),
+                      child: Icon(
+                        iconData,
+                        size: 22,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: RichText(
+                        text: TextSpan(
+                          text: text,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(
+                                color: Theme.of(context).colorScheme.onSurface,
+                              ),
+                          children: [
+                            TextSpan(
+                              text: "   x$quantity",
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ],
-        ),
-        value: value,
-        onChanged: onChanged,
+          ),
+          IconButton(
+            icon: const Icon(Icons.edit_rounded, size: 20),
+            onPressed: onEdit,
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(),
+          ),
+        ],
       ),
     );
   }
