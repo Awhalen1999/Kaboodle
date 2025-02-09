@@ -59,8 +59,8 @@ class ItemsActivitiesSelector extends StatelessWidget {
       svgPath: "assets/svg/mountain-route.svg",
     ),
     _ActivityItem(
-      id: "winterSports",
-      label: "Winter Sports",
+      id: "winterActivities",
+      label: "Winter Activities",
       svgPath: "assets/svg/winter-hat.svg",
     ),
     _ActivityItem(

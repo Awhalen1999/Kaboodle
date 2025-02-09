@@ -4,10 +4,12 @@ class PackingItem {
   final String id;
   final String label;
   final int baseQuantity;
-  final List<String> requiredWeathers;
-  final List<String> requiredPurposes;
-  final List<String> requiredAccommodations;
-  final List<String> applicableProfiles;
+  final List<String> requiredWeathers; // e.g. ['hot', 'cold', 'mild']
+  final List<String>
+      requiredPurposes; // e.g. ['business', 'vacation', 'leisure']
+  final List<String>
+      requiredAccommodations; // e.g. ['hotel', 'camping', 'roadTrip']
+  final List<String> applicableProfiles; // e.g. ['male'], ['female'], ['all']
   final IconData iconData;
 
   const PackingItem({
@@ -308,7 +310,7 @@ final Map<String, List<PackingItem>> packingItemsBySection = {
     PackingItem(
       id: 'tweezers',
       label: 'Tweezers',
-      iconData: Icons.build_rounded,
+      iconData: Icons.checkroom_rounded,
       baseQuantity: 1,
     ),
     // Female-specific toiletries
@@ -579,7 +581,7 @@ final Map<String, List<PackingItem>> packingItemsBySection = {
     PackingItem(
       id: 'water_bottle',
       label: 'Water Bottle',
-      iconData: Icons.local_drink_rounded,
+      iconData: Icons.water_drop_rounded,
       baseQuantity: 1,
     ),
     PackingItem(
@@ -693,14 +695,260 @@ final Map<String, List<PackingItem>> packingItemsBySection = {
       applicableProfiles: ['female'],
     ),
   ],
-
-  // Uncomment when ready to fill these out
-  /*
-  'cycling': [],
-  'hiking': [],
-  'winterSports': [],
-  'fishing': [],
-  */
+  //* Done
+  'cycling': [
+    PackingItem(
+      id: 'water_bottle',
+      label: 'Water Bottle',
+      iconData: Icons.water_drop_rounded,
+      baseQuantity: 1,
+    ),
+    PackingItem(
+      id: 'cycling_helmet',
+      label: 'Cycling Helmet',
+      iconData: Icons.checkroom_rounded,
+      baseQuantity: 1,
+    ),
+    PackingItem(
+      id: 'cycling_jersey',
+      label: 'Cycling Jersey',
+      iconData: Icons.checkroom_rounded,
+      baseQuantity: 1,
+    ),
+    PackingItem(
+      id: 'cycling_shorts',
+      label: 'Cycling Shorts',
+      iconData: Icons.checkroom_rounded,
+      baseQuantity: 1,
+    ),
+    PackingItem(
+      id: 'bike_gloves',
+      label: 'Bike Gloves',
+      iconData: Icons.pan_tool_rounded,
+      baseQuantity: 1,
+    ),
+    PackingItem(
+      id: 'bike_lock',
+      label: 'Bike Lock',
+      iconData: Icons.lock_rounded,
+      baseQuantity: 1,
+    ),
+    PackingItem(
+      id: 'tire_pump',
+      label: 'tire Pump',
+      iconData: Icons.tire_repair_rounded,
+      baseQuantity: 1,
+    ),
+    PackingItem(
+      id: 'bike_multi_tool',
+      label: 'Bike multi-tool',
+      iconData: Icons.build_rounded,
+      baseQuantity: 1,
+    ),
+    PackingItem(
+      id: 'energy_bars',
+      label: 'Energy Bars',
+      iconData: Icons.bolt_rounded,
+      baseQuantity: 1,
+    ),
+    PackingItem(
+      id: 'spare_tubes',
+      label: 'Spare Tubes',
+      iconData: Icons.build_rounded,
+      baseQuantity: 1,
+    ),
+    PackingItem(
+      id: 'water_proof_gear',
+      label: 'Water Proof Gear',
+      iconData: Icons.cloudy_snowing,
+      baseQuantity: 1,
+    ),
+  ],
+  //* Done
+  'hiking': [
+    PackingItem(
+      id: 'hiking_boots',
+      label: 'Hiking Boots',
+      iconData: Icons.directions_walk_rounded,
+      baseQuantity: 1,
+    ),
+    PackingItem(
+      id: 'backpack',
+      label: 'Backpack',
+      iconData: Icons.backpack_rounded,
+      baseQuantity: 1,
+    ),
+    PackingItem(
+      id: 'rain_jacket',
+      label: 'Rain Jacket',
+      iconData: Icons.cloudy_snowing,
+      baseQuantity: 1,
+    ),
+    PackingItem(
+      id: 'hiking_poles',
+      label: 'Hiking Poles',
+      iconData: Icons.accessibility_new_rounded,
+      baseQuantity: 1,
+    ),
+    PackingItem(
+      id: 'compass',
+      label: 'Compass',
+      iconData: Icons.explore_rounded,
+      baseQuantity: 1,
+    ),
+    PackingItem(
+      id: 'binoculars',
+      label: 'Binoculars',
+      iconData: Icons.checkroom_rounded,
+      baseQuantity: 1,
+    ),
+    PackingItem(
+      id: 'first_aid_kit',
+      label: 'First Aid Kit',
+      iconData: Icons.healing_rounded,
+      baseQuantity: 1,
+    ),
+    PackingItem(
+      id: 'insect_repellent',
+      label: 'Insect Repellent',
+      iconData: Icons.bug_report_rounded,
+      baseQuantity: 1,
+    ),
+  ],
+  // Todo: fix label to be "Winter Activities"
+  //* Done
+  'winterActivities': [
+    PackingItem(
+      id: 'snow_jacket',
+      label: 'Snow Jacket',
+      iconData: Icons.checkroom_rounded,
+      baseQuantity: 1,
+      requiredWeathers: ['cold'],
+    ),
+    PackingItem(
+      id: 'snow_pants',
+      label: 'Snow Pants',
+      iconData: Icons.checkroom_rounded,
+      baseQuantity: 1,
+      requiredWeathers: ['cold'],
+    ),
+    PackingItem(
+      id: 'winter_gloves',
+      label: 'Winter Gloves',
+      iconData: Icons.pan_tool_rounded,
+      baseQuantity: 1,
+      requiredWeathers: ['cold'],
+    ),
+    PackingItem(
+      id: 'winter_boots',
+      label: 'Winter Boots',
+      iconData: Icons.checkroom_rounded,
+      baseQuantity: 1,
+      requiredWeathers: ['cold'],
+    ),
+    PackingItem(
+      id: 'beanie',
+      label: 'Beanie',
+      iconData: Icons.checkroom_rounded,
+      baseQuantity: 1,
+      requiredWeathers: ['cold'],
+    ),
+    PackingItem(
+      id: 'ski_goggles',
+      label: 'Ski Goggles',
+      iconData: Icons.checkroom_rounded,
+      baseQuantity: 1,
+      requiredWeathers: ['cold'],
+    ),
+    PackingItem(
+      id: 'ski_helmet',
+      label: 'Ski Helmet',
+      iconData: Icons.checkroom_rounded,
+      baseQuantity: 1,
+      requiredWeathers: ['cold'],
+    ),
+    PackingItem(
+      id: 'face_mask',
+      label: 'Face Mask',
+      iconData: Icons.checkroom_rounded,
+      baseQuantity: 1,
+      requiredWeathers: ['cold'],
+    ),
+    PackingItem(
+      id: 'base_layers',
+      label: 'Base Layers',
+      iconData: Icons.checkroom_rounded,
+      baseQuantity: 1,
+      requiredWeathers: ['cold'],
+    ),
+    PackingItem(
+      id: 'ski_gear',
+      label: 'Ski Gear',
+      iconData: Icons.downhill_skiing_rounded,
+      baseQuantity: 1,
+      requiredWeathers: ['cold'],
+    ),
+    PackingItem(
+      id: 'snowboard_gear',
+      label: 'Snowboard Gear',
+      iconData: Icons.snowboarding_rounded,
+      baseQuantity: 1,
+      requiredWeathers: ['cold'],
+    ),
+    PackingItem(
+      id: 'lip_balm',
+      label: 'Lip Balm',
+      iconData: Icons.checkroom_rounded,
+      baseQuantity: 1,
+      requiredWeathers: ['cold'],
+    ),
+    PackingItem(
+      id: 'hand_warmers',
+      label: 'Hand Warmers',
+      iconData: Icons.pan_tool_rounded,
+      baseQuantity: 1,
+      requiredWeathers: ['cold'],
+    ),
+  ],
+  //* Done
+  'fishing': [
+    PackingItem(
+      id: 'fishing_rod',
+      label: 'Fishing Rod',
+      iconData: Icons.anchor_rounded,
+      baseQuantity: 1,
+    ),
+    PackingItem(
+      id: 'tackle_box',
+      label: 'Tackle Box',
+      iconData: Icons.business_center_rounded,
+      baseQuantity: 1,
+    ),
+    PackingItem(
+      id: 'fishing_hat',
+      label: 'Fishing Hat',
+      iconData: Icons.emoji_people_rounded,
+      baseQuantity: 1,
+    ),
+    PackingItem(
+      id: 'waders',
+      label: 'Waders',
+      iconData: Icons.checkroom_rounded,
+      baseQuantity: 1,
+    ),
+    PackingItem(
+      id: 'fishing_vest',
+      label: 'Fishing Vest',
+      iconData: Icons.checkroom_rounded,
+      baseQuantity: 1,
+    ),
+    PackingItem(
+      id: 'fishing_net',
+      label: 'Fishing Net',
+      iconData: Icons.checkroom_rounded,
+      baseQuantity: 1,
+    ),
+  ],
 };
 
 // Helper function that returns whether an item should be included based on the criteria
