@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
 class CustomCheckboxListTile extends StatelessWidget {
-  final IconData iconData;
-  final String text;
-  final int quantity;
-  final bool value;
-  final ValueChanged<bool?>? onChanged;
-  final VoidCallback? onEdit;
+  final IconData iconData; // Icon to display
+  final String text; // Main text to display
+  final int quantity; // Number of items
+  final bool value; // Checkbox value
+  final ValueChanged<bool?>? onChanged; // Callback for the checkbox
+  final VoidCallback? onEdit; // Callback for the edit action
+  final String note; // Note text to display as subtext
 
   const CustomCheckboxListTile({
     Key? key,
@@ -16,6 +17,7 @@ class CustomCheckboxListTile extends StatelessWidget {
     required this.value,
     required this.onChanged,
     this.onEdit,
+    this.note = '',
   }) : super(key: key);
 
   @override
@@ -29,7 +31,9 @@ class CustomCheckboxListTile extends StatelessWidget {
         ),
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          // Expanded InkWell wrapping the left and middle sections.
           Expanded(
             child: InkWell(
               borderRadius: const BorderRadius.only(
@@ -44,45 +48,70 @@ class CustomCheckboxListTile extends StatelessWidget {
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 child: Row(
                   children: [
-                    Checkbox(
-                      value: value,
-                      onChanged: onChanged,
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    // Left container for checkbox and icon.
+                    Container(
+                      width: 80,
+                      child: Row(
+                        children: [
+                          Checkbox(
+                            value: value,
+                            onChanged: onChanged,
+                            materialTapTargetSize:
+                                MaterialTapTargetSize.shrinkWrap,
+                          ),
+                          const SizedBox(width: 8),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .primary
+                                  .withOpacity(0.3),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            padding: const EdgeInsets.all(4),
+                            child: Icon(
+                              iconData,
+                              size: 22,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     const SizedBox(width: 8),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .primary
-                            .withOpacity(0.3),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      padding: const EdgeInsets.all(4),
-                      child: Icon(
-                        iconData,
-                        size: 22,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                    ),
-                    const SizedBox(width: 12),
+                    // Middle container for text and note.
                     Expanded(
-                      child: RichText(
-                        text: TextSpan(
-                          text: text,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium
-                              ?.copyWith(
-                                color: Theme.of(context).colorScheme.onSurface,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "$text   x$quantity",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface,
+                                ),
+                          ),
+                          if (note.isNotEmpty)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 2),
+                              child: Text(
+                                note,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurface
+                                          .withOpacity(0.7),
+                                    ),
                               ),
-                          children: [
-                            TextSpan(
-                              text: "   x$quantity",
-                              style: Theme.of(context).textTheme.bodySmall,
                             ),
-                          ],
-                        ),
+                        ],
                       ),
                     ),
                   ],
@@ -90,10 +119,11 @@ class CustomCheckboxListTile extends StatelessWidget {
               ),
             ),
           ),
+          // Right container: holds the edit icon as an IconButton.
           IconButton(
             icon: const Icon(Icons.edit_rounded, size: 20),
             onPressed: onEdit,
-            padding: EdgeInsets.zero,
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             constraints: const BoxConstraints(),
           ),
         ],

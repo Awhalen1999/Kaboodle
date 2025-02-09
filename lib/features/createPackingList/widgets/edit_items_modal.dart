@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 class EditItemsModal extends StatefulWidget {
   final String label;
   final int initialQuantity;
-  final ValueChanged<int> onSave;
+  final String initialNote;
+  final void Function(int, String) onSave; // Two-parameter callback
 
   const EditItemsModal({
     Key? key,
     required this.label,
     required this.initialQuantity,
+    this.initialNote = '',
     required this.onSave,
   }) : super(key: key);
 
@@ -18,11 +20,19 @@ class EditItemsModal extends StatefulWidget {
 
 class _EditItemsModalState extends State<EditItemsModal> {
   late double _quantity;
+  late TextEditingController _noteController;
 
   @override
   void initState() {
     super.initState();
     _quantity = widget.initialQuantity.toDouble();
+    _noteController = TextEditingController(text: widget.initialNote);
+  }
+
+  @override
+  void dispose() {
+    _noteController.dispose();
+    super.dispose();
   }
 
   @override
@@ -59,11 +69,35 @@ class _EditItemsModalState extends State<EditItemsModal> {
             ],
           ),
           const SizedBox(height: 16),
-          TextField(),
+          TextFormField(
+            controller: _noteController,
+            maxLines: 1,
+            decoration: InputDecoration(
+              labelText: "Add a note...",
+              filled: true,
+              fillColor: Theme.of(context).colorScheme.surfaceBright,
+              alignLabelWithHint: true,
+              floatingLabelStyle: TextStyle(
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.surfaceContainer,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.surfaceContainer,
+                ),
+              ),
+            ),
+          ),
           const SizedBox(height: 16),
           ElevatedButton(
             onPressed: () {
-              widget.onSave(_quantity.round());
+              widget.onSave(_quantity.round(), _noteController.text);
               Navigator.pop(context);
             },
             child: const Text("Save"),

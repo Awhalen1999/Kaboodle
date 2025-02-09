@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:copackr/shared/widgets/custom_checkbox_list_tile.dart';
 import 'package:copackr/features/createPackingList/widgets/items_builder.dart';
 import 'package:copackr/features/createPackingList/provider/create_packing_list_provider.dart';
-import 'edit_items_modal.dart'; // Updated import
+import 'edit_items_modal.dart';
 
 class PackingListBuilder extends StatefulWidget {
   const PackingListBuilder({Key? key}) : super(key: key);
@@ -19,9 +19,12 @@ class _PackingListBuilderState extends State<PackingListBuilder> {
   // Custom quantities that override calculated quantities (if edited)
   Map<String, int> customQuantities = {};
 
+  // Custom notes that override default notes (if edited)
+  Map<String, String> customNotes = {};
+
   // Helper function that calculates the final quantity based on tripLength.
-  // For fixed items we return the baseQuantity.
-  // For others we multiply the baseQuantity by the trip length.
+  // For fixed items, we return the baseQuantity.
+  // For others, we multiply the baseQuantity by the trip length.
   int getCalculatedQuantity(PackingItem item, double tripLength) {
     const fixedItems = {
       'medication',
@@ -69,17 +72,20 @@ class _PackingListBuilderState extends State<PackingListBuilder> {
     return (item.baseQuantity * tripLength).round();
   }
 
-  // Opens the custom modal widget for editing quantity.
+  // Opens the modal widget for editing quantity and note.
   void _openCustomizationSheet(PackingItem item, int currentQuantity) {
+    String currentNote = customNotes[item.id] ?? '';
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
         return EditItemsModal(
           label: item.label,
           initialQuantity: currentQuantity,
-          onSave: (newQuantity) {
+          initialNote: currentNote,
+          onSave: (newQuantity, newNote) {
             setState(() {
               customQuantities[item.id] = newQuantity;
+              customNotes[item.id] = newNote;
             });
           },
         );
@@ -95,20 +101,15 @@ class _PackingListBuilderState extends State<PackingListBuilder> {
     final String tripPurpose = provider.tripPurpose ?? '';
     final String weather = provider.weatherCondition ?? '';
     final String accommodation = provider.accommodation ?? '';
-    // The user-selected sections (Items/Activities) are stored as a list of section keys.
     final List<String> selectedSections = provider.itemsActivities;
-    // Trip length for calculating quantities.
     final double tripLength = provider.tripLength;
 
-    // Build a list of widgets (section headers and item checkboxes)
     List<Widget> listWidgets = [];
 
     for (var sectionKey in selectedSections) {
-      // Get items for this section.
       final List<PackingItem>? sectionItems = packingItemsBySection[sectionKey];
       if (sectionItems == null || sectionItems.isEmpty) continue;
 
-      // Filter the items based on user criteria.
       final filteredItems = sectionItems.where((item) {
         return itemMatchesCriteria(
           item,
@@ -118,9 +119,9 @@ class _PackingListBuilderState extends State<PackingListBuilder> {
           accommodation: accommodation,
         );
       }).toList();
+
       if (filteredItems.isEmpty) continue;
 
-      // Section header.
       listWidgets.add(
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -133,18 +134,19 @@ class _PackingListBuilderState extends State<PackingListBuilder> {
         ),
       );
 
-      // Add each filtered item as a checkbox tile.
       for (var item in filteredItems) {
         if (!checkedItems.containsKey(item.id)) {
           checkedItems[item.id] = false;
         }
         final int quantity = customQuantities[item.id] ??
             getCalculatedQuantity(item, tripLength);
+        final String note = customNotes[item.id] ?? '';
         listWidgets.add(
           CustomCheckboxListTile(
             iconData: item.iconData,
             text: item.label,
             quantity: quantity,
+            note: note,
             value: checkedItems[item.id]!,
             onChanged: (bool? newValue) {
               setState(() {
@@ -164,7 +166,6 @@ class _PackingListBuilderState extends State<PackingListBuilder> {
     );
   }
 
-  // Helper to convert a section key into a nicer title.
   String _formatSectionTitle(String key) {
     switch (key) {
       case 'commonItems':
