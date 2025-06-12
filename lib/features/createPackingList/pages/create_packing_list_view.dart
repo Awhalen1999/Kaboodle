@@ -5,6 +5,8 @@ import 'package:copackr/features/createPackingList/widgets/main_step_4_body.dart
 import 'package:copackr/shared/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
+import 'package:provider/provider.dart';
+import 'package:copackr/features/createPackingList/provider/create_packing_list_provider.dart';
 
 class CreatePackingListView extends StatefulWidget {
   const CreatePackingListView({Key? key}) : super(key: key);
@@ -30,7 +32,26 @@ class _CreatePackingListViewState extends State<CreatePackingListView> {
     }
   }
 
+  bool _canProceedToNextStep() {
+    if (_currentStep == 1) {
+      final title = context.read<CreatePackingListProvider>().title;
+      if (title.trim().isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Please enter a title for your list'),
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: Theme.of(context).colorScheme.error,
+          ),
+        );
+        return false;
+      }
+    }
+    return true;
+  }
+
   void _nextStep() {
+    if (!_canProceedToNextStep()) return;
+
     if (_currentStep < 4) {
       setState(() => _currentStep++);
     } else {

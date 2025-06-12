@@ -44,12 +44,37 @@ class MainStepOneBody extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  "Title",
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyLarge!
-                      .copyWith(fontWeight: FontWeight.w500),
+                Row(
+                  children: [
+                    Text(
+                      "Title",
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyLarge!
+                          .copyWith(fontWeight: FontWeight.w500),
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      "•",
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurfaceVariant
+                                .withOpacity(0.7),
+                          ),
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      "Required",
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurfaceVariant
+                                .withOpacity(0.7),
+                            fontStyle: FontStyle.italic,
+                          ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 12),
                 TitleField(),
