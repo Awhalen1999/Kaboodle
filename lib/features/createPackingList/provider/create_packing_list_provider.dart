@@ -43,13 +43,6 @@ class CreatePackingListProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-// * this is temporarily remove due to the state management with the selected params
-  void updateTags(List<String> tags) {
-    debugPrint("[Provider] Changing tags to $tags");
-    _tags = tags;
-    notifyListeners();
-  }
-
   void updateTravelDate(DateTime? date) {
     debugPrint("[Provider] Changing travel date to $date");
     _travelDate = date;
