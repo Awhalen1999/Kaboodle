@@ -25,7 +25,7 @@ class MainStepTwoBody extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            "Tell us a bit more about your plans so we can tailor our recommendations.",
+            "Tell us a bit more about your plans so we can tailor our packing recommendations. Feel free to skip any questions you don't want to answer or are unsure about.",
             style: Theme.of(context).textTheme.bodyLarge,
           ),
           const SizedBox(height: 16),

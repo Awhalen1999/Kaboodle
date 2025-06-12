@@ -19,7 +19,7 @@ class AccommodationSelector extends StatelessWidget {
             Expanded(
               child: SvgButtonColumn(
                 svgAsset: 'assets/svg/hotel.svg',
-                label: 'Hotel',
+                label: 'Hotel/Resort',
                 isSelected: provider.accommodation == 'hotel',
                 onPressed: () => provider.updateAccommodation('hotel'),
               ),
