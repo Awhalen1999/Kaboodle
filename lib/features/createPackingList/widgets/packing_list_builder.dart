@@ -5,22 +5,8 @@ import 'package:copackr/features/createPackingList/widgets/items_builder.dart';
 import 'package:copackr/features/createPackingList/provider/create_packing_list_provider.dart';
 import 'edit_items_modal.dart';
 
-class PackingListBuilder extends StatefulWidget {
+class PackingListBuilder extends StatelessWidget {
   const PackingListBuilder({Key? key}) : super(key: key);
-
-  @override
-  State<PackingListBuilder> createState() => _PackingListBuilderState();
-}
-
-class _PackingListBuilderState extends State<PackingListBuilder> {
-  // Checkbox state for each item (keyed by unique id)
-  Map<String, bool> checkedItems = {};
-
-  // Custom quantities that override calculated quantities (if edited)
-  Map<String, int> customQuantities = {};
-
-  // Custom notes that override default notes (if edited)
-  Map<String, String> customNotes = {};
 
   // Helper function that calculates the final quantity based on tripLength.
   // For fixed items, we return the baseQuantity.
@@ -73,8 +59,11 @@ class _PackingListBuilderState extends State<PackingListBuilder> {
   }
 
   // Opens the modal widget for editing quantity and note.
-  void _openCustomizationSheet(PackingItem item, int currentQuantity) {
-    String currentNote = customNotes[item.id] ?? '';
+  void _openCustomizationSheet(
+      BuildContext context, PackingItem item, int currentQuantity) {
+    final provider = context.read<CreatePackingListProvider>();
+    String currentNote = provider.itemNotes[item.id] ?? '';
+
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
@@ -83,10 +72,8 @@ class _PackingListBuilderState extends State<PackingListBuilder> {
           initialQuantity: currentQuantity,
           initialNote: currentNote,
           onSave: (newQuantity, newNote) {
-            setState(() {
-              customQuantities[item.id] = newQuantity;
-              customNotes[item.id] = newNote;
-            });
+            provider.updateItemQuantity(item.id, newQuantity);
+            provider.updateItemNote(item.id, newNote);
           },
         );
       },
@@ -135,25 +122,22 @@ class _PackingListBuilderState extends State<PackingListBuilder> {
       );
 
       for (var item in filteredItems) {
-        if (!checkedItems.containsKey(item.id)) {
-          checkedItems[item.id] = false;
-        }
-        final int quantity = customQuantities[item.id] ??
+        final int quantity = provider.itemQuantities[item.id] ??
             getCalculatedQuantity(item, tripLength);
-        final String note = customNotes[item.id] ?? '';
+        final String note = provider.itemNotes[item.id] ?? '';
+        final bool isChecked = provider.checkedItems[item.id] ?? false;
+
         listWidgets.add(
           CustomCheckboxListTile(
             iconData: item.iconData,
             text: item.label,
             quantity: quantity,
             note: note,
-            value: checkedItems[item.id]!,
+            value: isChecked,
             onChanged: (bool? newValue) {
-              setState(() {
-                checkedItems[item.id] = newValue ?? false;
-              });
+              provider.toggleItemChecked(item.id, newValue);
             },
-            onEdit: () => _openCustomizationSheet(item, quantity),
+            onEdit: () => _openCustomizationSheet(context, item, quantity),
           ),
         );
       }

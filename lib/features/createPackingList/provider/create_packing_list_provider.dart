@@ -13,6 +13,16 @@ class CreatePackingListProvider extends ChangeNotifier {
   String? _accommodation;
   final List<String> _itemsActivities = [];
 
+  // New state for checked items
+  final Map<String, bool> _checkedItems = {};
+  final Map<String, int> _itemQuantities = {};
+  final Map<String, String> _itemNotes = {};
+
+  // Getters for the new state
+  Map<String, bool> get checkedItems => Map.unmodifiable(_checkedItems);
+  Map<String, int> get itemQuantities => Map.unmodifiable(_itemQuantities);
+  Map<String, String> get itemNotes => Map.unmodifiable(_itemNotes);
+
   String get title => _title;
   String get description => _description;
   Color get listColor => _listColor;
@@ -91,4 +101,38 @@ class CreatePackingListProvider extends ChangeNotifier {
   }
 
   bool isItemSelected(String itemId) => _itemsActivities.contains(itemId);
+
+  // New methods to manage checked items state
+  void toggleItemChecked(String itemId, bool? value) {
+    _checkedItems[itemId] = value ?? false;
+    debugPrint(
+        "[Provider] Item $itemId checked state: ${_checkedItems[itemId]}");
+    notifyListeners();
+  }
+
+  void updateItemQuantity(String itemId, int quantity) {
+    _itemQuantities[itemId] = quantity;
+    debugPrint("[Provider] Item $itemId quantity updated to: $quantity");
+    notifyListeners();
+  }
+
+  void updateItemNote(String itemId, String note) {
+    if (note.isEmpty) {
+      _itemNotes.remove(itemId);
+      debugPrint("[Provider] Note removed for item: $itemId");
+    } else {
+      _itemNotes[itemId] = note;
+      debugPrint("[Provider] Note updated for item $itemId: $note");
+    }
+    notifyListeners();
+  }
+
+  // Helper method to get the complete state of an item
+  Map<String, dynamic> getItemState(String itemId) {
+    return {
+      'checked': _checkedItems[itemId] ?? false,
+      'quantity': _itemQuantities[itemId],
+      'note': _itemNotes[itemId],
+    };
+  }
 }
