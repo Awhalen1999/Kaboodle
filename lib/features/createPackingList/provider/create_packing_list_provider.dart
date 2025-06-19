@@ -107,7 +107,6 @@ class CreatePackingListProvider extends ChangeNotifier {
   String _title = "";
   String _description = "";
   Color _listColor = Colors.grey;
-  List<String> _tags = [];
   DateTime? _travelDate;
   String? _gender;
   String? _tripPurpose;
@@ -123,7 +122,6 @@ class CreatePackingListProvider extends ChangeNotifier {
   String get title => _title;
   String get description => _description;
   Color get listColor => _listColor;
-  List<String> get tags => _tags;
   DateTime? get travelDate => _travelDate;
   String? get gender => _gender;
   String? get tripPurpose => _tripPurpose;
@@ -287,7 +285,6 @@ class CreatePackingListProvider extends ChangeNotifier {
       'title': _title,
       'description': _description,
       'listColor': _listColor.value, // Store as int
-      'tags': _tags,
       'travelDate': _travelDate?.toIso8601String(),
       'gender': _gender,
       'tripPurpose': _tripPurpose,
@@ -307,7 +304,6 @@ class CreatePackingListProvider extends ChangeNotifier {
     _title = data['title'] as String? ?? '';
     _description = data['description'] as String? ?? '';
     _listColor = Color(data['listColor'] as int? ?? Colors.grey.value);
-    _tags = List<String>.from(data['tags'] as List? ?? []);
     _travelDate = data['travelDate'] != null
         ? DateTime.parse(data['travelDate'] as String)
         : null;
@@ -338,7 +334,6 @@ class CreatePackingListProvider extends ChangeNotifier {
     _title = "";
     _description = "";
     _listColor = Colors.grey;
-    _tags.clear();
     _travelDate = null;
     _gender = null;
     _tripPurpose = null;

@@ -55,6 +55,32 @@ class _CreatePackingListViewState extends State<CreatePackingListView> {
     if (_currentStep < 4) {
       setState(() => _currentStep++);
     } else {
+      // Log the complete data structure that would be saved to Firestore
+      final provider = context.read<CreatePackingListProvider>();
+      final packingListData = provider.getPackingListData();
+
+      print('=== PACKING LIST DATA FOR FIRESTORE ===');
+      print('Complete structure:');
+      print(packingListData);
+      print('\n=== BREAKDOWN ===');
+      print('Title: ${packingListData['title']}');
+      print('Description: ${packingListData['description']}');
+      print('List Color: ${packingListData['listColor']}');
+      print('Travel Date: ${packingListData['travelDate']}');
+      print('Gender: ${packingListData['gender']}');
+      print('Trip Purpose: ${packingListData['tripPurpose']}');
+      print('Weather: ${packingListData['weatherCondition']}');
+      print('Trip Length: ${packingListData['tripLength']}');
+      print('Accommodation: ${packingListData['accommodation']}');
+      print('Selected Sections: ${packingListData['selectedSections']}');
+      print('Items Count: ${(packingListData['items'] as List).length}');
+      print('\n=== ITEMS DETAILS ===');
+      for (final item in packingListData['items'] as List) {
+        print(
+            '• ${item['label']} (${item['section']}) - Qty: ${item['finalQuantity'] ?? item['calculatedQuantity']} - Note: ${item['note'] ?? 'none'}');
+      }
+      print('=== END LOG ===');
+
       // final step action
     }
   }

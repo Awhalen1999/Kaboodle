@@ -487,8 +487,8 @@ final Map<String, List<PackingItem>> packingItemsBySection = {
   ],
   'beach': [
     PackingItem(
-      id: 'after_sun_case',
-      label: 'After Sun Case',
+      id: 'after_sun_care',
+      label: 'After Sun Care',
       iconData: Icons.wb_sunny_rounded,
       baseQuantity: 1,
     ),
