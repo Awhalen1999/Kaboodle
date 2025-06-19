@@ -88,7 +88,8 @@ class PackingListBuilder extends StatelessWidget {
           onSave: (newQuantity, newNote) {
             // Update the item with new quantity and note
             final updatedItem = packingItem.copyWith(
-              customQuantity: newQuantity,
+              customQuantity:
+                  newQuantity, // Will be null if quantity wasn't changed
               note: newNote.isEmpty ? null : newNote,
             );
             provider.updateItem(updatedItem);

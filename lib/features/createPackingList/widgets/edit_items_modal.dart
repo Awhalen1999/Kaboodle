@@ -4,7 +4,7 @@ class EditItemsModal extends StatefulWidget {
   final String label;
   final int initialQuantity;
   final String initialNote;
-  final void Function(int, String) onSave; // Two-parameter callback
+  final void Function(int?, String) onSave; // One-parameter callback
 
   const EditItemsModal({
     Key? key,
@@ -21,10 +21,12 @@ class EditItemsModal extends StatefulWidget {
 class _EditItemsModalState extends State<EditItemsModal> {
   late double _quantity;
   late TextEditingController _noteController;
+  late int _originalQuantity;
 
   @override
   void initState() {
     super.initState();
+    _originalQuantity = widget.initialQuantity;
     _quantity = widget.initialQuantity.toDouble();
     _noteController = TextEditingController(text: widget.initialNote);
   }
@@ -97,7 +99,14 @@ class _EditItemsModalState extends State<EditItemsModal> {
           const SizedBox(height: 16),
           ElevatedButton(
             onPressed: () {
-              widget.onSave(_quantity.round(), _noteController.text);
+              final newQuantity = _quantity.round();
+              final newNote = _noteController.text;
+
+              // Only pass custom quantity if it was actually changed
+              final quantityToSave =
+                  newQuantity != _originalQuantity ? newQuantity : null;
+
+              widget.onSave(quantityToSave, newNote);
               Navigator.pop(context);
             },
             child: const Text("Save"),

@@ -76,8 +76,11 @@ class _CreatePackingListViewState extends State<CreatePackingListView> {
       print('Items Count: ${(packingListData['items'] as List).length}');
       print('\n=== ITEMS DETAILS ===');
       for (final item in packingListData['items'] as List) {
+        final calculatedQty = item['calculatedQuantity'];
+        final customQty = item['customQuantity'];
+        final finalQty = customQty ?? calculatedQty;
         print(
-            '• ${item['label']} (${item['section']}) - Qty: ${item['finalQuantity'] ?? item['calculatedQuantity']} - Note: ${item['note'] ?? 'none'}');
+            '• ${item['label']} (${item['section']}) - Calculated: $calculatedQty, Custom: $customQty, Final: $finalQty - Note: ${item['note'] ?? 'none'}');
       }
       print('=== END LOG ===');
 
