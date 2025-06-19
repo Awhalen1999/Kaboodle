@@ -58,22 +58,40 @@ class PackingListBuilder extends StatelessWidget {
     return (item.baseQuantity * tripLength).round();
   }
 
+  // Convert PackingItem to PackingListItem
+  PackingListItem createPackingListItem(
+      PackingItem item, double tripLength, String sectionKey) {
+    final calculatedQuantity = getCalculatedQuantity(item, tripLength);
+
+    return PackingListItem(
+      id: item.id,
+      label: item.label,
+      section: sectionKey,
+      baseQuantity: item.baseQuantity,
+      calculatedQuantity: calculatedQuantity,
+      iconData: item.iconData.codePoint.toString(), // Store icon as string
+    );
+  }
+
   // Opens the modal widget for editing quantity and note.
   void _openCustomizationSheet(
-      BuildContext context, PackingItem item, int currentQuantity) {
+      BuildContext context, PackingListItem packingItem) {
     final provider = context.read<CreatePackingListProvider>();
-    String currentNote = provider.itemNotes[item.id] ?? '';
 
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
         return EditItemsModal(
-          label: item.label,
-          initialQuantity: currentQuantity,
-          initialNote: currentNote,
+          label: packingItem.label,
+          initialQuantity: packingItem.finalQuantity,
+          initialNote: packingItem.note ?? '',
           onSave: (newQuantity, newNote) {
-            provider.updateItemQuantity(item.id, newQuantity);
-            provider.updateItemNote(item.id, newNote);
+            // Update the item with new quantity and note
+            final updatedItem = packingItem.copyWith(
+              customQuantity: newQuantity,
+              note: newNote.isEmpty ? null : newNote,
+            );
+            provider.updateItem(updatedItem);
           },
         );
       },
@@ -122,24 +140,59 @@ class PackingListBuilder extends StatelessWidget {
       );
 
       for (var item in filteredItems) {
-        final int quantity = provider.itemQuantities[item.id] ??
-            getCalculatedQuantity(item, tripLength);
-        final String note = provider.itemNotes[item.id] ?? '';
-        final bool isChecked = provider.checkedItems[item.id] ?? false;
+        // Check if this item is already selected
+        final existingPackingItem = provider.getItem(item.id);
 
-        listWidgets.add(
-          CustomCheckboxListTile(
-            iconData: item.iconData,
-            text: item.label,
-            quantity: quantity,
-            note: note,
-            value: isChecked,
-            onChanged: (bool? newValue) {
-              provider.toggleItemChecked(item.id, newValue);
-            },
-            onEdit: () => _openCustomizationSheet(context, item, quantity),
-          ),
-        );
+        if (existingPackingItem != null) {
+          // Item is already selected - show it as selected (but not checked for packing)
+          listWidgets.add(
+            CustomCheckboxListTile(
+              iconData: item.iconData,
+              text: existingPackingItem.label,
+              quantity: existingPackingItem.finalQuantity,
+              note: existingPackingItem.note ?? '',
+              value:
+                  true, // Always true when item is in the list (not isChecked)
+              onChanged: (bool? newValue) {
+                if (newValue == false) {
+                  // User unselected this item - remove it from the list
+                  provider.removeItem(item.id);
+                }
+                // If newValue is true, do nothing (item is already selected)
+              },
+              onEdit: () =>
+                  _openCustomizationSheet(context, existingPackingItem),
+            ),
+          );
+        } else {
+          // Item is not selected - show it as unselected
+          final calculatedQuantity = getCalculatedQuantity(item, tripLength);
+
+          listWidgets.add(
+            CustomCheckboxListTile(
+              iconData: item.iconData,
+              text: item.label,
+              quantity: calculatedQuantity,
+              note: '',
+              value: false, // Not in the list yet
+              onChanged: (bool? newValue) {
+                if (newValue == true) {
+                  // User selected this item - add it to the list
+                  final packingItem =
+                      createPackingListItem(item, tripLength, sectionKey);
+                  provider.addItem(packingItem);
+                }
+              },
+              onEdit: () {
+                // Create the item first, then open edit modal
+                final packingItem =
+                    createPackingListItem(item, tripLength, sectionKey);
+                provider.addItem(packingItem);
+                _openCustomizationSheet(context, packingItem);
+              },
+            ),
+          );
+        }
       }
     }
 
