@@ -11,7 +11,22 @@ class MainStepFourBody extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(left: 4, right: 4, bottom: 16),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Header section
+          Text(
+            "Overview",
+            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            "Review your trip details and packing list before saving.",
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
+          const SizedBox(height: 8),
           TripDetailsOverview(),
           TripRequirementsOverview(),
           TripItemsOverview(),
