@@ -1,6 +1,5 @@
 import 'package:copackr/features/createPackingList/widgets/color_picker.dart';
 import 'package:copackr/features/createPackingList/widgets/description_field.dart';
-// import 'package:copackr/features/createPackingList/widgets/tag_options.dart';
 import 'package:copackr/features/createPackingList/widgets/time_date_picker.dart';
 import 'package:copackr/features/createPackingList/widgets/title_field.dart';
 import 'package:flutter/material.dart';
@@ -145,40 +144,6 @@ class MainStepOneBody extends StatelessWidget {
               ],
             ),
           ),
-          // const SizedBox(height: 16),
-          // Container(
-          //   width: double.infinity,
-          //   padding: const EdgeInsets.all(16),
-          //   decoration: BoxDecoration(
-          //     color: Theme.of(context).colorScheme.surfaceBright,
-          //     borderRadius: BorderRadius.circular(12),
-          //     boxShadow: [
-          //       BoxShadow(
-          //         color: Theme.of(context).colorScheme.shadow,
-          //         blurRadius: 10,
-          //       ),
-          //     ],
-          //   ),
-          //   child: Column(
-          //     crossAxisAlignment: CrossAxisAlignment.start,
-          //     children: [
-          //       Text(
-          //         "Tags",
-          //         style: Theme.of(context)
-          //             .textTheme
-          //             .bodyLarge!
-          //             .copyWith(fontWeight: FontWeight.w500),
-          //       ),
-          //       const SizedBox(height: 4),
-          //       Text(
-          //         "Select some tags to easily identify your list.",
-          //         style: Theme.of(context).textTheme.bodySmall,
-          //       ),
-          //       const SizedBox(height: 12),
-          //       const TagOptions(),
-          //     ],
-          //   ),
-          // ),
           const SizedBox(height: 16),
           Container(
             width: double.infinity,
