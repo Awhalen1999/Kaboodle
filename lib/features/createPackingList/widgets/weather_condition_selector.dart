@@ -1,3 +1,4 @@
+import 'package:copackr/core/constants/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,26 +14,16 @@ class WeatherConditionSelector extends StatelessWidget {
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        SvgButtonRow(
-          svgAsset: 'assets/svg/warm.svg',
-          label: "Hot",
-          isSelected: provider.weatherCondition == 'hot',
-          onPressed: () => provider.updateWeatherCondition('hot'),
-        ),
-        SvgButtonRow(
-          svgAsset: 'assets/svg/cool.svg',
-          label: "Cold",
-          isSelected: provider.weatherCondition == 'cold',
-          onPressed: () => provider.updateWeatherCondition('cold'),
-        ),
-        SvgButtonRow(
-          svgAsset: 'assets/svg/mild.svg',
-          label: "Mild",
-          isSelected: provider.weatherCondition == 'mild',
-          onPressed: () => provider.updateWeatherCondition('mild'),
-        ),
-      ],
+      children: weatherConditionDetails.entries.map((entry) {
+        final key = entry.key;
+        final details = entry.value;
+        return SvgButtonRow(
+          svgAsset: details['svgPath']!,
+          label: details['label']!,
+          isSelected: provider.weatherCondition == key,
+          onPressed: () => provider.updateWeatherCondition(key),
+        );
+      }).toList(),
     );
   }
 }

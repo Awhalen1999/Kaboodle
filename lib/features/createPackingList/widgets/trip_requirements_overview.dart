@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:copackr/features/createPackingList/provider/create_packing_list_provider.dart';
+import 'package:copackr/core/constants/app_constants.dart';
+import 'package:copackr/shared/widgets/custom_item_chip.dart';
 
 class TripRequirementsOverview extends StatelessWidget {
   final VoidCallback? onEdit;
@@ -23,9 +25,7 @@ class TripRequirementsOverview extends StatelessWidget {
         (provider.accommodation != null && provider.accommodation!.isNotEmpty)
             ? provider.accommodation!
             : 'NA';
-    final itemsActivities = (provider.itemsActivities.isNotEmpty)
-        ? provider.itemsActivities.join(', ')
-        : 'NA';
+    final itemsActivities = provider.itemsActivities;
 
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 0),
@@ -69,10 +69,46 @@ class TripRequirementsOverview extends StatelessWidget {
             const SizedBox(height: 8),
             _OverviewField(label: 'Accommodations', value: accommodation),
             const SizedBox(height: 8),
-            _OverviewField(label: 'Items / Activities', value: itemsActivities),
+            _buildItemsActivities(context, itemsActivities),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildItemsActivities(
+      BuildContext context, List<String> itemsActivities) {
+    if (itemsActivities.isEmpty) {
+      return const _OverviewField(label: 'Items / Activities', value: 'NA');
+    }
+
+    List<Widget> chips = itemsActivities.map((activityId) {
+      final details = activityDetails[activityId];
+      if (details == null) {
+        return const SizedBox.shrink();
+      }
+      return Padding(
+        padding: const EdgeInsets.only(right: 8.0, bottom: 8.0),
+        child: CustomItemChip(
+          label: details['label'],
+          color: details['color'],
+        ),
+      );
+    }).toList();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Items / Activities',
+          style: Theme.of(context).textTheme.labelMedium?.copyWith(
+              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7)),
+        ),
+        const SizedBox(height: 4),
+        Wrap(
+          children: chips,
+        ),
+      ],
     );
   }
 
