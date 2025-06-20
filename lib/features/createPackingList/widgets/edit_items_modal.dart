@@ -39,17 +39,48 @@ class _EditItemsModalState extends State<EditItemsModal> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      // Use the same padding as your other step bodies.
-      padding: const EdgeInsets.only(left: 24, right: 24, bottom: 36, top: 24),
+    return Container(
+      padding: const EdgeInsets.only(left: 24, right: 24, top: 24, bottom: 32),
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "Edit ${widget.label}",
-            style: Theme.of(context).textTheme.bodyLarge,
+          // Header
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Text(
+                  "Edit ${widget.label}",
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                ),
+              ),
+              IconButton(
+                onPressed: () => Navigator.pop(context),
+                icon: Icon(
+                  Icons.close_rounded,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
+                style: IconButton.styleFrom(
+                  backgroundColor:
+                      Theme.of(context).colorScheme.surfaceContainer,
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 24),
+
+          // Quantity Section
+          Text(
+            "Quantity",
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
+          ),
+          const SizedBox(height: 12),
           Row(
             children: [
               const Text("Quantity: "),
@@ -67,13 +98,36 @@ class _EditItemsModalState extends State<EditItemsModal> {
                   },
                 ),
               ),
-              Text(_quantity.round().toString()),
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  _quantity.round().toString(),
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
+                ),
+              ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 24),
+
+          // Note Section
+          Text(
+            "Note (Optional)",
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
+          ),
+          const SizedBox(height: 12),
           TextFormField(
             controller: _noteController,
-            maxLines: 1,
+            maxLines: 3,
             decoration: InputDecoration(
               labelText: "Add a note...",
               filled: true,
@@ -91,25 +145,66 @@ class _EditItemsModalState extends State<EditItemsModal> {
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide(
-                  color: Theme.of(context).colorScheme.surfaceContainer,
+                  color: Theme.of(context).colorScheme.primary,
+                  width: 2,
                 ),
               ),
             ),
           ),
-          const SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: () {
-              final newQuantity = _quantity.round();
-              final newNote = _noteController.text;
+          const SizedBox(height: 32),
 
-              // Only pass custom quantity if it was actually changed
-              final quantityToSave =
-                  newQuantity != _originalQuantity ? newQuantity : null;
+          // Buttons
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton(
+                  onPressed: () => Navigator.pop(context),
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: Text(
+                    "Cancel",
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () {
+                    final newQuantity = _quantity.round();
+                    final newNote = _noteController.text;
 
-              widget.onSave(quantityToSave, newNote);
-              Navigator.pop(context);
-            },
-            child: const Text("Save"),
+                    // Only pass custom quantity if it was actually changed
+                    final quantityToSave =
+                        newQuantity != _originalQuantity ? newQuantity : null;
+
+                    widget.onSave(quantityToSave, newNote);
+                    Navigator.pop(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: Text(
+                    "Save",
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
