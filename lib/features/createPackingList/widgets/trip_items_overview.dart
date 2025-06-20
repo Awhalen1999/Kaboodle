@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:copackr/features/createPackingList/provider/create_packing_list_provider.dart';
+import 'package:copackr/features/createPackingList/provider/custom_items_provider.dart';
 
 class TripItemsOverview extends StatelessWidget {
   const TripItemsOverview({super.key});
@@ -8,7 +9,16 @@ class TripItemsOverview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<CreatePackingListProvider>();
-    final items = provider.selectedItemsList;
+    final customItemsProvider = context.watch<CustomItemsProvider>();
+
+    // Get checked regular items
+    final regularItems =
+        provider.selectedItemsList.where((item) => item.isChecked).toList();
+    // Get checked custom items
+    final customItems = customItemsProvider.getCheckedCustomItems();
+
+    // Combine all items for display
+    final allItems = [...regularItems, ...customItems];
 
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 0),
@@ -44,108 +54,116 @@ class TripItemsOverview extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 16),
-            if (items.isEmpty)
+            if (allItems.isEmpty)
               Text('No items selected',
                   style: Theme.of(context).textTheme.bodyMedium),
-            if (items.isNotEmpty)
+            if (allItems.isNotEmpty)
               Column(
-                children: items
-                    .map((item) => Container(
-                          margin: const EdgeInsets.only(bottom: 8),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
+                children: allItems.map((item) {
+                  // Handle both regular and custom items
+                  final label = item is PackingListItem
+                      ? item.label
+                      : (item as CustomPackingItem).label;
+                  final quantity = item is PackingListItem
+                      ? item.finalQuantity
+                      : (item as CustomPackingItem).quantity;
+                  final note = item is PackingListItem
+                      ? item.note
+                      : (item as CustomPackingItem).note;
+                  final iconData = item is PackingListItem
+                      ? item.iconDataAsIcon
+                      : (item as CustomPackingItem).iconDataAsIcon;
+
+                  return Container(
+                    margin: const EdgeInsets.only(bottom: 8),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: Theme.of(context).colorScheme.surfaceContainer,
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 8),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
                               color: Theme.of(context)
                                   .colorScheme
-                                  .surfaceContainer,
+                                  .primary
+                                  .withOpacity(0.3),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            padding: const EdgeInsets.all(4),
+                            child: Icon(
+                              iconData,
+                              size: 22,
+                              color: Theme.of(context).colorScheme.primary,
                             ),
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 8),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .primary
-                                        .withOpacity(0.3),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  padding: const EdgeInsets.all(4),
-                                  child: Icon(
-                                    item.iconDataAsIcon,
-                                    size: 22,
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                  ),
-                                ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Flexible(
-                                            child: Text(
-                                              item.label,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyMedium
-                                                  ?.copyWith(
-                                                    color: Theme.of(context)
-                                                        .colorScheme
-                                                        .onSurface,
-                                                  ),
-                                              overflow: TextOverflow.ellipsis,
+                                Row(
+                                  children: [
+                                    Flexible(
+                                      child: Text(
+                                        label,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium
+                                            ?.copyWith(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSurface,
                                             ),
-                                          ),
-                                          const SizedBox(width: 6),
-                                          Text(
-                                            'x${item.finalQuantity}',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyMedium
-                                                ?.copyWith(
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .onSurface
-                                                      .withOpacity(0.6),
-                                                ),
-                                          ),
-                                        ],
+                                        overflow: TextOverflow.ellipsis,
                                       ),
-                                      if (item.note != null &&
-                                          item.note!.isNotEmpty)
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 2),
-                                          child: Text(
-                                            item.note!,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodySmall
-                                                ?.copyWith(
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .onSurface
-                                                      .withOpacity(0.7),
-                                                ),
+                                    ),
+                                    const SizedBox(width: 6),
+                                    Text(
+                                      'x$quantity',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium
+                                          ?.copyWith(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSurface
+                                                .withOpacity(0.6),
                                           ),
-                                        ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
+                                if (note != null && note.isNotEmpty)
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 2),
+                                    child: Text(
+                                      note,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall
+                                          ?.copyWith(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSurface
+                                                .withOpacity(0.7),
+                                          ),
+                                    ),
+                                  ),
                               ],
                             ),
                           ),
-                        ))
-                    .toList(),
+                        ],
+                      ),
+                    ),
+                  );
+                }).toList(),
               ),
           ],
         ),

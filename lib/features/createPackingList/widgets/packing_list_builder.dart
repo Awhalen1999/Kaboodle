@@ -3,7 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:copackr/shared/widgets/custom_checkbox_list_tile.dart';
 import 'package:copackr/features/createPackingList/widgets/items_builder.dart';
 import 'package:copackr/features/createPackingList/provider/create_packing_list_provider.dart';
+import 'package:copackr/features/createPackingList/provider/custom_items_provider.dart';
 import 'edit_items_modal.dart';
+import 'add_custom_item_modal.dart';
 
 class PackingListBuilder extends StatelessWidget {
   const PackingListBuilder({Key? key}) : super(key: key);
@@ -99,10 +101,28 @@ class PackingListBuilder extends StatelessWidget {
     );
   }
 
+  // Opens the modal widget for adding custom items
+  void _openAddCustomItemSheet(BuildContext context, String sectionKey) {
+    final customItemsProvider = context.read<CustomItemsProvider>();
+
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return AddCustomItemModal(
+          sectionTitle: _formatSectionTitle(sectionKey),
+          onAdd: (itemName, quantity) {
+            customItemsProvider.addCustomItem(itemName, quantity, sectionKey);
+          },
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // Read current criteria from the provider.
     final provider = context.watch<CreatePackingListProvider>();
+    final customItemsProvider = context.watch<CustomItemsProvider>();
     final String gender = provider.gender ?? '';
     final String tripPurpose = provider.tripPurpose ?? '';
     final String weather = provider.weatherCondition ?? '';
@@ -126,16 +146,34 @@ class PackingListBuilder extends StatelessWidget {
         );
       }).toList();
 
-      if (filteredItems.isEmpty) continue;
+      // Get custom items for this section
+      final customItems =
+          customItemsProvider.getCustomItemsForSection(sectionKey);
+
+      // Show section if it has filtered items OR custom items
+      if (filteredItems.isEmpty && customItems.isEmpty) continue;
 
       listWidgets.add(
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: Text(
-            _formatSectionTitle(sectionKey),
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  fontWeight: FontWeight.w500,
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  _formatSectionTitle(sectionKey),
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.w500,
+                      ),
                 ),
+              ),
+              IconButton(
+                onPressed: () => _openAddCustomItemSheet(context, sectionKey),
+                icon: Icon(
+                  Icons.add_circle_outline_rounded,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
+            ],
           ),
         ),
       );
@@ -182,6 +220,8 @@ class PackingListBuilder extends StatelessWidget {
                   final packingItem =
                       createPackingListItem(item, tripLength, sectionKey);
                   provider.addItem(packingItem);
+                  // Mark it as checked for packing
+                  provider.toggleItemChecked(packingItem.id, true);
                 }
               },
               onEdit: () {
@@ -189,11 +229,34 @@ class PackingListBuilder extends StatelessWidget {
                 final packingItem =
                     createPackingListItem(item, tripLength, sectionKey);
                 provider.addItem(packingItem);
+                // Mark it as checked for packing
+                provider.toggleItemChecked(packingItem.id, true);
                 _openCustomizationSheet(context, packingItem);
               },
             ),
           );
         }
+      }
+
+      // Add custom items for this section
+      for (var customItem in customItems) {
+        listWidgets.add(
+          CustomCheckboxListTile(
+            iconData: Icons.checkroom_rounded,
+            text: customItem.label,
+            quantity: customItem.quantity,
+            note: customItem.note ?? '',
+            value: customItem.isChecked,
+            onChanged: (bool? newValue) {
+              customItemsProvider.toggleCustomItemChecked(
+                  customItem.id, newValue);
+            },
+            onEdit: () {
+              // TODO: Create a custom item edit modal
+              // For now, we'll just toggle the checked state
+            },
+          ),
+        );
       }
     }
 

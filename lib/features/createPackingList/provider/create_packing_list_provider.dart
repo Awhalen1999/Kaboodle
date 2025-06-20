@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'custom_items_provider.dart';
 
 // Represents a packing list item as it will be stored in Firestore
 class PackingListItem {
@@ -280,7 +281,26 @@ class CreatePackingListProvider extends ChangeNotifier {
   }
 
   // Get the complete packing list data for saving to Firestore
-  Map<String, dynamic> getPackingListData() {
+  Map<String, dynamic> getPackingListData(
+      [CustomItemsProvider? customItemsProvider]) {
+    final checkedCustomItems =
+        customItemsProvider?.getCheckedCustomItems() ?? [];
+
+    // Convert custom items to the same structure as regular items
+    final convertedCustomItems = checkedCustomItems.map((customItem) {
+      return {
+        'id': customItem.id,
+        'label': customItem.label,
+        'section': customItem.section,
+        'baseQuantity': customItem.quantity,
+        'calculatedQuantity': customItem.quantity,
+        'customQuantity': customItem.quantity,
+        'note': customItem.note,
+        'isChecked': customItem.isChecked,
+        'iconData': customItem.iconData,
+      };
+    }).toList();
+
     return {
       'title': _title,
       'description': _description,
@@ -292,7 +312,12 @@ class CreatePackingListProvider extends ChangeNotifier {
       'tripLength': _tripLength,
       'accommodation': _accommodation,
       'selectedSections': _itemsActivities,
-      'items': _selectedItems.values.map((item) => item.toMap()).toList(),
+      'items': [
+        ..._selectedItems.values
+            .where((item) => item.isChecked) // Only include checked items
+            .map((item) => item.toMap()),
+        ...convertedCustomItems, // Add converted custom items
+      ],
       'createdAt': DateTime.now().toIso8601String(),
       'updatedAt': DateTime.now().toIso8601String(),
       'isCompleted': false,

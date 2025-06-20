@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:copackr/features/createPackingList/provider/create_packing_list_provider.dart';
+import 'package:copackr/features/createPackingList/provider/custom_items_provider.dart';
 
 class CreatePackingListView extends StatefulWidget {
   const CreatePackingListView({Key? key}) : super(key: key);
@@ -57,7 +58,8 @@ class _CreatePackingListViewState extends State<CreatePackingListView> {
     } else {
       // Log the complete data structure that would be saved to Firestore
       final provider = context.read<CreatePackingListProvider>();
-      final packingListData = provider.getPackingListData();
+      final customItemsProvider = context.read<CustomItemsProvider>();
+      final packingListData = provider.getPackingListData(customItemsProvider);
 
       print('=== PACKING LIST DATA FOR FIRESTORE ===');
       print('Complete structure:');
