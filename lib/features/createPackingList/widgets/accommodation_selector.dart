@@ -18,11 +18,14 @@ class AccommodationSelector extends StatelessWidget {
         children: keys.map((key) {
           final details = accommodationDetails[key]!;
           return Expanded(
-            child: SvgButtonColumn(
-              svgAsset: details['svgPath']!,
-              label: details['label']!,
-              isSelected: provider.accommodation == key,
-              onPressed: () => provider.updateAccommodation(key),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4.0),
+              child: SvgButtonColumn(
+                svgAsset: details['svgPath']!,
+                label: details['label']!,
+                isSelected: provider.accommodation == key,
+                onPressed: () => provider.updateAccommodation(key),
+              ),
             ),
           );
         }).toList(),

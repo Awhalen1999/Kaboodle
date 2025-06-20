@@ -31,8 +31,8 @@ class SvgButtonColumn extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
           ),
           padding: const EdgeInsets.symmetric(
-            vertical: 6,
-            horizontal: 4,
+            vertical: 12,
+            horizontal: 8,
           ),
         ),
         child: Column(
