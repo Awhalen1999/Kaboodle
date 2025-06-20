@@ -181,7 +181,11 @@ class _CreatePackingListViewState extends State<CreatePackingListView> {
         return const MainStepThreeBody();
       case 4:
       default:
-        return const MainStepFourBody();
+        return MainStepFourBody(
+          onEditTripDetails: () => setState(() => _currentStep = 1),
+          onEditTripRequirements: () => setState(() => _currentStep = 2),
+          onEditPackingList: () => setState(() => _currentStep = 3),
+        );
     }
   }
 }

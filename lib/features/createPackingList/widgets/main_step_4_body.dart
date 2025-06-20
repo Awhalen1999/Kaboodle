@@ -4,7 +4,16 @@ import 'package:copackr/features/createPackingList/widgets/trip_requirements_ove
 import 'package:copackr/features/createPackingList/widgets/trip_items_overview.dart';
 
 class MainStepFourBody extends StatelessWidget {
-  const MainStepFourBody({Key? key}) : super(key: key);
+  final VoidCallback? onEditTripDetails;
+  final VoidCallback? onEditTripRequirements;
+  final VoidCallback? onEditPackingList;
+
+  const MainStepFourBody({
+    Key? key,
+    this.onEditTripDetails,
+    this.onEditTripRequirements,
+    this.onEditPackingList,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,9 +36,9 @@ class MainStepFourBody extends StatelessWidget {
             style: Theme.of(context).textTheme.bodyLarge,
           ),
           const SizedBox(height: 8),
-          TripDetailsOverview(),
-          TripRequirementsOverview(),
-          TripItemsOverview(),
+          TripDetailsOverview(onEdit: onEditTripDetails),
+          TripRequirementsOverview(onEdit: onEditTripRequirements),
+          TripItemsOverview(onEdit: onEditPackingList),
         ],
       ),
     );

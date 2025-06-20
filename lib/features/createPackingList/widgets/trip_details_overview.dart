@@ -3,7 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:copackr/features/createPackingList/provider/create_packing_list_provider.dart';
 
 class TripDetailsOverview extends StatelessWidget {
-  const TripDetailsOverview({super.key});
+  final VoidCallback? onEdit;
+
+  const TripDetailsOverview({super.key, this.onEdit});
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +39,7 @@ class TripDetailsOverview extends StatelessWidget {
                       ?.copyWith(fontWeight: FontWeight.bold),
                 ),
                 TextButton.icon(
-                  onPressed: () {}, // TODO: Implement edit action
+                  onPressed: onEdit,
                   icon: const Icon(Icons.edit, size: 18),
                   label: const Text('Edit'),
                   style: TextButton.styleFrom(
