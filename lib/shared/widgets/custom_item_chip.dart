@@ -15,7 +15,7 @@ class CustomItemChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceContainer,
+        color: color.withOpacity(0.1),
         borderRadius: BorderRadius.circular(25),
       ),
       child: Row(
@@ -34,7 +34,7 @@ class CustomItemChip extends StatelessWidget {
             label,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   fontWeight: FontWeight.w500,
-                  color: Theme.of(context).colorScheme.onSurface,
+                  color: color,
                 ),
           ),
         ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// todo: make colors darker here
 final Map<String, Map<String, dynamic>> activityDetails = {
   "commonItems": {
     "label": "Common items",
