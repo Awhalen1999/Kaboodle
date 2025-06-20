@@ -252,8 +252,25 @@ class PackingListBuilder extends StatelessWidget {
                   customItem.id, newValue);
             },
             onEdit: () {
-              // TODO: Create a custom item edit modal
-              // For now, we'll just toggle the checked state
+              // Open edit modal for custom item
+              showModalBottomSheet(
+                context: context,
+                builder: (BuildContext context) {
+                  return EditItemsModal(
+                    label: customItem.label,
+                    initialQuantity: customItem.quantity,
+                    initialNote: customItem.note ?? '',
+                    onSave: (newQuantity, newNote) {
+                      // Update the custom item with new quantity and note
+                      final updatedItem = customItem.copyWith(
+                        quantity: newQuantity ?? customItem.quantity,
+                        note: newNote.isEmpty ? null : newNote,
+                      );
+                      customItemsProvider.updateCustomItem(updatedItem);
+                    },
+                  );
+                },
+              );
             },
           ),
         );
