@@ -23,7 +23,7 @@ class TripRequirementsOverview extends StatelessWidget {
         (provider.accommodation != null && provider.accommodation!.isNotEmpty)
             ? provider.accommodation!
             : 'NA';
-    final activities = (provider.itemsActivities.isNotEmpty)
+    final itemsActivities = (provider.itemsActivities.isNotEmpty)
         ? provider.itemsActivities.join(', ')
         : 'NA';
 
@@ -69,7 +69,7 @@ class TripRequirementsOverview extends StatelessWidget {
             const SizedBox(height: 8),
             _OverviewField(label: 'Accommodations', value: accommodation),
             const SizedBox(height: 8),
-            _OverviewField(label: 'Activities', value: activities),
+            _OverviewField(label: 'Items / Activities', value: itemsActivities),
           ],
         ),
       ),
