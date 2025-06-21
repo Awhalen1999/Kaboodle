@@ -6,6 +6,7 @@ import 'package:copackr/features/createPackingList/provider/create_packing_list_
 import 'package:copackr/features/createPackingList/provider/custom_items_provider.dart';
 import 'edit_items_modal.dart';
 import 'add_custom_item_modal.dart';
+import 'package:copackr/core/constants/app_icons.dart';
 
 class PackingListBuilder extends StatelessWidget {
   const PackingListBuilder({Key? key}) : super(key: key);
@@ -71,7 +72,7 @@ class PackingListBuilder extends StatelessWidget {
       section: sectionKey,
       baseQuantity: item.baseQuantity,
       calculatedQuantity: calculatedQuantity,
-      iconData: item.iconData.codePoint.toString(), // Store icon as string
+      iconName: item.iconName,
     );
   }
 
@@ -186,7 +187,7 @@ class PackingListBuilder extends StatelessWidget {
           // Item is already selected - show it as selected (but not checked for packing)
           listWidgets.add(
             CustomCheckboxListTile(
-              iconData: item.iconData,
+              iconData: existingPackingItem.icon,
               text: existingPackingItem.label,
               quantity: existingPackingItem.finalQuantity,
               note: existingPackingItem.note ?? '',
@@ -209,7 +210,7 @@ class PackingListBuilder extends StatelessWidget {
 
           listWidgets.add(
             CustomCheckboxListTile(
-              iconData: item.iconData,
+              iconData: getIconByName(item.iconName),
               text: item.label,
               quantity: calculatedQuantity,
               note: '',
@@ -242,7 +243,7 @@ class PackingListBuilder extends StatelessWidget {
       for (var customItem in customItems) {
         listWidgets.add(
           CustomCheckboxListTile(
-            iconData: Icons.checkroom_rounded,
+            iconData: customItem.icon,
             text: customItem.label,
             quantity: customItem.quantity,
             note: customItem.note ?? '',

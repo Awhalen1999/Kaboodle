@@ -1,3 +1,4 @@
+import 'package:copackr/core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'custom_items_provider.dart';
 
@@ -11,7 +12,7 @@ class PackingListItem {
   final int? customQuantity;
   final String? note;
   final bool isChecked;
-  final String iconData;
+  final String iconName;
 
   const PackingListItem({
     required this.id,
@@ -22,7 +23,7 @@ class PackingListItem {
     this.customQuantity,
     this.note,
     this.isChecked = false,
-    required this.iconData,
+    required this.iconName,
   });
 
   // Factory constructor to create from Firestore data
@@ -36,7 +37,7 @@ class PackingListItem {
       customQuantity: map['customQuantity'] as int?,
       note: map['note'] as String?,
       isChecked: map['isChecked'] as bool? ?? false,
-      iconData: map['iconData'] as String,
+      iconName: map['iconName'] as String? ?? 'checkroom_rounded',
     );
   }
 
@@ -50,7 +51,7 @@ class PackingListItem {
     int? customQuantity,
     String? note,
     bool? isChecked,
-    String? iconData,
+    String? iconName,
   }) {
     return PackingListItem(
       id: id ?? this.id,
@@ -61,7 +62,7 @@ class PackingListItem {
       customQuantity: customQuantity ?? this.customQuantity,
       note: note ?? this.note,
       isChecked: isChecked ?? this.isChecked,
-      iconData: iconData ?? this.iconData,
+      iconName: iconName ?? this.iconName,
     );
   }
 
@@ -74,7 +75,7 @@ class PackingListItem {
       'baseQuantity': baseQuantity,
       'calculatedQuantity': calculatedQuantity,
       'isChecked': isChecked,
-      'iconData': iconData,
+      'iconName': iconName,
     };
 
     // Only include optional fields if they have values
@@ -92,15 +93,7 @@ class PackingListItem {
   int get finalQuantity => customQuantity ?? calculatedQuantity;
 
   // Convert stored icon string back to IconData
-  IconData get iconDataAsIcon {
-    try {
-      final codePoint = int.parse(iconData);
-      return IconData(codePoint, fontFamily: 'MaterialIcons');
-    } catch (e) {
-      // Fallback to a default icon if parsing fails
-      return Icons.checkroom_rounded;
-    }
-  }
+  IconData get icon => getIconByName(iconName);
 }
 
 class CreatePackingListProvider extends ChangeNotifier {
@@ -297,7 +290,7 @@ class CreatePackingListProvider extends ChangeNotifier {
         'customQuantity': customItem.quantity,
         'note': customItem.note,
         'isChecked': customItem.isChecked,
-        'iconData': customItem.iconData,
+        'iconName': customItem.iconName,
       };
     }).toList();
 
@@ -329,9 +322,11 @@ class CreatePackingListProvider extends ChangeNotifier {
     _title = data['title'] as String? ?? '';
     _description = data['description'] as String? ?? '';
     _listColor = Color(data['listColor'] as int? ?? Colors.grey.value);
-    _travelDate = data['travelDate'] != null
-        ? DateTime.parse(data['travelDate'] as String)
-        : null;
+
+    final travelDateString = data['travelDate'] as String?;
+    _travelDate =
+        travelDateString != null ? DateTime.tryParse(travelDateString) : null;
+
     _gender = data['gender'] as String?;
     _tripPurpose = data['tripPurpose'] as String?;
     _weatherCondition = data['weatherCondition'] as String?;

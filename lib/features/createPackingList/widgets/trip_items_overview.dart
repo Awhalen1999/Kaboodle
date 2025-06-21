@@ -73,8 +73,8 @@ class TripItemsOverview extends StatelessWidget {
                       ? item.note
                       : (item as CustomPackingItem).note;
                   final iconData = item is PackingListItem
-                      ? item.iconDataAsIcon
-                      : (item as CustomPackingItem).iconDataAsIcon;
+                      ? item.icon
+                      : (item as CustomPackingItem).icon;
 
                   return Container(
                     margin: const EdgeInsets.only(bottom: 8),

@@ -1,3 +1,4 @@
+import 'package:copackr/core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 
 // Represents a custom packing list item
@@ -8,7 +9,7 @@ class CustomPackingItem {
   final int quantity;
   final String? note;
   final bool isChecked;
-  final String iconData;
+  final String iconName;
 
   const CustomPackingItem({
     required this.id,
@@ -17,7 +18,7 @@ class CustomPackingItem {
     required this.quantity,
     this.note,
     this.isChecked = false,
-    required this.iconData,
+    required this.iconName,
   });
 
   // Factory constructor to create from Firestore data
@@ -29,7 +30,7 @@ class CustomPackingItem {
       quantity: map['quantity'] as int,
       note: map['note'] as String?,
       isChecked: map['isChecked'] as bool? ?? false,
-      iconData: map['iconData'] as String,
+      iconName: map['iconName'] as String? ?? 'checkroom_rounded',
     );
   }
 
@@ -41,7 +42,7 @@ class CustomPackingItem {
     int? quantity,
     String? note,
     bool? isChecked,
-    String? iconData,
+    String? iconName,
   }) {
     return CustomPackingItem(
       id: id ?? this.id,
@@ -50,7 +51,7 @@ class CustomPackingItem {
       quantity: quantity ?? this.quantity,
       note: note ?? this.note,
       isChecked: isChecked ?? this.isChecked,
-      iconData: iconData ?? this.iconData,
+      iconName: iconName ?? this.iconName,
     );
   }
 
@@ -62,7 +63,7 @@ class CustomPackingItem {
       'section': section,
       'quantity': quantity,
       'isChecked': isChecked,
-      'iconData': iconData,
+      'iconName': iconName,
     };
 
     if (note != null && note!.isNotEmpty) {
@@ -73,14 +74,7 @@ class CustomPackingItem {
   }
 
   // Convert stored icon string back to IconData
-  IconData get iconDataAsIcon {
-    try {
-      final codePoint = int.parse(iconData);
-      return IconData(codePoint, fontFamily: 'MaterialIcons');
-    } catch (e) {
-      return Icons.checkroom_rounded;
-    }
-  }
+  IconData get icon => getIconByName(iconName);
 }
 
 class CustomItemsProvider extends ChangeNotifier {
@@ -100,7 +94,7 @@ class CustomItemsProvider extends ChangeNotifier {
       label: itemName,
       section: section,
       quantity: quantity,
-      iconData: Icons.checkroom_rounded.codePoint.toString(),
+      iconName: 'checkroom_rounded', // Default icon
     );
 
     _customItems[customId] = customItem;
