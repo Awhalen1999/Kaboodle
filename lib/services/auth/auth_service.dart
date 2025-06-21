@@ -4,6 +4,13 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
 class AuthService {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  // Get current user
+  User? getCurrentUser() {
+    return _auth.currentUser;
+  }
+
   Future<void> signup({
     required String email,
     required String password,
@@ -11,7 +18,7 @@ class AuthService {
   }) async {
     try {
       // Perform async signup
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -50,7 +57,7 @@ class AuthService {
   }) async {
     try {
       // Perform async signin
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+      await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -86,7 +93,7 @@ class AuthService {
     required BuildContext context,
   }) async {
     // Perform async signout
-    await FirebaseAuth.instance.signOut();
+    await _auth.signOut();
 
     // Delay if needed, then check if context is still valid before redirecting
     await Future.delayed(const Duration(seconds: 1));

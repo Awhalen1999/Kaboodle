@@ -1,5 +1,6 @@
 import 'package:copackr/services/auth/auth_service.dart';
 import 'package:copackr/shared/widgets/custom_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -9,6 +10,21 @@ class ProfileBody extends StatelessWidget {
   // Use the new signout method, passing context
   Future<void> _logout(BuildContext context) async {
     await AuthService().signout(context: context);
+  }
+
+  void _getUserInfo() {
+    final User? user = AuthService().getCurrentUser();
+    if (user != null) {
+      debugPrint('--- CURRENT USER INFO ---');
+      debugPrint('User ID: ${user.uid}');
+      debugPrint('Email: ${user.email}');
+      debugPrint('Display Name: ${user.displayName}');
+      debugPrint('Photo URL: ${user.photoURL}');
+      debugPrint('Email Verified: ${user.emailVerified}');
+      debugPrint('--- END ---');
+    } else {
+      debugPrint('--- No user is currently signed in. ---');
+    }
   }
 
   @override
@@ -23,6 +39,13 @@ class ProfileBody extends StatelessWidget {
           CustomButton(
             buttonText: "My packing lists",
             onPressed: () => context.push('/my-packing-lists'),
+            textColor: Theme.of(context).colorScheme.onSurface,
+            isLoading: false,
+          ),
+          const SizedBox(height: 24),
+          CustomButton(
+            buttonText: "Get User Info (Test)",
+            onPressed: _getUserInfo,
             textColor: Theme.of(context).colorScheme.onSurface,
             isLoading: false,
           ),
