@@ -69,8 +69,7 @@ class _CreatePackingListViewState extends State<CreatePackingListView> {
 
         // Save to Firestore
         final firestoreService = FirestoreService();
-        final documentId =
-            await firestoreService.savePackingList(packingListData);
+        await firestoreService.savePackingList(packingListData);
 
         // Success - reset providers and navigate back
         if (context.mounted) {
