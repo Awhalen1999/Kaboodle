@@ -1,4 +1,5 @@
 import 'package:copackr/services/auth/auth_service.dart';
+import 'package:copackr/services/data/firestore.dart';
 import 'package:copackr/shared/widgets/custom_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,22 @@ class ProfileBody extends StatelessWidget {
     }
   }
 
+  Future<void> _testFirestoreConnection() async {
+    try {
+      debugPrint('🔍 Testing Firestore connection...');
+      final firestoreService = FirestoreService();
+      final isConnected = await firestoreService.testConnection();
+
+      if (isConnected) {
+        debugPrint('✅ Firestore connection test PASSED');
+      } else {
+        debugPrint('❌ Firestore connection test FAILED');
+      }
+    } catch (e) {
+      debugPrint('❌ Firestore test error: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -46,6 +63,13 @@ class ProfileBody extends StatelessWidget {
           CustomButton(
             buttonText: "Get User Info (Test)",
             onPressed: _getUserInfo,
+            textColor: Theme.of(context).colorScheme.onSurface,
+            isLoading: false,
+          ),
+          const SizedBox(height: 24),
+          CustomButton(
+            buttonText: "Test Firestore Connection",
+            onPressed: _testFirestoreConnection,
             textColor: Theme.of(context).colorScheme.onSurface,
             isLoading: false,
           ),
