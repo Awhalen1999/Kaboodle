@@ -19,6 +19,7 @@ class CreatePackingListView extends StatefulWidget {
 
 class _CreatePackingListViewState extends State<CreatePackingListView> {
   int _currentStep = 1;
+  bool _isSaving = false;
 
   String _getAppBarTitle() {
     switch (_currentStep) {
@@ -58,28 +59,29 @@ class _CreatePackingListViewState extends State<CreatePackingListView> {
       setState(() => _currentStep++);
     } else {
       // Final step - save to Firestore
+      setState(() => _isSaving = true);
+
       try {
         final provider = context.read<CreatePackingListProvider>();
         final customItemsProvider = context.read<CustomItemsProvider>();
         final packingListData =
             provider.getPackingListData(customItemsProvider);
 
-        // Show loading state
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text('Saving your packing list...'),
-            behavior: SnackBarBehavior.floating,
-            backgroundColor: Theme.of(context).colorScheme.primary,
-          ),
-        );
-
         // Save to Firestore
         final firestoreService = FirestoreService();
         final documentId =
             await firestoreService.savePackingList(packingListData);
 
-        // Success - show success message and navigate back
+        // Success - reset providers and navigate back
         if (context.mounted) {
+          // Reset the provider data for next use
+          provider.reset();
+          customItemsProvider.reset();
+
+          // Navigate back to the previous screen
+          Navigator.of(context).pop();
+
+          // Show success message after navigation
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Packing list saved successfully!'),
@@ -87,16 +89,11 @@ class _CreatePackingListViewState extends State<CreatePackingListView> {
               backgroundColor: Colors.green,
             ),
           );
-
-          // Reset the provider data for next use
-          provider.reset();
-          customItemsProvider.reset();
-
-          // Navigate back to the previous screen
-          Navigator.of(context).pop();
         }
       } catch (e) {
-        // Error handling
+        // Error handling - reset loading state
+        setState(() => _isSaving = false);
+
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -120,6 +117,7 @@ class _CreatePackingListViewState extends State<CreatePackingListView> {
   }
 
   String _getButtonText() {
+    if (_isSaving) return 'Saving...';
     if (_currentStep == 2) return 'Build List';
     if (_currentStep == 4) return 'Finish';
     return 'Next';
@@ -179,7 +177,7 @@ class _CreatePackingListViewState extends State<CreatePackingListView> {
               ),
               CustomButton(
                 buttonText: _getButtonText(),
-                onPressed: _nextStep,
+                onPressed: _isSaving ? null : _nextStep,
                 textColor: Theme.of(context).colorScheme.onPrimary,
                 buttonColor: Theme.of(context).colorScheme.primary,
                 isLoading: false,
