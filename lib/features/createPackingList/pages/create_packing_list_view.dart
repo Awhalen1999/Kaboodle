@@ -3,6 +3,7 @@ import 'package:copackr/features/createPackingList/widgets/main_step_2_body.dart
 import 'package:copackr/features/createPackingList/widgets/main_step_3_body.dart';
 import 'package:copackr/features/createPackingList/widgets/main_step_4_body.dart';
 import 'package:copackr/shared/widgets/custom_button.dart';
+import 'package:copackr/services/data/firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 import 'package:provider/provider.dart';
@@ -50,43 +51,63 @@ class _CreatePackingListViewState extends State<CreatePackingListView> {
     return true;
   }
 
-  void _nextStep() {
+  void _nextStep() async {
     if (!_canProceedToNextStep()) return;
 
     if (_currentStep < 4) {
       setState(() => _currentStep++);
     } else {
-      // Log the complete data structure that would be saved to Firestore
-      final provider = context.read<CreatePackingListProvider>();
-      final customItemsProvider = context.read<CustomItemsProvider>();
-      final packingListData = provider.getPackingListData(customItemsProvider);
+      // Final step - save to Firestore
+      try {
+        final provider = context.read<CreatePackingListProvider>();
+        final customItemsProvider = context.read<CustomItemsProvider>();
+        final packingListData =
+            provider.getPackingListData(customItemsProvider);
 
-      print('=== PACKING LIST DATA FOR FIRESTORE ===');
-      print('Complete structure:');
-      print(packingListData);
-      print('\n=== BREAKDOWN ===');
-      print('Title: ${packingListData['title']}');
-      print('Description: ${packingListData['description']}');
-      print('List Color: ${packingListData['listColor']}');
-      print('Travel Date: ${packingListData['travelDate']}');
-      print('Gender: ${packingListData['gender']}');
-      print('Trip Purpose: ${packingListData['tripPurpose']}');
-      print('Weather: ${packingListData['weatherCondition']}');
-      print('Trip Length: ${packingListData['tripLength']}');
-      print('Accommodation: ${packingListData['accommodation']}');
-      print('Selected Sections: ${packingListData['selectedSections']}');
-      print('Items Count: ${(packingListData['items'] as List).length}');
-      print('\n=== ITEMS DETAILS ===');
-      for (final item in packingListData['items'] as List) {
-        final calculatedQty = item['calculatedQuantity'];
-        final customQty = item['customQuantity'];
-        final finalQty = customQty ?? calculatedQty;
-        print(
-            '• ${item['label']} (${item['section']}) - Calculated: $calculatedQty, Custom: $customQty, Final: $finalQty - Note: ${item['note'] ?? 'none'}');
+        // Show loading state
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Saving your packing list...'),
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: Theme.of(context).colorScheme.primary,
+          ),
+        );
+
+        // Save to Firestore
+        final firestoreService = FirestoreService();
+        final documentId =
+            await firestoreService.savePackingList(packingListData);
+
+        // Success - show success message and navigate back
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Packing list saved successfully!'),
+              behavior: SnackBarBehavior.floating,
+              backgroundColor: Colors.green,
+            ),
+          );
+
+          // Reset the provider data for next use
+          provider.reset();
+          customItemsProvider.reset();
+
+          // Navigate back to the previous screen
+          Navigator.of(context).pop();
+        }
+      } catch (e) {
+        // Error handling
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Error saving packing list: $e'),
+              behavior: SnackBarBehavior.floating,
+              backgroundColor: Theme.of(context).colorScheme.error,
+            ),
+          );
+        }
+        print('Error saving packing list: $e');
       }
-      print('=== END LOG ===');
-
-      // final step action
     }
   }
 

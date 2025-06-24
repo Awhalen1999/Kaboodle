@@ -161,4 +161,11 @@ class CustomItemsProvider extends ChangeNotifier {
   // Get count of checked custom items
   int get checkedCustomItemsCount =>
       _customItems.values.where((item) => item.isChecked).length;
+
+  // Reset all data (useful for creating new lists)
+  void reset() {
+    _customItems.clear();
+    debugPrint("[CustomItemsProvider] Reset all data");
+    notifyListeners();
+  }
 }
