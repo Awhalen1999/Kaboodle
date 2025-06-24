@@ -44,7 +44,7 @@ class _LoginBodyState extends State<LoginBody> {
           ),
           const SizedBox(height: 24),
           Text(
-            'C O P A C K R',
+            'Kaboodle',
             style: Theme.of(context).textTheme.headlineSmall,
           ),
           const SizedBox(height: 24),
