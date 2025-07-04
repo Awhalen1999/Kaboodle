@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 
 class CustomChip extends StatelessWidget {
-  const CustomChip({super.key});
+  final String label;
+
+  const CustomChip({
+    super.key,
+    required this.label,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Chip(
       label: Text(
-        "9",
+        label,
         style: TextStyle(
           fontWeight: FontWeight.w800,
         ),

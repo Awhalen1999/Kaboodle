@@ -59,18 +59,31 @@ class FirestoreService {
         throw Exception('User must be authenticated to fetch packing lists');
       }
 
+      // TODO: Create composite index for userId + createdAt in Firebase console
+      // Current query without ordering to avoid index requirement
+      // For proper ordering, create index: userId (Ascending) + createdAt (Descending)
       final querySnapshot = await _firestore
           .collection('packing_lists')
           .where('userId', isEqualTo: currentUser.uid)
-          .orderBy('createdAt', descending: true)
+          // .orderBy('createdAt', descending: true) // Temporarily removed - requires composite index
           .get();
 
-      return querySnapshot.docs
+      // Sort in memory as temporary workaround
+      final docs = querySnapshot.docs
           .map((doc) => {
                 'id': doc.id,
                 ...doc.data(),
               })
           .toList();
+
+      // Sort by createdAt descending (newest first)
+      docs.sort((a, b) {
+        final aCreatedAt = a['createdAt'] as String? ?? '';
+        final bCreatedAt = b['createdAt'] as String? ?? '';
+        return bCreatedAt.compareTo(aCreatedAt);
+      });
+
+      return docs;
     } catch (e) {
       print('❌ Error fetching user packing lists: $e');
       throw Exception('Failed to fetch packing lists: $e');
