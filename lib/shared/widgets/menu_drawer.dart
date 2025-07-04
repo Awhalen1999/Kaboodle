@@ -1,9 +1,10 @@
 import 'package:copackr/shared/widgets/custom_chip.dart';
 import 'package:copackr/shared/widgets/packing_list_tile.dart';
-import 'package:copackr/services/data/firestore.dart';
+import 'package:copackr/services/data/packing_list_cache.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class MenuDrawer extends StatefulWidget {
   const MenuDrawer({
@@ -15,37 +16,13 @@ class MenuDrawer extends StatefulWidget {
 }
 
 class _MenuDrawerState extends State<MenuDrawer> {
-  List<Map<String, dynamic>> _packingLists = [];
-  bool _isLoading = true;
-  String? _error;
-
   @override
   void initState() {
     super.initState();
-    _loadPackingLists();
-  }
-
-  Future<void> _loadPackingLists() async {
-    try {
-      setState(() {
-        _isLoading = true;
-        _error = null;
-      });
-
-      final firestoreService = FirestoreService();
-      final lists = await firestoreService.getUserPackingLists();
-
-      setState(() {
-        _packingLists = lists;
-        _isLoading = false;
-      });
-    } catch (e) {
-      setState(() {
-        _error = e.toString();
-        _isLoading = false;
-      });
-      print('Error loading packing lists: $e');
-    }
+    // Load lists when drawer is first opened
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<PackingListCache>().getLists();
+    });
   }
 
   @override
@@ -81,7 +58,11 @@ class _MenuDrawerState extends State<MenuDrawer> {
               ListTile(
                 title: const Text('My packing lists'),
                 leading: const Icon(Icons.format_list_bulleted),
-                trailing: CustomChip(label: _packingLists.length.toString()),
+                trailing: Consumer<PackingListCache>(
+                  builder: (context, cache, child) {
+                    return CustomChip(label: cache.count.toString());
+                  },
+                ),
                 onTap: () {
                   Navigator.pop(context);
                   context.push('/my-packing-lists');
@@ -112,13 +93,18 @@ class _MenuDrawerState extends State<MenuDrawer> {
                       ),
                     ),
                     const SizedBox(width: 4),
-                    Text(
-                      "(${_packingLists.length})",
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        fontWeight: FontWeight.w400,
-                      ),
+                    Consumer<PackingListCache>(
+                      builder: (context, cache, child) {
+                        return Text(
+                          "(${cache.count})",
+                          style: TextStyle(
+                            fontSize: 12,
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        );
+                      },
                     ),
                     const Spacer(),
                     IconButton(
@@ -139,7 +125,11 @@ class _MenuDrawerState extends State<MenuDrawer> {
                 ),
               ),
               Expanded(
-                child: _buildListsContent(),
+                child: Consumer<PackingListCache>(
+                  builder: (context, cache, child) {
+                    return _buildListsContent(cache);
+                  },
+                ),
               ),
               Container(
                 decoration: BoxDecoration(
@@ -183,14 +173,14 @@ class _MenuDrawerState extends State<MenuDrawer> {
     );
   }
 
-  Widget _buildListsContent() {
-    if (_isLoading) {
+  Widget _buildListsContent(PackingListCache cache) {
+    if (cache.isLoading) {
       return const Center(
         child: CircularProgressIndicator(),
       );
     }
 
-    if (_error != null) {
+    if (cache.error != null) {
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -207,13 +197,13 @@ class _MenuDrawerState extends State<MenuDrawer> {
             ),
             const SizedBox(height: 8),
             Text(
-              _error!,
+              cache.error!,
               style: Theme.of(context).textTheme.bodySmall,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16),
             ElevatedButton(
-              onPressed: _loadPackingLists,
+              onPressed: () => cache.refresh(),
               child: const Text('Retry'),
             ),
           ],
@@ -221,7 +211,7 @@ class _MenuDrawerState extends State<MenuDrawer> {
       );
     }
 
-    if (_packingLists.isEmpty) {
+    if (cache.lists.isEmpty) {
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -256,27 +246,31 @@ class _MenuDrawerState extends State<MenuDrawer> {
       );
     }
 
-    return SingleChildScrollView(
-      child: Column(
-        children: _packingLists.map((listData) {
-          final listName = listData['title'] as String? ?? 'Untitled List';
-          final listColorValue =
-              listData['listColor'] as int? ?? Colors.grey.value;
-          final listColor = Color(listColorValue);
-          final items = listData['items'] as List? ?? [];
-          final itemCount = items.length;
+    return RefreshIndicator(
+      onRefresh: () => cache.refresh(),
+      child: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: Column(
+          children: cache.lists.map((listData) {
+            final listName = listData['title'] as String? ?? 'Untitled List';
+            final listColorValue =
+                listData['listColor'] as int? ?? Colors.grey.value;
+            final listColor = Color(listColorValue);
+            final items = listData['items'] as List? ?? [];
+            final itemCount = items.length;
 
-          return PackingListTile(
-            listName: listName,
-            listColor: listColor,
-            itemCount: itemCount,
-            onTap: () {
-              Navigator.pop(context);
-              // TODO: Navigate to list viewer with the specific list ID
-              context.push('/list-viewer');
-            },
-          );
-        }).toList(),
+            return PackingListTile(
+              listName: listName,
+              listColor: listColor,
+              itemCount: itemCount,
+              onTap: () {
+                Navigator.pop(context);
+                // TODO: Navigate to list viewer with the specific list ID
+                context.push('/list-viewer');
+              },
+            );
+          }).toList(),
+        ),
       ),
     );
   }

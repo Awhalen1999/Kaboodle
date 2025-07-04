@@ -4,6 +4,7 @@ import 'package:copackr/features/createPackingList/widgets/main_step_3_body.dart
 import 'package:copackr/features/createPackingList/widgets/main_step_4_body.dart';
 import 'package:copackr/shared/widgets/custom_button.dart';
 import 'package:copackr/services/data/firestore.dart';
+import 'package:copackr/services/data/packing_list_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 import 'package:provider/provider.dart';
@@ -69,7 +70,16 @@ class _CreatePackingListViewState extends State<CreatePackingListView> {
 
         // Save to Firestore
         final firestoreService = FirestoreService();
-        await firestoreService.savePackingList(packingListData);
+        final documentId =
+            await firestoreService.savePackingList(packingListData);
+
+        // Add to cache
+        final cache = context.read<PackingListCache>();
+        final newListData = {
+          'id': documentId,
+          ...packingListData,
+        };
+        cache.addList(newListData);
 
         // Success - reset providers and navigate back
         if (context.mounted) {
