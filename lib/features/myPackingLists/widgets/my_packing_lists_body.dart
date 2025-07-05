@@ -5,8 +5,21 @@ import 'package:copackr/core/constants/app_constants.dart';
 import 'package:go_router/go_router.dart';
 import 'package:copackr/shared/widgets/custom_item_chip.dart';
 
-class MyPackingListsBody extends StatelessWidget {
+class MyPackingListsBody extends StatefulWidget {
   const MyPackingListsBody({super.key});
+
+  @override
+  State<MyPackingListsBody> createState() => _MyPackingListsBodyState();
+}
+
+class _MyPackingListsBodyState extends State<MyPackingListsBody> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<PackingListCache>().getLists();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -160,26 +173,24 @@ class MyPackingListsBody extends StatelessWidget {
           );
         }
 
-        return Container(
-          child: Stack(
-            children: [
-              content,
-              Positioned(
-                bottom: 36,
-                right: 20,
-                child: FloatingActionButton(
-                  onPressed: () => context.push('/create-packing-list'),
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                  elevation: 4,
-                  child: const Icon(Icons.add, size: 32),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
+        return Stack(
+          children: [
+            content,
+            Positioned(
+              bottom: 36,
+              right: 20,
+              child: FloatingActionButton(
+                onPressed: () => context.push('/create-packing-list'),
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
                 ),
+                child: const Icon(Icons.add, size: 32),
               ),
-            ],
-          ),
+            ),
+          ],
         );
       },
     );
