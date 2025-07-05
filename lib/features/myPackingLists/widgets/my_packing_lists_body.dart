@@ -79,7 +79,7 @@ class MyPackingListsBody extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).cardColor,
+                    color: Theme.of(context).colorScheme.surfaceBright,
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(
