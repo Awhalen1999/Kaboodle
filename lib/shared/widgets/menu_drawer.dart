@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:copackr/shared/widgets/custom_chip.dart';
 import 'package:copackr/shared/widgets/packing_list_tile.dart';
 import 'package:copackr/services/data/packing_list_cache.dart';
@@ -5,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:swipe_refresh/swipe_refresh.dart';
 
 class MenuDrawer extends StatefulWidget {
   const MenuDrawer({
@@ -16,6 +18,8 @@ class MenuDrawer extends StatefulWidget {
 }
 
 class _MenuDrawerState extends State<MenuDrawer> {
+  final _refreshController = StreamController<SwipeRefreshState>.broadcast();
+
   @override
   void initState() {
     super.initState();
@@ -23,6 +27,17 @@ class _MenuDrawerState extends State<MenuDrawer> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<PackingListCache>().getLists();
     });
+  }
+
+  @override
+  void dispose() {
+    _refreshController.close();
+    super.dispose();
+  }
+
+  Future<void> _refresh() async {
+    await context.read<PackingListCache>().refresh();
+    _refreshController.sink.add(SwipeRefreshState.hidden);
   }
 
   @override
@@ -127,7 +142,101 @@ class _MenuDrawerState extends State<MenuDrawer> {
               Expanded(
                 child: Consumer<PackingListCache>(
                   builder: (context, cache, child) {
-                    return _buildListsContent(cache);
+                    if (cache.isLoading) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    if (cache.error != null) {
+                      return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.error_outline,
+                              size: 48,
+                              color: Theme.of(context).colorScheme.error,
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              'Error loading lists',
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              cache.error!,
+                              style: Theme.of(context).textTheme.bodySmall,
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 16),
+                            ElevatedButton(
+                              onPressed: () => cache.refresh(),
+                              child: const Text('Retry'),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                    if (cache.lists.isEmpty) {
+                      return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.inbox_outlined,
+                              size: 48,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSurfaceVariant,
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              'No lists saved',
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              'Create your first packing list to get started',
+                              style: Theme.of(context).textTheme.bodySmall,
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 16),
+                            ElevatedButton.icon(
+                              onPressed: () {
+                                Navigator.pop(context);
+                                context.push('/create-packing-list');
+                              },
+                              icon: const Icon(Icons.add),
+                              label: const Text('Create List'),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                    return SwipeRefresh.builder(
+                      stateStream: _refreshController.stream,
+                      onRefresh: _refresh,
+                      itemCount: cache.lists.length,
+                      itemBuilder: (context, index) {
+                        final listData = cache.lists[index];
+                        final listName =
+                            listData['title'] as String? ?? 'Untitled List';
+                        final listColorValue =
+                            listData['listColor'] as int? ?? Colors.grey.value;
+                        final listColor = Color(listColorValue);
+                        final items = listData['items'] as List? ?? [];
+                        final itemCount = items.length;
+                        return PackingListTile(
+                          listName: listName,
+                          listColor: listColor,
+                          itemCount: itemCount,
+                          onTap: () {
+                            Navigator.pop(context);
+                            // TODO: Navigate to list viewer with the specific list ID
+                            context.push('/list-viewer');
+                          },
+                        );
+                      },
+                      padding: const EdgeInsets.only(bottom: 16),
+                    );
                   },
                 ),
               ),
@@ -168,108 +277,6 @@ class _MenuDrawerState extends State<MenuDrawer> {
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildListsContent(PackingListCache cache) {
-    if (cache.isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
-    }
-
-    if (cache.error != null) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.error_outline,
-              size: 48,
-              color: Theme.of(context).colorScheme.error,
-            ),
-            const SizedBox(height: 16),
-            Text(
-              'Error loading lists',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              cache.error!,
-              style: Theme.of(context).textTheme.bodySmall,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () => cache.refresh(),
-              child: const Text('Retry'),
-            ),
-          ],
-        ),
-      );
-    }
-
-    if (cache.lists.isEmpty) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.inbox_outlined,
-              size: 48,
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
-            ),
-            const SizedBox(height: 16),
-            Text(
-              'No lists saved',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Create your first packing list to get started',
-              style: Theme.of(context).textTheme.bodySmall,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton.icon(
-              onPressed: () {
-                Navigator.pop(context);
-                context.push('/create-packing-list');
-              },
-              icon: const Icon(Icons.add),
-              label: const Text('Create List'),
-            ),
-          ],
-        ),
-      );
-    }
-
-    return RefreshIndicator(
-      onRefresh: () => cache.refresh(),
-      child: SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        child: Column(
-          children: cache.lists.map((listData) {
-            final listName = listData['title'] as String? ?? 'Untitled List';
-            final listColorValue =
-                listData['listColor'] as int? ?? Colors.grey.value;
-            final listColor = Color(listColorValue);
-            final items = listData['items'] as List? ?? [];
-            final itemCount = items.length;
-
-            return PackingListTile(
-              listName: listName,
-              listColor: listColor,
-              itemCount: itemCount,
-              onTap: () {
-                Navigator.pop(context);
-                // TODO: Navigate to list viewer with the specific list ID
-                context.push('/list-viewer');
-              },
-            );
-          }).toList(),
         ),
       ),
     );

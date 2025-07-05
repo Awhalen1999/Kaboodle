@@ -1,9 +1,11 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:copackr/services/data/packing_list_cache.dart';
 import 'package:copackr/core/constants/app_constants.dart';
 import 'package:go_router/go_router.dart';
 import 'package:copackr/shared/widgets/custom_item_chip.dart';
+import 'package:swipe_refresh/swipe_refresh.dart';
 
 class MyPackingListsBody extends StatefulWidget {
   const MyPackingListsBody({super.key});
@@ -13,6 +15,8 @@ class MyPackingListsBody extends StatefulWidget {
 }
 
 class _MyPackingListsBodyState extends State<MyPackingListsBody> {
+  final _refreshController = StreamController<SwipeRefreshState>.broadcast();
+
   @override
   void initState() {
     super.initState();
@@ -22,14 +26,25 @@ class _MyPackingListsBodyState extends State<MyPackingListsBody> {
   }
 
   @override
+  void dispose() {
+    _refreshController.close();
+    super.dispose();
+  }
+
+  Future<void> _refresh() async {
+    await context.read<PackingListCache>().refresh();
+    _refreshController.sink.add(SwipeRefreshState.hidden);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Consumer<PackingListCache>(
       builder: (context, cache, child) {
-        Widget content;
+        Widget listContent;
         if (cache.isLoading) {
-          content = const Center(child: CircularProgressIndicator());
+          listContent = const Center(child: CircularProgressIndicator());
         } else if (cache.error != null) {
-          content = Center(
+          listContent = Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -51,7 +66,7 @@ class _MyPackingListsBodyState extends State<MyPackingListsBody> {
             ),
           );
         } else if (cache.lists.isEmpty) {
-          content = Center(
+          listContent = Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -69,8 +84,9 @@ class _MyPackingListsBodyState extends State<MyPackingListsBody> {
             ),
           );
         } else {
-          content = ListView.builder(
-            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+          listContent = SwipeRefresh.builder(
+            stateStream: _refreshController.stream,
+            onRefresh: _refresh,
             itemCount: cache.lists.length,
             itemBuilder: (context, index) {
               final listData = cache.lists[index];
@@ -170,12 +186,13 @@ class _MyPackingListsBodyState extends State<MyPackingListsBody> {
                 ),
               );
             },
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
           );
         }
 
         return Stack(
           children: [
-            content,
+            listContent,
             Positioned(
               bottom: 36,
               right: 20,
