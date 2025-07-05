@@ -45,7 +45,7 @@ class PackingListCard extends StatelessWidget {
             children: [
               Container(
                 margin: const EdgeInsets.only(
-                    right: 16, left: 4, top: 8, bottom: 8),
+                    right: 16, left: 4, top: 2, bottom: 2),
                 width: 8,
                 height: double.infinity,
                 decoration: BoxDecoration(
