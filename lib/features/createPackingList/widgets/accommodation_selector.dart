@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:copackr/features/createPackingList/provider/create_packing_list_provider.dart';
-import 'package:copackr/features/createPackingList/widgets/svg_button_column.dart';
-import 'package:copackr/core/constants/app_constants.dart';
+import 'package:kaboodle/features/createPackingList/provider/create_packing_list_provider.dart';
+import 'package:kaboodle/features/createPackingList/widgets/svg_button_column.dart';
+import 'package:kaboodle/core/constants/app_constants.dart';
 
 class AccommodationSelector extends StatelessWidget {
   const AccommodationSelector({Key? key}) : super(key: key);

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:copackr/features/upcomingTrips/widgets/upcoming_trips_body.dart';
-import 'package:copackr/shared/widgets/custom_app_bar.dart';
-import 'package:copackr/shared/widgets/menu_drawer.dart';
+import 'package:kaboodle/features/upcomingTrips/widgets/upcoming_trips_body.dart';
+import 'package:kaboodle/shared/widgets/custom_app_bar.dart';
+import 'package:kaboodle/shared/widgets/menu_drawer.dart';
 
 class UpcomingTripsView extends StatelessWidget {
   const UpcomingTripsView({super.key});

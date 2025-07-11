@@ -1,9 +1,9 @@
-import 'package:copackr/features/createPackingList/widgets/accommodation_selector.dart';
-import 'package:copackr/features/createPackingList/widgets/gender_selector.dart';
-import 'package:copackr/features/createPackingList/widgets/items_activities_selector.dart';
-import 'package:copackr/features/createPackingList/widgets/purpose_of_trip_selector.dart';
-import 'package:copackr/features/createPackingList/widgets/trip_length_slider.dart';
-import 'package:copackr/features/createPackingList/widgets/weather_condition_selector.dart';
+import 'package:kaboodle/features/createPackingList/widgets/accommodation_selector.dart';
+import 'package:kaboodle/features/createPackingList/widgets/gender_selector.dart';
+import 'package:kaboodle/features/createPackingList/widgets/items_activities_selector.dart';
+import 'package:kaboodle/features/createPackingList/widgets/purpose_of_trip_selector.dart';
+import 'package:kaboodle/features/createPackingList/widgets/trip_length_slider.dart';
+import 'package:kaboodle/features/createPackingList/widgets/weather_condition_selector.dart';
 import 'package:flutter/material.dart';
 
 class MainStepTwoBody extends StatelessWidget {

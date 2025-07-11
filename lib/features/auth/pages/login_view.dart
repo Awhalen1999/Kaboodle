@@ -1,4 +1,4 @@
-import 'package:copackr/features/auth/widgets/login_body.dart';
+import 'package:kaboodle/features/auth/widgets/login_body.dart';
 import 'package:flutter/material.dart';
 
 class LoginView extends StatelessWidget {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:copackr/features/createPackingList/provider/create_packing_list_provider.dart';
+import 'package:kaboodle/features/createPackingList/provider/create_packing_list_provider.dart';
 
 class ColorPicker extends StatefulWidget {
   const ColorPicker({Key? key}) : super(key: key);

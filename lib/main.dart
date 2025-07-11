@@ -1,8 +1,8 @@
-import 'package:copackr/firebase_options.dart';
-import 'package:copackr/router.dart';
-import 'package:copackr/theme/dark_mode.dart';
-import 'package:copackr/theme/light_mode.dart';
-import 'package:copackr/services/data/packing_list_cache.dart';
+import 'package:kaboodle/firebase_options.dart';
+import 'package:kaboodle/router.dart';
+import 'package:kaboodle/theme/dark_mode.dart';
+import 'package:kaboodle/theme/light_mode.dart';
+import 'package:kaboodle/services/data/packing_list_cache.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

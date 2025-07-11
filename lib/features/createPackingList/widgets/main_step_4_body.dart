@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:copackr/features/createPackingList/widgets/trip_details_overview.dart';
-import 'package:copackr/features/createPackingList/widgets/trip_requirements_overview.dart';
-import 'package:copackr/features/createPackingList/widgets/trip_items_overview.dart';
+import 'package:kaboodle/features/createPackingList/widgets/trip_details_overview.dart';
+import 'package:kaboodle/features/createPackingList/widgets/trip_requirements_overview.dart';
+import 'package:kaboodle/features/createPackingList/widgets/trip_items_overview.dart';
 
 class MainStepFourBody extends StatelessWidget {
   final VoidCallback? onEditTripDetails;

@@ -1,6 +1,6 @@
-import 'package:copackr/services/auth/auth_service.dart';
-import 'package:copackr/services/data/firestore.dart';
-import 'package:copackr/shared/widgets/custom_button.dart';
+import 'package:kaboodle/services/auth/auth_service.dart';
+import 'package:kaboodle/services/data/firestore.dart';
+import 'package:kaboodle/shared/widgets/custom_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';

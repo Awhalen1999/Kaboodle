@@ -1,4 +1,4 @@
-import 'package:copackr/shared/widgets/custom_button.dart';
+import 'package:kaboodle/shared/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

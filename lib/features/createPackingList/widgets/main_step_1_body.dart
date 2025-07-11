@@ -1,7 +1,7 @@
-import 'package:copackr/features/createPackingList/widgets/color_picker.dart';
-import 'package:copackr/features/createPackingList/widgets/description_field.dart';
-import 'package:copackr/features/createPackingList/widgets/time_date_picker.dart';
-import 'package:copackr/features/createPackingList/widgets/title_field.dart';
+import 'package:kaboodle/features/createPackingList/widgets/color_picker.dart';
+import 'package:kaboodle/features/createPackingList/widgets/description_field.dart';
+import 'package:kaboodle/features/createPackingList/widgets/time_date_picker.dart';
+import 'package:kaboodle/features/createPackingList/widgets/title_field.dart';
 import 'package:flutter/material.dart';
 
 class MainStepOneBody extends StatelessWidget {

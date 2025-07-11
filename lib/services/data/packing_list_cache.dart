@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:copackr/services/data/firestore.dart';
+import 'package:kaboodle/services/data/firestore.dart';
 
 class PackingListCache extends ChangeNotifier {
   final FirestoreService _firestoreService = FirestoreService();

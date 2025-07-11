@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:copackr/core/constants/app_constants.dart';
-import 'package:copackr/shared/widgets/custom_item_chip.dart';
+import 'package:kaboodle/core/constants/app_constants.dart';
+import 'package:kaboodle/shared/widgets/custom_item_chip.dart';
 
 class PackingListCard extends StatelessWidget {
   final String title;

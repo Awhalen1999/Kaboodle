@@ -1,12 +1,12 @@
-import 'package:copackr/features/auth/pages/login_view.dart';
-import 'package:copackr/features/auth/pages/signup_view.dart';
-import 'package:copackr/features/auth/pages/welcome_view.dart';
-import 'package:copackr/features/createPackingList/pages/create_packing_list_view.dart';
-import 'package:copackr/features/listViewer/pages/list_viewer_view.dart';
-import 'package:copackr/features/myPackingLists/pages/my_packing_lists_view.dart';
-import 'package:copackr/features/profile/pages/profile_view.dart';
-import 'package:copackr/features/upcomingTrips/pages/upcoming_trips_view.dart';
-import 'package:copackr/services/auth/auth_gate.dart';
+import 'package:kaboodle/features/auth/pages/login_view.dart';
+import 'package:kaboodle/features/auth/pages/signup_view.dart';
+import 'package:kaboodle/features/auth/pages/welcome_view.dart';
+import 'package:kaboodle/features/createPackingList/pages/create_packing_list_view.dart';
+import 'package:kaboodle/features/listViewer/pages/list_viewer_view.dart';
+import 'package:kaboodle/features/myPackingLists/pages/my_packing_lists_view.dart';
+import 'package:kaboodle/features/profile/pages/profile_view.dart';
+import 'package:kaboodle/features/upcomingTrips/pages/upcoming_trips_view.dart';
+import 'package:kaboodle/services/auth/auth_gate.dart';
 import 'package:go_router/go_router.dart';
 
 // GoRouter configuration

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:copackr/theme/light_mode.dart';
+import 'package:kaboodle/theme/light_mode.dart';
 
 class CustomButton extends StatelessWidget {
   final String? buttonText;

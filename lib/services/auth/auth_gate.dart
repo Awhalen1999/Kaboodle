@@ -1,5 +1,5 @@
-import 'package:copackr/features/auth/pages/welcome_view.dart';
-import 'package:copackr/features/myPackingLists/pages/my_packing_lists_view.dart';
+import 'package:kaboodle/features/auth/pages/welcome_view.dart';
+import 'package:kaboodle/features/myPackingLists/pages/my_packing_lists_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 

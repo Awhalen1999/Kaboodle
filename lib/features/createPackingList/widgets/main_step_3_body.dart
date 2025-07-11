@@ -1,4 +1,4 @@
-import 'package:copackr/features/createPackingList/widgets/packing_list_builder.dart';
+import 'package:kaboodle/features/createPackingList/widgets/packing_list_builder.dart';
 import 'package:flutter/material.dart';
 
 class MainStepThreeBody extends StatelessWidget {

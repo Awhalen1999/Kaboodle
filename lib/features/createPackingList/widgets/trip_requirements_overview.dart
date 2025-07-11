@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:copackr/features/createPackingList/provider/create_packing_list_provider.dart';
-import 'package:copackr/core/constants/app_constants.dart';
-import 'package:copackr/shared/widgets/custom_item_chip.dart';
+import 'package:kaboodle/features/createPackingList/provider/create_packing_list_provider.dart';
+import 'package:kaboodle/core/constants/app_constants.dart';
+import 'package:kaboodle/shared/widgets/custom_item_chip.dart';
 
 class TripRequirementsOverview extends StatelessWidget {
   final VoidCallback? onEdit;

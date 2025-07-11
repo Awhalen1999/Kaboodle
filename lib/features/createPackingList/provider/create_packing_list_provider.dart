@@ -1,4 +1,4 @@
-import 'package:copackr/core/constants/app_icons.dart';
+import 'package:kaboodle/core/constants/app_icons.dart';
 import 'package:flutter/material.dart';
 import 'custom_items_provider.dart';
 

@@ -1,4 +1,4 @@
-import 'package:copackr/features/auth/widgets/signup_body.dart';
+import 'package:kaboodle/features/auth/widgets/signup_body.dart';
 import 'package:flutter/material.dart';
 
 class SignupView extends StatelessWidget {

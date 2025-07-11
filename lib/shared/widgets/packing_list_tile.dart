@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:copackr/shared/widgets/custom_chip.dart';
+import 'package:kaboodle/shared/widgets/custom_chip.dart';
 
 class PackingListTile extends StatelessWidget {
   final String listName;

@@ -1,15 +1,15 @@
-import 'package:copackr/features/createPackingList/widgets/main_step_1_body.dart';
-import 'package:copackr/features/createPackingList/widgets/main_step_2_body.dart';
-import 'package:copackr/features/createPackingList/widgets/main_step_3_body.dart';
-import 'package:copackr/features/createPackingList/widgets/main_step_4_body.dart';
-import 'package:copackr/shared/widgets/custom_button.dart';
-import 'package:copackr/services/data/firestore.dart';
-import 'package:copackr/services/data/packing_list_cache.dart';
+import 'package:kaboodle/features/createPackingList/widgets/main_step_1_body.dart';
+import 'package:kaboodle/features/createPackingList/widgets/main_step_2_body.dart';
+import 'package:kaboodle/features/createPackingList/widgets/main_step_3_body.dart';
+import 'package:kaboodle/features/createPackingList/widgets/main_step_4_body.dart';
+import 'package:kaboodle/shared/widgets/custom_button.dart';
+import 'package:kaboodle/services/data/firestore.dart';
+import 'package:kaboodle/services/data/packing_list_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 import 'package:provider/provider.dart';
-import 'package:copackr/features/createPackingList/provider/create_packing_list_provider.dart';
-import 'package:copackr/features/createPackingList/provider/custom_items_provider.dart';
+import 'package:kaboodle/features/createPackingList/provider/create_packing_list_provider.dart';
+import 'package:kaboodle/features/createPackingList/provider/custom_items_provider.dart';
 
 class CreatePackingListView extends StatefulWidget {
   const CreatePackingListView({Key? key}) : super(key: key);

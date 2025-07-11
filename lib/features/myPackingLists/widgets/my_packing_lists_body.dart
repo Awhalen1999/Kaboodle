@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:copackr/services/data/packing_list_cache.dart';
+import 'package:kaboodle/services/data/packing_list_cache.dart';
 import 'package:go_router/go_router.dart';
 import 'package:swipe_refresh/swipe_refresh.dart';
-import 'package:copackr/shared/widgets/packing_list_card.dart';
+import 'package:kaboodle/shared/widgets/packing_list_card.dart';
 
 class MyPackingListsBody extends StatefulWidget {
   const MyPackingListsBody({super.key});

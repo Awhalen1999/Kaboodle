@@ -1,10 +1,10 @@
 import 'dart:async';
-import 'package:copackr/shared/widgets/custom_chip.dart';
-import 'package:copackr/shared/widgets/packing_list_tile.dart';
-import 'package:copackr/services/data/packing_list_cache.dart';
+import 'package:kaboodle/shared/widgets/custom_chip.dart';
+import 'package:kaboodle/shared/widgets/packing_list_tile.dart';
+import 'package:kaboodle/services/data/packing_list_cache.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:go_router/go_router.dart';  
 import 'package:provider/provider.dart';
 import 'package:swipe_refresh/swipe_refresh.dart';
 

@@ -1,8 +1,8 @@
-import 'package:copackr/core/constants/app_constants.dart';
+import 'package:kaboodle/core/constants/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:copackr/features/createPackingList/provider/create_packing_list_provider.dart';
-import 'package:copackr/shared/widgets/custom_svg_checkbox_list_tile.dart';
+import 'package:kaboodle/features/createPackingList/provider/create_packing_list_provider.dart';
+import 'package:kaboodle/shared/widgets/custom_svg_checkbox_list_tile.dart';
 
 class ItemsActivitiesSelector extends StatelessWidget {
   const ItemsActivitiesSelector({Key? key}) : super(key: key);
