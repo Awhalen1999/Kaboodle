@@ -63,6 +63,6 @@ class DefaultFirebaseOptions {
     messagingSenderId: '814627986734',
     projectId: 'copackr-9dad4',
     storageBucket: 'copackr-9dad4.firebasestorage.app',
-    iosBundleId: 'com.example.copackr',
+    iosBundleId: 'com.example.kaboodle',
   );
 }
