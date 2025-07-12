@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class PackingListSettingsSheet extends StatelessWidget {
+class PackingListSettingsSheet extends StatefulWidget {
   final String title;
   final VoidCallback onEdit;
   final VoidCallback onDelete;
@@ -11,6 +11,32 @@ class PackingListSettingsSheet extends StatelessWidget {
     required this.onEdit,
     required this.onDelete,
   }) : super(key: key);
+
+  @override
+  State<PackingListSettingsSheet> createState() =>
+      _PackingListSettingsSheetState();
+}
+
+class _PackingListSettingsSheetState extends State<PackingListSettingsSheet> {
+  bool _confirmDelete = false;
+
+  void _handleDelete() {
+    if (_confirmDelete) {
+      widget.onDelete();
+    } else {
+      setState(() {
+        _confirmDelete = true;
+      });
+    }
+  }
+
+  void _resetConfirm() {
+    if (_confirmDelete) {
+      setState(() {
+        _confirmDelete = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +60,10 @@ class PackingListSettingsSheet extends StatelessWidget {
                 ),
               ),
               IconButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () {
+                  Navigator.pop(context);
+                  _resetConfirm();
+                },
                 icon: Icon(
                   Icons.close_rounded,
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -49,7 +78,7 @@ class PackingListSettingsSheet extends StatelessWidget {
           const SizedBox(height: 16),
           // List Name
           Text(
-            title,
+            widget.title,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.w500,
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -73,7 +102,10 @@ class PackingListSettingsSheet extends StatelessWidget {
                       color: Theme.of(context).colorScheme.onPrimary,
                     ),
               ),
-              onPressed: onEdit,
+              onPressed: () {
+                widget.onEdit();
+                _resetConfirm();
+              },
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 backgroundColor: Theme.of(context).colorScheme.primary,
@@ -94,16 +126,18 @@ class PackingListSettingsSheet extends StatelessWidget {
                 color: Theme.of(context).colorScheme.onPrimary,
               ),
               label: Text(
-                'Delete',
+                _confirmDelete ? 'Are you sure?' : 'Delete',
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: Theme.of(context).colorScheme.onPrimary,
                     ),
               ),
-              onPressed: onDelete,
+              onPressed: _handleDelete,
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16),
-                backgroundColor: Theme.of(context).colorScheme.primary,
+                backgroundColor: _confirmDelete
+                    ? Theme.of(context).colorScheme.error
+                    : Theme.of(context).colorScheme.primary,
                 foregroundColor: Theme.of(context).colorScheme.onPrimary,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
