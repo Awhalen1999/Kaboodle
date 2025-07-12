@@ -4,6 +4,7 @@ import 'package:kaboodle/shared/widgets/custom_item_chip.dart';
 import 'package:kaboodle/shared/widgets/packing_list_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 import 'package:kaboodle/services/data/packing_list_cache.dart';
+import 'package:go_router/go_router.dart';
 
 class PackingListCard extends StatelessWidget {
   final String listId;
@@ -141,8 +142,8 @@ class PackingListCard extends StatelessWidget {
                                 title: title,
                                 onEdit: () {
                                   Navigator.pop(context);
+                                  context.push('/edit-packing-list/$listId');
                                   print('Edit list: title-$title ID-$listId');
-                                  // todo: Navigate to edit page
                                 },
                                 onDelete: () async {
                                   try {
