@@ -4,7 +4,7 @@ import 'package:kaboodle/shared/widgets/packing_list_tile.dart';
 import 'package:kaboodle/services/data/packing_list_cache.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';  
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:swipe_refresh/swipe_refresh.dart';
 
@@ -86,7 +86,20 @@ class _MenuDrawerState extends State<MenuDrawer> {
               ListTile(
                 title: const Text('Upcoming trips'),
                 leading: const Icon(Icons.double_arrow_rounded),
-                trailing: const CustomChip(label: "2"),
+                trailing: Consumer<PackingListCache>(
+                  builder: (context, cache, child) {
+                    // Calculate upcoming trips count
+                    final now = DateTime.now();
+                    final upcomingTripsCount = cache.lists.where((list) {
+                      final dateStr = list['travelDate'] as String?;
+                      if (dateStr == null) return false;
+                      final date = DateTime.tryParse(dateStr);
+                      return date != null &&
+                          date.isAfter(now.subtract(const Duration(days: 1)));
+                    }).length;
+                    return CustomChip(label: upcomingTripsCount.toString());
+                  },
+                ),
                 onTap: () {
                   Navigator.pop(context);
                   context.push('/upcoming-trips');
