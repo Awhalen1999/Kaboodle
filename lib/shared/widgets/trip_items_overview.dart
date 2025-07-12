@@ -1,27 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:kaboodle/features/createPackingList/provider/create_packing_list_provider.dart';
-import 'package:kaboodle/features/createPackingList/provider/custom_items_provider.dart';
 
 class TripItemsOverview extends StatelessWidget {
+  final List<TripItemOverviewData> items;
   final VoidCallback? onEdit;
 
-  const TripItemsOverview({super.key, this.onEdit});
+  const TripItemsOverview({super.key, required this.items, this.onEdit});
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.watch<CreatePackingListProvider>();
-    final customItemsProvider = context.watch<CustomItemsProvider>();
-
-    // Get checked regular items
-    final regularItems =
-        provider.selectedItemsList.where((item) => item.isChecked).toList();
-    // Get checked custom items
-    final customItems = customItemsProvider.getCheckedCustomItems();
-
-    // Combine all items for display
-    final allItems = [...regularItems, ...customItems];
-
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 0),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -56,26 +42,12 @@ class TripItemsOverview extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 16),
-            if (allItems.isEmpty)
+            if (items.isEmpty)
               Text('No items selected',
                   style: Theme.of(context).textTheme.bodyMedium),
-            if (allItems.isNotEmpty)
+            if (items.isNotEmpty)
               Column(
-                children: allItems.map((item) {
-                  // Handle both regular and custom items
-                  final label = item is PackingListItem
-                      ? item.label
-                      : (item as CustomPackingItem).label;
-                  final quantity = item is PackingListItem
-                      ? item.finalQuantity
-                      : (item as CustomPackingItem).quantity;
-                  final note = item is PackingListItem
-                      ? item.note
-                      : (item as CustomPackingItem).note;
-                  final iconData = item is PackingListItem
-                      ? item.icon
-                      : (item as CustomPackingItem).icon;
-
+                children: items.map((item) {
                   return Container(
                     margin: const EdgeInsets.only(bottom: 8),
                     decoration: BoxDecoration(
@@ -100,7 +72,7 @@ class TripItemsOverview extends StatelessWidget {
                             ),
                             padding: const EdgeInsets.all(4),
                             child: Icon(
-                              iconData,
+                              item.icon,
                               size: 22,
                               color: Theme.of(context).colorScheme.primary,
                             ),
@@ -115,7 +87,7 @@ class TripItemsOverview extends StatelessWidget {
                                   children: [
                                     Flexible(
                                       child: Text(
-                                        label,
+                                        item.label,
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodyMedium
@@ -129,7 +101,7 @@ class TripItemsOverview extends StatelessWidget {
                                     ),
                                     const SizedBox(width: 6),
                                     Text(
-                                      'x$quantity',
+                                      'x${item.quantity}',
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodyMedium
@@ -142,11 +114,11 @@ class TripItemsOverview extends StatelessWidget {
                                     ),
                                   ],
                                 ),
-                                if (note != null && note.isNotEmpty)
+                                if (item.note != null && item.note!.isNotEmpty)
                                   Padding(
                                     padding: const EdgeInsets.only(top: 2),
                                     child: Text(
-                                      note,
+                                      item.note!,
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodySmall
@@ -172,4 +144,18 @@ class TripItemsOverview extends StatelessWidget {
       ),
     );
   }
+}
+
+class TripItemOverviewData {
+  final String label;
+  final int quantity;
+  final String? note;
+  final IconData icon;
+
+  TripItemOverviewData({
+    required this.label,
+    required this.quantity,
+    this.note,
+    required this.icon,
+  });
 }

@@ -1,28 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:kaboodle/features/createPackingList/provider/create_packing_list_provider.dart';
+import 'package:kaboodle/core/constants/app_constants.dart';
+import 'package:kaboodle/shared/widgets/custom_item_chip.dart';
 
-class TripDetailsOverview extends StatelessWidget {
+class TripRequirementsOverview extends StatelessWidget {
+  final String purpose;
+  final String weather;
+  final String tripLength;
+  final String accommodation;
+  final List<String> itemsActivities;
   final VoidCallback? onEdit;
 
-  const TripDetailsOverview({super.key, this.onEdit});
+  const TripRequirementsOverview({
+    super.key,
+    required this.purpose,
+    required this.weather,
+    required this.tripLength,
+    required this.accommodation,
+    required this.itemsActivities,
+    this.onEdit,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.watch<CreatePackingListProvider>();
-    final title = (provider.title.isNotEmpty) ? provider.title : 'NA';
-    final description =
-        (provider.description.isNotEmpty) ? provider.description : 'NA';
-    final date =
-        provider.travelDate != null ? _formatDate(provider.travelDate!) : 'NA';
-
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 0),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       elevation: 1,
-      color: Theme.of(context)
-          .colorScheme
-          .surfaceContainerLow, // Use surfaceContainer for background
+      color: Theme.of(context).colorScheme.surfaceContainerLow,
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -32,7 +36,7 @@ class TripDetailsOverview extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Trip Details',
+                  'Trip Requirements',
                   style: Theme.of(context)
                       .textTheme
                       .titleMedium
@@ -52,38 +56,55 @@ class TripDetailsOverview extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 16),
-            _OverviewField(label: 'Title', value: title),
+            _OverviewField(label: 'Purpose of Trip', value: purpose),
             const SizedBox(height: 8),
-            _OverviewField(label: 'Description', value: description),
+            _OverviewField(label: 'Weather Preference', value: weather),
             const SizedBox(height: 8),
-            _OverviewField(label: 'Date', value: date),
+            _OverviewField(label: 'Trip Length', value: tripLength),
+            const SizedBox(height: 8),
+            _OverviewField(label: 'Accommodations', value: accommodation),
+            const SizedBox(height: 8),
+            _buildItemsActivities(context, itemsActivities),
           ],
         ),
       ),
     );
   }
 
-  String _formatDate(DateTime date) {
-    // Format as e.g. Jan 1, 2024
-    return '${_monthName(date.month)} ${date.day}, ${date.year}';
-  }
+  Widget _buildItemsActivities(
+      BuildContext context, List<String> itemsActivities) {
+    if (itemsActivities.isEmpty) {
+      return const _OverviewField(label: 'Items / Activities', value: 'NA');
+    }
 
-  String _monthName(int month) {
-    const months = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec'
-    ];
-    return months[month - 1];
+    List<Widget> chips = itemsActivities.map((activityId) {
+      final details = activityDetails[activityId];
+      if (details == null) {
+        return const SizedBox.shrink();
+      }
+      return Padding(
+        padding: const EdgeInsets.only(right: 8.0, bottom: 8.0),
+        child: CustomItemChip(
+          label: details['label'],
+          color: details['color'],
+        ),
+      );
+    }).toList();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Items / Activities',
+          style: Theme.of(context).textTheme.labelMedium?.copyWith(
+              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7)),
+        ),
+        const SizedBox(height: 4),
+        Wrap(
+          children: chips,
+        ),
+      ],
+    );
   }
 }
 
