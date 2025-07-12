@@ -98,12 +98,14 @@ class _MyPackingListsBodyState extends State<MyPackingListsBody> {
                   (listData['selectedSections'] as List?)?.cast<String>() ?? [];
 
               return PackingListCard(
+                // todo: this will never really be empty, this is temporary
+                listId: listData['id'] as String? ?? '',
                 title: listName,
                 description: description,
                 color: listColor,
                 selectedSections: selectedSections,
                 onTap: () {
-                  // TODO: Pass the list ID to the viewer
+                  // todo: Pass the list ID to the viewer
                   context.push('/list-viewer');
                 },
               );

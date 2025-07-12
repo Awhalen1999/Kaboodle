@@ -59,7 +59,7 @@ class FirestoreService {
         throw Exception('User must be authenticated to fetch packing lists');
       }
 
-      // TODO: Create composite index for userId + createdAt in Firebase console
+      // todo: Create composite index for userId + createdAt in Firebase console
       // Current query without ordering to avoid index requirement
       // For proper ordering, create index: userId (Ascending) + createdAt (Descending)
       final querySnapshot = await _firestore

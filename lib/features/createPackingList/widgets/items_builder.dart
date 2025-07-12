@@ -813,7 +813,7 @@ final Map<String, List<PackingItem>> packingItemsBySection = {
       baseQuantity: 1,
     ),
   ],
-  // Todo: fix label to be "Winter Activities"
+  // todo: fix label to be "Winter Activities"
   //* Done
   'winterActivities': [
     PackingItem(

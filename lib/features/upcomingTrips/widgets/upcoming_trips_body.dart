@@ -116,6 +116,8 @@ class _UpcomingTripsBodyState extends State<UpcomingTripsBody> {
                     tripDate != null ? tripDate.difference(now).inDays : null;
 
                 return PackingListCard(
+                  // todo: this will never really be empty, this is temporary
+                  listId: listData['id'] as String? ?? '',
                   title: listName,
                   description: description,
                   color: listColor,
@@ -123,7 +125,7 @@ class _UpcomingTripsBodyState extends State<UpcomingTripsBody> {
                   daysUntil:
                       (daysUntil != null && daysUntil >= 0) ? daysUntil : null,
                   onTap: () {
-                    // TODO: Pass the list ID to the viewer
+                    // todo: Pass the list ID to the viewer
                     context.push('/list-viewer');
                   },
                 );

@@ -230,7 +230,7 @@ class _MenuDrawerState extends State<MenuDrawer> {
                           itemCount: itemCount,
                           onTap: () {
                             Navigator.pop(context);
-                            // TODO: Navigate to list viewer with the specific list ID
+                            // todo: Navigate to list viewer with the specific list ID
                             context.push('/list-viewer');
                           },
                         );

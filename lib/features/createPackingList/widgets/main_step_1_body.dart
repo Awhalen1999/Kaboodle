@@ -97,7 +97,7 @@ class MainStepOneBody extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Todo: fix the way this interacts with the close text ect.
+                // todo: fix the way this interacts with the close text ect.
                 Text(
                   "Description",
                   style: Theme.of(context)

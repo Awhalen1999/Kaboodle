@@ -4,6 +4,7 @@ import 'package:kaboodle/shared/widgets/custom_item_chip.dart';
 import 'package:kaboodle/shared/widgets/packing_list_bottom_sheet.dart';
 
 class PackingListCard extends StatelessWidget {
+  final String listId;
   final String title;
   final String description;
   final Color color;
@@ -13,6 +14,7 @@ class PackingListCard extends StatelessWidget {
 
   const PackingListCard({
     super.key,
+    required this.listId,
     required this.title,
     required this.description,
     required this.color,
@@ -137,13 +139,13 @@ class PackingListCard extends StatelessWidget {
                                 title: title,
                                 onEdit: () {
                                   Navigator.pop(context);
-                                  print('Edit list: ' + title);
-                                  // TODO: Navigate to edit page
+                                  print('Edit list: title-$title ID-$listId');
+                                  // todo: Navigate to edit page
                                 },
                                 onDelete: () {
                                   Navigator.pop(context);
-                                  print('Delete list: ' + title);
-                                  // TODO: Implement delete logic
+                                  print('Delete list: title-$title ID-$listId');
+                                  // todo: Implement delete logic
                                 },
                               ),
                             );
