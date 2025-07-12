@@ -32,28 +32,41 @@ class _TravelDatePickerState extends State<TravelDatePicker> {
         ? "Select a date..."
         : "${provider.travelDate!.month}/${provider.travelDate!.day}/${provider.travelDate!.year}";
 
-    return InkWell(
-      onTap: _openCalendar,
-      child: Container(
-        height: 56,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: Theme.of(context).colorScheme.surfaceContainer,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Select a date',
+          style: Theme.of(context)
+              .textTheme
+              .titleMedium
+              ?.copyWith(fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 16),
+        InkWell(
+          onTap: _openCalendar,
+          child: Container(
+            height: 56,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: Theme.of(context).colorScheme.surfaceContainer,
+              ),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              children: [
+                Text(dateText),
+                const Spacer(),
+                Icon(
+                  Icons.calendar_today_rounded,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
+              ],
+            ),
           ),
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Row(
-          children: [
-            Text(dateText),
-            const Spacer(),
-            Icon(
-              Icons.calendar_today_rounded,
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
-            ),
-          ],
-        ),
-      ),
+      ],
     );
   }
 }

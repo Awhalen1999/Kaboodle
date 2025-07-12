@@ -42,25 +42,43 @@ class _ColorPickerState extends State<ColorPicker> {
   Widget build(BuildContext context) {
     final model = context.watch<CreatePackingListProvider>();
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: List.generate(_colors.length, (index) {
-        final color = _colors[index];
-        return IconButton(
-          icon: Icon(
-            Icons.circle,
-            color: color,
-            size: _selectedIndex == index ? 32 : 22,
-          ),
-          onPressed: () {
-            setState(() {
-              _selectedIndex = index;
-            });
-            // Update the provider with the new color
-            model.updateListColor(_colors[index]);
-          },
-        );
-      }),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Choose a list color',
+          style: Theme.of(context)
+              .textTheme
+              .titleMedium
+              ?.copyWith(fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          "Select a color to easily identify your list.",
+          style: Theme.of(context).textTheme.bodySmall,
+        ),
+        const SizedBox(height: 16),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: List.generate(_colors.length, (index) {
+            final color = _colors[index];
+            return IconButton(
+              icon: Icon(
+                Icons.circle,
+                color: color,
+                size: _selectedIndex == index ? 32 : 22,
+              ),
+              onPressed: () {
+                setState(() {
+                  _selectedIndex = index;
+                });
+                // Update the provider with the new color
+                model.updateListColor(_colors[index]);
+              },
+            );
+          }),
+        ),
+      ],
     );
   }
 }

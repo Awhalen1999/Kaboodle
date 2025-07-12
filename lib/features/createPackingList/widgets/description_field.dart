@@ -25,32 +25,45 @@ class _DescriptionFieldState extends State<DescriptionField> {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      controller: _controller,
-      minLines: 3,
-      maxLines: 5,
-      textInputAction: TextInputAction.done,
-      decoration: InputDecoration(
-        labelText: "Add a description...",
-        filled: true,
-        fillColor: Theme.of(context).colorScheme.surfaceBright,
-        alignLabelWithHint: true,
-        floatingLabelStyle: TextStyle(
-          color: Theme.of(context).colorScheme.onSurface,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Description',
+          style: Theme.of(context)
+              .textTheme
+              .titleMedium
+              ?.copyWith(fontWeight: FontWeight.bold),
         ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(
-            color: Theme.of(context).colorScheme.surfaceContainer,
+        const SizedBox(height: 16),
+        TextFormField(
+          controller: _controller,
+          minLines: 3,
+          maxLines: 5,
+          textInputAction: TextInputAction.done,
+          decoration: InputDecoration(
+            labelText: "Add a description...",
+            filled: true,
+            fillColor: Theme.of(context).colorScheme.surfaceBright,
+            alignLabelWithHint: true,
+            floatingLabelStyle: TextStyle(
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(
+                color: Theme.of(context).colorScheme.surfaceContainer,
+              ),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(
+                color: Theme.of(context).colorScheme.surfaceContainer,
+              ),
+            ),
           ),
         ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(
-            color: Theme.of(context).colorScheme.surfaceContainer,
-          ),
-        ),
-      ),
+      ],
     );
   }
 }

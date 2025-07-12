@@ -27,59 +27,7 @@ class MainStepOneBody extends StatelessWidget {
             style: Theme.of(context).textTheme.bodyLarge,
           ),
           const SizedBox(height: 16),
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surfaceBright,
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: [
-                BoxShadow(
-                  color: Theme.of(context).colorScheme.shadow,
-                  blurRadius: 10,
-                ),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      "Title",
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyLarge!
-                          .copyWith(fontWeight: FontWeight.w500),
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      "•",
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onSurfaceVariant
-                                .withOpacity(0.7),
-                          ),
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      "Required",
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onSurfaceVariant
-                                .withOpacity(0.7),
-                            fontStyle: FontStyle.italic,
-                          ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 12),
-                TitleField(),
-              ],
-            ),
-          ),
+          TitleField(),
           const SizedBox(height: 16),
           Container(
             width: double.infinity,
