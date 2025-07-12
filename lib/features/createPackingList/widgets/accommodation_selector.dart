@@ -5,7 +5,7 @@ import 'package:kaboodle/features/createPackingList/widgets/svg_button_column.da
 import 'package:kaboodle/core/constants/app_constants.dart';
 
 class AccommodationSelector extends StatelessWidget {
-  const AccommodationSelector({Key? key}) : super(key: key);
+  const AccommodationSelector({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -37,13 +37,35 @@ class AccommodationSelector extends StatelessWidget {
     final firstRowKeys = keys.sublist(0, (keys.length / 2).ceil());
     final secondRowKeys = keys.sublist((keys.length / 2).ceil());
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        buildRow(firstRowKeys),
-        const SizedBox(height: 16),
-        buildRow(secondRowKeys),
-      ],
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 0),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      elevation: 1,
+      color: Theme.of(context).colorScheme.surfaceContainerLow,
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Accommodations',
+              style: Theme.of(context)
+                  .textTheme
+                  .titleMedium
+                  ?.copyWith(fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 16),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                buildRow(firstRowKeys),
+                const SizedBox(height: 16),
+                buildRow(secondRowKeys),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

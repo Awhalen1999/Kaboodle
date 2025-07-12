@@ -10,12 +10,12 @@ class SvgButtonRow extends StatelessWidget {
   final bool isSelected;
 
   const SvgButtonRow({
-    Key? key,
+    super.key,
     required this.svgAsset,
     required this.label,
     this.onPressed,
     this.isSelected = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

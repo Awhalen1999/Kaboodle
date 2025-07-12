@@ -8,12 +8,12 @@ class SvgButtonColumn extends StatelessWidget {
   final bool isSelected;
 
   const SvgButtonColumn({
-    Key? key,
+    super.key,
     required this.svgAsset,
     required this.label,
     this.onPressed,
     this.isSelected = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

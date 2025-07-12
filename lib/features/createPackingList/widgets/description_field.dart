@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:kaboodle/features/createPackingList/provider/create_packing_list_provider.dart';
 
 class DescriptionField extends StatefulWidget {
-  const DescriptionField({Key? key}) : super(key: key);
+  const DescriptionField({super.key});
 
   @override
   State<DescriptionField> createState() => _DescriptionFieldState();

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class TravelDatePicker extends StatefulWidget {
-  const TravelDatePicker({Key? key}) : super(key: key);
+  const TravelDatePicker({super.key});
 
   @override
   State<TravelDatePicker> createState() => _TravelDatePickerState();

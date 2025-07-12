@@ -9,7 +9,7 @@ import 'add_custom_item_bottom_sheet.dart';
 import 'package:kaboodle/core/constants/app_icons.dart';
 
 class PackingListBuilder extends StatelessWidget {
-  const PackingListBuilder({Key? key}) : super(key: key);
+  const PackingListBuilder({super.key});
 
   // Helper function that calculates the final quantity based on tripLength.
   // For fixed items, we return the baseQuantity.

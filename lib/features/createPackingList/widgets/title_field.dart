@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:kaboodle/features/createPackingList/provider/create_packing_list_provider.dart';
 
 class TitleField extends StatefulWidget {
-  const TitleField({Key? key}) : super(key: key);
+  const TitleField({super.key});
 
   @override
   State<TitleField> createState() => _TitleFieldState();

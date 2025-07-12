@@ -5,10 +5,10 @@ class AddCustomItemModal extends StatefulWidget {
   final Function(String itemName, int quantity) onAdd;
 
   const AddCustomItemModal({
-    Key? key,
+    super.key,
     required this.sectionTitle,
     required this.onAdd,
-  }) : super(key: key);
+  });
 
   @override
   State<AddCustomItemModal> createState() => _AddCustomItemModalState();

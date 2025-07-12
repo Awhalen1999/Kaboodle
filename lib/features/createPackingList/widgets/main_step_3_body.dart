@@ -2,7 +2,7 @@ import 'package:kaboodle/features/createPackingList/widgets/packing_list_builder
 import 'package:flutter/material.dart';
 
 class MainStepThreeBody extends StatelessWidget {
-  const MainStepThreeBody({Key? key}) : super(key: key);
+  const MainStepThreeBody({super.key});
 
   @override
   Widget build(BuildContext context) {

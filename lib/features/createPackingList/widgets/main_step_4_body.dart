@@ -12,11 +12,11 @@ class MainStepFourBody extends StatelessWidget {
   final VoidCallback? onEditPackingList;
 
   const MainStepFourBody({
-    Key? key,
+    super.key,
     this.onEditTripDetails,
     this.onEditTripRequirements,
     this.onEditPackingList,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

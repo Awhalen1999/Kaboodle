@@ -5,7 +5,7 @@ import 'package:kaboodle/features/createPackingList/widgets/title_field.dart';
 import 'package:flutter/material.dart';
 
 class MainStepOneBody extends StatelessWidget {
-  const MainStepOneBody({Key? key}) : super(key: key);
+  const MainStepOneBody({super.key});
 
   @override
   Widget build(BuildContext context) {

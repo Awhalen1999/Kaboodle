@@ -7,12 +7,12 @@ class EditItemsModal extends StatefulWidget {
   final void Function(int?, String) onSave; // One-parameter callback
 
   const EditItemsModal({
-    Key? key,
+    super.key,
     required this.label,
     required this.initialQuantity,
     this.initialNote = '',
     required this.onSave,
-  }) : super(key: key);
+  });
 
   @override
   State<EditItemsModal> createState() => _EditItemsModalState();
