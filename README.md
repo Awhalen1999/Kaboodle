@@ -1,4 +1,4 @@
-# Kaboodle 🧳 ✅
+# Kaboodle
 
 A mobile packing planner application built with Flutter
 
