@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kaboodle/core/constants/app_constants.dart';
 import 'package:kaboodle/shared/widgets/custom_item_chip.dart';
+import 'package:kaboodle/shared/widgets/packing_list_bottom_sheet.dart';
 
 class PackingListCard extends StatelessWidget {
   final String title;
@@ -132,43 +133,19 @@ class PackingListCard extends StatelessWidget {
                                   top: Radius.circular(24),
                                 ),
                               ),
-                              builder: (context) {
-                                return SafeArea(
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 24, vertical: 24),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        ListTile(
-                                          leading: const Icon(Icons.edit),
-                                          title: const Text('Edit'),
-                                          onTap: () {
-                                            Navigator.pop(context);
-                                            print('Edit list: ' + title);
-                                            // TODO: Navigate to edit page
-                                          },
-                                        ),
-                                        ListTile(
-                                          leading: const Icon(Icons.delete),
-                                          title: const Text('Delete'),
-                                          textColor: Theme.of(context)
-                                              .colorScheme
-                                              .error,
-                                          iconColor: Theme.of(context)
-                                              .colorScheme
-                                              .error,
-                                          onTap: () {
-                                            Navigator.pop(context);
-                                            print('Delete list: ' + title);
-                                            // TODO: Implement delete logic
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              },
+                              builder: (context) => PackingListSettingsSheet(
+                                title: title,
+                                onEdit: () {
+                                  Navigator.pop(context);
+                                  print('Edit list: ' + title);
+                                  // TODO: Navigate to edit page
+                                },
+                                onDelete: () {
+                                  Navigator.pop(context);
+                                  print('Delete list: ' + title);
+                                  // TODO: Implement delete logic
+                                },
+                              ),
                             );
                           },
                         ),

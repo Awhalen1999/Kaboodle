@@ -4,8 +4,8 @@ import 'package:kaboodle/shared/widgets/custom_checkbox_list_tile.dart';
 import 'package:kaboodle/features/createPackingList/widgets/items_builder.dart';
 import 'package:kaboodle/features/createPackingList/provider/create_packing_list_provider.dart';
 import 'package:kaboodle/features/createPackingList/provider/custom_items_provider.dart';
-import 'edit_items_modal.dart';
-import 'add_custom_item_modal.dart';
+import 'edit_items_bottom_sheet.dart';
+import 'add_custom_item_bottom_sheet.dart';
 import 'package:kaboodle/core/constants/app_icons.dart';
 
 class PackingListBuilder extends StatelessWidget {
