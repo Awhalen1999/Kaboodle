@@ -21,6 +21,7 @@ class CreatePackingListView extends StatefulWidget {
 class _CreatePackingListViewState extends State<CreatePackingListView> {
   int _currentStep = 1;
   bool _isSaving = false;
+  bool _isEditingStep = false;
 
   String _getAppBarTitle() {
     switch (_currentStep) {
@@ -128,8 +129,23 @@ class _CreatePackingListViewState extends State<CreatePackingListView> {
   String _getButtonText() {
     if (_isSaving) return 'Saving...';
     if (_currentStep == 2) return 'Build List';
+    if (_currentStep == 3) return 'Review List';
     if (_currentStep == 4) return 'Finish';
     return 'Next';
+  }
+
+  void _startEditMode(int step) {
+    setState(() {
+      _currentStep = step;
+      _isEditingStep = true;
+    });
+  }
+
+  void _finishEditMode() {
+    setState(() {
+      _isEditingStep = false;
+      _currentStep = 4; // Go back to the overview step
+    });
   }
 
   @override
@@ -184,14 +200,24 @@ class _CreatePackingListViewState extends State<CreatePackingListView> {
                   ),
                 ),
               ),
-              CustomButton(
-                buttonText: _getButtonText(),
-                onPressed: _isSaving ? null : _nextStep,
-                textColor: Theme.of(context).colorScheme.onPrimary,
-                buttonColor: Theme.of(context).colorScheme.primary,
-                isLoading: false,
-                borderRadius: 12,
-              ),
+              if (_isEditingStep)
+                CustomButton(
+                  buttonText: 'OK',
+                  onPressed: _finishEditMode,
+                  textColor: Theme.of(context).colorScheme.onPrimary,
+                  buttonColor: Theme.of(context).colorScheme.primary,
+                  isLoading: false,
+                  borderRadius: 12,
+                )
+              else
+                CustomButton(
+                  buttonText: _getButtonText(),
+                  onPressed: _isSaving ? null : _nextStep,
+                  textColor: Theme.of(context).colorScheme.onPrimary,
+                  buttonColor: Theme.of(context).colorScheme.primary,
+                  isLoading: false,
+                  borderRadius: 12,
+                ),
             ],
           ),
         ),
@@ -210,9 +236,9 @@ class _CreatePackingListViewState extends State<CreatePackingListView> {
       case 4:
       default:
         return MainStepFourBody(
-          onEditTripDetails: () => setState(() => _currentStep = 1),
-          onEditTripRequirements: () => setState(() => _currentStep = 2),
-          onEditPackingList: () => setState(() => _currentStep = 3),
+          onEditTripDetails: () => _startEditMode(1),
+          onEditTripRequirements: () => _startEditMode(2),
+          onEditPackingList: () => _startEditMode(3),
         );
     }
   }
