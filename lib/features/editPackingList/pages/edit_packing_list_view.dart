@@ -17,7 +17,6 @@ class EditPackingListView extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_rounded),
           onPressed: () => Navigator.of(context).pop(),
-          // todo: return to previous page
         ),
         title: Text('Edit packing list'),
         // close button

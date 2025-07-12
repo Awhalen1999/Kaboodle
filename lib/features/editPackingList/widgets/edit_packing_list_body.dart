@@ -122,6 +122,7 @@ class _EditPackingListBodyState extends State<EditPackingListBody> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // todo: use the list title here instead of the hardcoded text
               Text(
                 "Edit packing list details",
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
