@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:kaboodle/core/constants/app_constants.dart';
 import 'package:kaboodle/shared/widgets/custom_item_chip.dart';
 import 'package:kaboodle/shared/widgets/packing_list_bottom_sheet.dart';
+import 'package:provider/provider.dart';
+import 'package:kaboodle/services/data/packing_list_cache.dart';
 
 class PackingListCard extends StatelessWidget {
   final String listId;
@@ -142,10 +144,17 @@ class PackingListCard extends StatelessWidget {
                                   print('Edit list: title-$title ID-$listId');
                                   // todo: Navigate to edit page
                                 },
-                                onDelete: () {
+                                onDelete: () async {
+                                  try {
+                                    await context
+                                        .read<PackingListCache>()
+                                        .deleteList(listId);
+                                    print(
+                                        'Delete list: title-$title ID-$listId');
+                                  } catch (e) {
+                                    print('Error deleting list: $e');
+                                  }
                                   Navigator.pop(context);
-                                  print('Delete list: title-$title ID-$listId');
-                                  // todo: Implement delete logic
                                 },
                               ),
                             );

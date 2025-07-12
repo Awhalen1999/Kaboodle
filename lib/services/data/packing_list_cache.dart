@@ -99,4 +99,10 @@ class PackingListCache extends ChangeNotifier {
       return null;
     }
   }
+
+  /// Delete a list from Firestore and refresh cache
+  Future<void> deleteList(String listId) async {
+    await _firestoreService.deletePackingList(listId);
+    await refresh();
+  }
 }
