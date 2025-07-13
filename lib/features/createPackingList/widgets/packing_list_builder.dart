@@ -230,10 +230,13 @@ class PackingListBuilder extends StatelessWidget {
             text: existingItem.label,
             quantity: existingItem.finalQuantity,
             note: existingItem.note ?? '',
-            value: true, // Always true when item is in the list
+            value: existingItem.isChecked, // Use the actual checked state
             onChanged: (bool? newValue) {
-              if (newValue == false) {
-                // User unselected this item - remove it from the list
+              if (newValue == true) {
+                // User checked this item - mark as checked
+                onItemUpdated(existingItem.copyWith(isChecked: true));
+              } else if (newValue == false) {
+                // User unselected this item - mark as unchecked (don't remove)
                 onItemRemoved(existingItem.id);
               }
             },

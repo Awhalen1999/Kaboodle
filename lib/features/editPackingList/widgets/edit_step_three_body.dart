@@ -22,7 +22,7 @@ class _EditStepThreeBodyState extends State<EditStepThreeBody> {
   String? _accommodation;
   List<String> _selectedSections = [];
   double _tripLength = 1.0;
-  Map<String, PackingListItem> _existingItems = {};
+  final Map<String, PackingListItem> _existingItems = {};
 
   @override
   void initState() {
@@ -63,7 +63,12 @@ class _EditStepThreeBodyState extends State<EditStepThreeBody> {
 
   void _onItemRemoved(String itemId) {
     setState(() {
-      _existingItems.remove(itemId);
+      // Mark the item as unchecked but keep it in the list
+      // This matches the create flow behavior where items persist
+      final item = _existingItems[itemId];
+      if (item != null) {
+        _existingItems[itemId] = item.copyWith(isChecked: false);
+      }
     });
   }
 

@@ -1,6 +1,5 @@
 import 'package:kaboodle/features/editPackingList/widgets/edit_packing_list_body.dart';
 import 'package:flutter/material.dart';
-import 'package:kaboodle/shared/widgets/custom_button.dart';
 
 class EditPackingListView extends StatelessWidget {
   final String listId;
@@ -40,13 +39,6 @@ class EditPackingListView extends StatelessWidget {
                 child: SingleChildScrollView(
                   child: EditPackingListBody(listId: listId),
                 ),
-              ),
-              CustomButton(
-                buttonText: 'Save',
-                onPressed: () {},
-                textColor: Theme.of(context).colorScheme.onPrimary,
-                buttonColor: Theme.of(context).colorScheme.primary,
-                isLoading: false,
               ),
             ],
           ),

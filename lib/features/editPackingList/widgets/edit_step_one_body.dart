@@ -33,7 +33,7 @@ class _EditStepOneBodyState extends State<EditStepOneBody> {
       setState(() {
         _title = listData['title'] ?? '';
         _description = listData['description'] ?? '';
-        _listColor = Color(listData['listColor'] ?? Colors.grey.value);
+        _listColor = Color(listData['listColor'] ?? Colors.grey.shade500.value);
 
         final travelDateString = listData['travelDate'] as String?;
         _travelDate = travelDateString != null
