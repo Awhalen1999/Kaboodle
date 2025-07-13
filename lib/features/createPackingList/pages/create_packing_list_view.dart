@@ -1,7 +1,7 @@
-import 'package:kaboodle/features/createPackingList/widgets/main_step_1_body.dart';
-import 'package:kaboodle/features/createPackingList/widgets/main_step_2_body.dart';
-import 'package:kaboodle/features/createPackingList/widgets/main_step_3_body.dart';
-import 'package:kaboodle/features/createPackingList/widgets/main_step_4_body.dart';
+import 'package:kaboodle/features/createPackingList/widgets/create_step_3_body.dart';
+import 'package:kaboodle/features/createPackingList/widgets/create_step_two_body.dart';
+import 'package:kaboodle/features/createPackingList/widgets/crete_step_three_body.dart';
+import 'package:kaboodle/features/createPackingList/widgets/create_step_four_body.dart';
 import 'package:kaboodle/shared/widgets/custom_button.dart';
 import 'package:kaboodle/services/data/firestore.dart';
 import 'package:kaboodle/services/data/packing_list_cache.dart';

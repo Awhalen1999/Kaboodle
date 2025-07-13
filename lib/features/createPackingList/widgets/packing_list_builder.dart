@@ -101,6 +101,7 @@ class PackingListBuilder extends StatelessWidget {
       section: sectionKey,
       baseQuantity: item.baseQuantity,
       calculatedQuantity: calculatedQuantity,
+      isChecked: true, // Items are checked by default when added
       iconName: item.iconName,
     );
   }

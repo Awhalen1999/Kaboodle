@@ -94,6 +94,7 @@ class CustomItemsProvider extends ChangeNotifier {
       label: itemName,
       section: section,
       quantity: quantity,
+      isChecked: true, // Custom items are checked by default when added
       iconName: 'checkroom_rounded', // Default icon
     );
 

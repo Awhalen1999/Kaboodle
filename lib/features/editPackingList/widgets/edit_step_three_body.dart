@@ -85,8 +85,11 @@ class _EditStepThreeBodyState extends State<EditStepThreeBody> {
       if (currentData == null) throw Exception('List not found');
 
       // Convert items to the format expected by Firestore
-      final itemsList =
-          _existingItems.values.map((item) => item.toMap()).toList();
+      // Only include checked items (consistent with create flow)
+      final itemsList = _existingItems.values
+          .where((item) => item.isChecked)
+          .map((item) => item.toMap())
+          .toList();
 
       // Update with new items and timestamp
       final updatedData = {
