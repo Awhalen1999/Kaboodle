@@ -87,6 +87,22 @@ class ListViewerBody extends StatelessWidget {
             List<String>.from(listData['selectedSections'] ?? []);
         final itemsList = listData['items'] as List? ?? [];
 
+        // Extract items from the list data
+        final items = <TripItemOverviewData>[];
+        for (final itemData in itemsList) {
+          final item = itemData as Map<String, dynamic>;
+          final iconName = item['iconName'] as String? ?? 'checkroom_rounded';
+          items.add(TripItemOverviewData(
+            label: item['label'] as String? ?? 'Unknown Item',
+            quantity: item['customQuantity'] as int? ??
+                item['calculatedQuantity'] as int? ??
+                item['baseQuantity'] as int? ??
+                1,
+            note: item['note'] as String?,
+            icon: getIconByName(iconName),
+          ));
+        }
+
         return Padding(
           padding: const EdgeInsets.only(left: 4, right: 4, bottom: 16),
           child: Column(
@@ -99,117 +115,70 @@ class ListViewerBody extends StatelessWidget {
                     borderRadius: BorderRadius.circular(16)),
                 elevation: 1,
                 color: Theme.of(context).colorScheme.surfaceContainerLow,
-                child: Stack(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(18),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            title,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headlineSmall
-                                ?.copyWith(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(18, 18, 18, 0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style:
+                            Theme.of(context).textTheme.headlineSmall?.copyWith(
                                   fontWeight: FontWeight.bold,
                                   color: Theme.of(context).colorScheme.primary,
                                 ),
-                          ),
-                          if (description.isNotEmpty) ...[
-                            const SizedBox(height: 4),
-                            Text(
-                              description,
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                          ],
-                          const SizedBox(height: 10),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              _InfoPair(label: 'Date', value: date),
-                              _InfoPair(label: 'Purpose', value: purpose),
-                              _InfoPair(label: 'Weather', value: weather),
-                            ],
-                          ),
-                          const SizedBox(height: 6),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              _InfoPair(label: 'Duration', value: tripLength),
-                              _InfoPair(label: 'Stay', value: accommodation),
-                              const SizedBox(width: 60), // for alignment
-                            ],
-                          ),
-                          if (itemsActivities.isNotEmpty) ...[
-                            const SizedBox(height: 10),
-                            Wrap(
-                              spacing: 8,
-                              runSpacing: 8,
-                              children: itemsActivities.map((activityId) {
-                                final details = activityDetails[activityId];
-                                if (details == null)
-                                  return const SizedBox.shrink();
-                                return CustomItemChip(
-                                  label: details['label'],
-                                  color: details['color'],
-                                );
-                              }).toList(),
-                            ),
-                          ],
+                      ),
+                      if (description.isNotEmpty) ...[
+                        const SizedBox(height: 4),
+                        Text(
+                          description,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                      ],
+                      const SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          _InfoPair(label: 'Date', value: date),
+                          _InfoPair(label: 'Purpose', value: purpose),
+                          _InfoPair(label: 'Weather', value: weather),
                         ],
                       ),
-                    ),
-                    // Floating item count badge
-                    Positioned(
-                      top: 12,
-                      right: 16,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 6),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .primary
-                              .withOpacity(0.12),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Text(
-                          '${itemsList.length} items',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodySmall
-                              ?.copyWith(
-                                color: Theme.of(context).colorScheme.primary,
-                                fontWeight: FontWeight.w600,
-                              ),
-                        ),
+                      const SizedBox(height: 6),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          _InfoPair(label: 'Duration', value: tripLength),
+                          _InfoPair(label: 'Stay', value: accommodation),
+                          const SizedBox(width: 60), // for alignment
+                        ],
                       ),
-                    ),
-                  ],
+                      // Activities chips
+                      if (itemsActivities.isNotEmpty) ...[
+                        const SizedBox(height: 10),
+                        Wrap(
+                          spacing: 8,
+                          runSpacing: 8,
+                          children: itemsActivities.map((activityId) {
+                            final details = activityDetails[activityId];
+                            if (details == null) return const SizedBox.shrink();
+                            return CustomItemChip(
+                              label: details['label'],
+                              color: details['color'],
+                            );
+                          }).toList(),
+                        ),
+                      ],
+                      // Packing Items preview card
+                      if (items.isNotEmpty || itemsList.isEmpty) ...[
+                        const SizedBox(height: 10),
+                        _buildItemsPreview(context, items),
+                      ],
+                    ],
+                  ),
                 ),
               ),
-              // Scroll prompt
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 4),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.keyboard_arrow_down_rounded,
-                        color: Theme.of(context).colorScheme.primary, size: 28),
-                    const SizedBox(width: 4),
-                    Text(
-                      'Scroll to start packing',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Theme.of(context).colorScheme.primary,
-                            fontWeight: FontWeight.w500,
-                          ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 8),
-              // Ready to pack section
+
               _buildPackingPrompt(context, itemsList.length),
             ],
           ),
@@ -220,7 +189,6 @@ class ListViewerBody extends StatelessWidget {
 
   Widget _buildPackingPrompt(BuildContext context, int itemCount) {
     return Card(
-      margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 0),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       elevation: 1,
       color: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.1),
@@ -315,6 +283,118 @@ class ListViewerBody extends StatelessWidget {
       ),
     );
   }
+
+  Widget _buildItemsPreview(
+      BuildContext context, List<TripItemOverviewData> items) {
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 0),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      elevation: 1,
+      color: Theme.of(context).colorScheme.surfaceContainerLow,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Icon(
+                  Icons.inventory_2_rounded,
+                  color: Theme.of(context).colorScheme.primary,
+                  size: 20,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Text(
+                'Packing Items',
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+              const Spacer(),
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(
+                  '${items.length} items',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Theme.of(context).colorScheme.primary,
+                        fontWeight: FontWeight.w600,
+                      ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          if (items.isEmpty)
+            Text(
+              'No items in this list',
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+            ),
+          if (items.isNotEmpty)
+            Column(
+              children: items.take(5).map((item) {
+                return Container(
+                  margin: const EdgeInsets.only(bottom: 8),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Theme.of(context).colorScheme.surfaceBright,
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        item.icon,
+                        size: 18,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          item.label,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      Text(
+                        'x${item.quantity}',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSurfaceVariant,
+                              fontWeight: FontWeight.w500,
+                            ),
+                      ),
+                    ],
+                  ),
+                );
+              }).toList(),
+            ),
+          if (items.length > 5) ...[
+            const SizedBox(height: 8),
+            Text(
+              '... and ${items.length - 5} more items',
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    fontStyle: FontStyle.italic,
+                  ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
 }
 
 class _InfoPair extends StatelessWidget {
@@ -342,4 +422,19 @@ class _InfoPair extends StatelessWidget {
       ],
     );
   }
+}
+
+// Helper class for item preview
+class TripItemOverviewData {
+  final String label;
+  final int quantity;
+  final String? note;
+  final IconData icon;
+
+  TripItemOverviewData({
+    required this.label,
+    required this.quantity,
+    this.note,
+    required this.icon,
+  });
 }
