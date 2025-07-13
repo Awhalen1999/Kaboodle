@@ -43,8 +43,10 @@ final router = GoRouter(
       builder: (context, state) => MyPackingListsView(),
     ),
     GoRoute(
-      path: '/list-viewer',
-      builder: (context, state) => ListViewerView(),
+      path: '/list-viewer/:listId',
+      builder: (context, state) => ListViewerView(
+        listId: state.pathParameters['listId']!,
+      ),
     ),
     GoRoute(
       path: '/create-packing-list',

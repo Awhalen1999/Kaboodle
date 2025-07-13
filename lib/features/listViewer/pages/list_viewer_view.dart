@@ -4,7 +4,8 @@ import 'package:kaboodle/shared/widgets/custom_app_bar.dart';
 import 'package:kaboodle/shared/widgets/menu_drawer.dart';
 
 class ListViewerView extends StatelessWidget {
-  const ListViewerView({super.key});
+  final String listId;
+  const ListViewerView({super.key, required this.listId});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class ListViewerView extends StatelessWidget {
         ),
       ),
       drawer: const MenuDrawer(),
-      body: const ListViewerBody(),
+      body: ListViewerBody(listId: listId),
     );
   }
 }

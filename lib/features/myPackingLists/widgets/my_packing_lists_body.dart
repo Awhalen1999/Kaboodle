@@ -105,8 +105,7 @@ class _MyPackingListsBodyState extends State<MyPackingListsBody> {
                 color: listColor,
                 selectedSections: selectedSections,
                 onTap: () {
-                  // todo: Pass the list ID to the viewer
-                  context.push('/list-viewer');
+                  context.push('/list-viewer/${listData['id']}');
                 },
               );
             },
