@@ -1,9 +1,14 @@
-import 'package:kaboodle/features/createPackingList/provider/create_packing_list_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class TravelDatePicker extends StatefulWidget {
-  const TravelDatePicker({super.key});
+  final DateTime? selectedDate;
+  final Function(DateTime?) onDateSelected;
+
+  const TravelDatePicker({
+    super.key,
+    required this.selectedDate,
+    required this.onDateSelected,
+  });
 
   @override
   State<TravelDatePicker> createState() => _TravelDatePickerState();
@@ -12,25 +17,23 @@ class TravelDatePicker extends StatefulWidget {
 class _TravelDatePickerState extends State<TravelDatePicker> {
   Future<void> _openCalendar() async {
     final now = DateTime.now();
-    final provider = context.read<CreatePackingListProvider>();
 
     final pickedDate = await showDatePicker(
       context: context,
-      initialDate: provider.travelDate ?? now,
+      initialDate: widget.selectedDate ?? now,
       firstDate: DateTime(now.year - 10),
       lastDate: DateTime(now.year + 10),
     );
     if (pickedDate != null) {
-      provider.updateTravelDate(pickedDate);
+      widget.onDateSelected(pickedDate);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.watch<CreatePackingListProvider>();
-    final dateText = provider.travelDate == null
+    final dateText = widget.selectedDate == null
         ? "Select a date..."
-        : "${provider.travelDate!.month}/${provider.travelDate!.day}/${provider.travelDate!.year}";
+        : "${widget.selectedDate!.month}/${widget.selectedDate!.day}/${widget.selectedDate!.year}";
 
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 0),

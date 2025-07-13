@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:kaboodle/features/createPackingList/provider/create_packing_list_provider.dart';
 
 class ColorPicker extends StatefulWidget {
-  const ColorPicker({super.key});
+  final Color selectedColor;
+  final Function(Color) onColorSelected;
+
+  const ColorPicker({
+    super.key,
+    required this.selectedColor,
+    required this.onColorSelected,
+  });
 
   @override
   State<ColorPicker> createState() => _ColorPickerState();
@@ -27,9 +32,8 @@ class _ColorPickerState extends State<ColorPicker> {
       Colors.orange,
     ];
 
-    // Check the provider's current color and find which index matches
-    final model = context.read<CreatePackingListProvider>();
-    final currentColor = model.listColor;
+    // Check the current color and find which index matches
+    final currentColor = widget.selectedColor;
 
     // If the current color is in our list, pick that index. Otherwise default to 0.
     final index = _colors.indexOf(currentColor);
@@ -39,9 +43,18 @@ class _ColorPickerState extends State<ColorPicker> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final model = context.watch<CreatePackingListProvider>();
+  void didUpdateWidget(ColorPicker oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.selectedColor != widget.selectedColor) {
+      final index = _colors.indexOf(widget.selectedColor);
+      if (index != -1) {
+        _selectedIndex = index;
+      }
+    }
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 0),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -79,8 +92,8 @@ class _ColorPickerState extends State<ColorPicker> {
                     setState(() {
                       _selectedIndex = index;
                     });
-                    // Update the provider with the new color
-                    model.updateListColor(_colors[index]);
+                    // Update with the new color
+                    widget.onColorSelected(_colors[index]);
                   },
                 );
               }),

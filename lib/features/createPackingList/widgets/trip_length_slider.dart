@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:kaboodle/features/createPackingList/provider/create_packing_list_provider.dart';
 
 class TripLengthSlider extends StatefulWidget {
-  const TripLengthSlider({super.key});
+  final double tripLength;
+  final Function(double) onTripLengthChanged;
+
+  const TripLengthSlider({
+    super.key,
+    required this.tripLength,
+    required this.onTripLengthChanged,
+  });
 
   @override
   State<TripLengthSlider> createState() => _TripLengthSliderState();
@@ -17,7 +22,7 @@ class _TripLengthSliderState extends State<TripLengthSlider> {
       return "3-7 days";
     } else if (value == 1.0) {
       return "1 week";
-    } else if (value == 4.0) {    
+    } else if (value == 4.0) {
       return "4+ weeks";
     } else {
       return "${value.toStringAsFixed(1)} weeks";
@@ -26,8 +31,7 @@ class _TripLengthSliderState extends State<TripLengthSlider> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.watch<CreatePackingListProvider>();
-    final currentValue = provider.tripLength;
+    final currentValue = widget.tripLength;
 
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 0),
@@ -65,7 +69,7 @@ class _TripLengthSliderState extends State<TripLengthSlider> {
                   max: 4.0,
                   divisions: 8,
                   onChanged: (newValue) {
-                    provider.updateTripLength(newValue);
+                    widget.onTripLengthChanged(newValue);
                   },
                 ),
               ],

@@ -6,6 +6,9 @@ import 'package:kaboodle/shared/widgets/trip_requirements_overview.dart';
 import 'package:kaboodle/shared/widgets/trip_items_overview.dart';
 import 'package:kaboodle/core/constants/app_icons.dart';
 import 'package:kaboodle/core/utils/date_formatter.dart';
+import 'package:kaboodle/features/editPackingList/widgets/edit_step_one_body.dart';
+import 'package:kaboodle/features/editPackingList/widgets/edit_step_two_body.dart';
+import 'package:kaboodle/features/editPackingList/widgets/edit_step_three_body.dart';
 
 class EditPackingListBody extends StatefulWidget {
   final String listId;
@@ -21,8 +24,67 @@ class _EditPackingListBodyState extends State<EditPackingListBody> {
     super.initState();
     // Ensure cache is loaded
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<PackingListCache>().getLists();
+      if (mounted) {
+        final cache = context.read<PackingListCache>();
+        if (!cache.hasLoaded) {
+          cache.getLists();
+        }
+      }
     });
+  }
+
+  void _navigateToEditStep(int step) {
+    Widget editPage;
+    switch (step) {
+      case 1:
+        editPage = Scaffold(
+          appBar: AppBar(
+            title: Text('Edit Trip Details'),
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back_ios_rounded),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ),
+          body: SafeArea(
+            child: EditStepOneBody(listId: widget.listId),
+          ),
+        );
+        break;
+      case 2:
+        editPage = Scaffold(
+          appBar: AppBar(
+            title: Text('Edit Trip Requirements'),
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back_ios_rounded),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ),
+          body: SafeArea(
+            child: EditStepTwoBody(listId: widget.listId),
+          ),
+        );
+        break;
+      case 3:
+        editPage = Scaffold(
+          appBar: AppBar(
+            title: Text('Edit Packing List'),
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back_ios_rounded),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ),
+          body: SafeArea(
+            child: EditStepThreeBody(listId: widget.listId),
+          ),
+        );
+        break;
+      default:
+        return;
+    }
+
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => editPage),
+    );
   }
 
   @override
@@ -122,9 +184,8 @@ class _EditPackingListBodyState extends State<EditPackingListBody> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // todo: use the list title here instead of the hardcoded text
               Text(
-                "Edit packing list details",
+                "Edit ${title}",
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: Theme.of(context).colorScheme.primary,
@@ -140,6 +201,7 @@ class _EditPackingListBodyState extends State<EditPackingListBody> {
                 title: title,
                 description: description,
                 date: date,
+                onEdit: () => _navigateToEditStep(1),
               ),
               TripRequirementsOverview(
                 purpose: purpose,
@@ -147,9 +209,11 @@ class _EditPackingListBodyState extends State<EditPackingListBody> {
                 tripLength: tripLength,
                 accommodation: accommodation,
                 itemsActivities: itemsActivities,
+                onEdit: () => _navigateToEditStep(2),
               ),
               TripItemsOverview(
                 items: items,
+                onEdit: () => _navigateToEditStep(3),
               ),
             ],
           ),

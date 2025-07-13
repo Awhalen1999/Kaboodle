@@ -1,15 +1,19 @@
 import 'package:kaboodle/core/constants/app_constants.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:kaboodle/features/createPackingList/provider/create_packing_list_provider.dart';
 import 'package:kaboodle/features/createPackingList/widgets/svg_button_row.dart';
 
 class GenderSelector extends StatelessWidget {
-  const GenderSelector({super.key});
+  final String? selectedGender;
+  final Function(String?) onGenderSelected;
+
+  const GenderSelector({
+    super.key,
+    required this.selectedGender,
+    required this.onGenderSelected,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final model = context.watch<CreatePackingListProvider>();
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 0),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -36,9 +40,9 @@ class GenderSelector extends StatelessWidget {
                 return SvgButtonRow(
                   svgAsset: details['svgPath']!,
                   label: details['label']!,
-                  isSelected: model.gender == key,
+                  isSelected: selectedGender == key,
                   onPressed: () {
-                    model.updateGender(key);
+                    onGenderSelected(key);
                   },
                 );
               }).toList(),

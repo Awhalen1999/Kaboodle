@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:kaboodle/features/createPackingList/provider/create_packing_list_provider.dart';
 import 'package:kaboodle/features/createPackingList/widgets/svg_button_column.dart';
 import 'package:kaboodle/core/constants/app_constants.dart';
 
 class AccommodationSelector extends StatelessWidget {
-  const AccommodationSelector({super.key});
+  final String? selectedAccommodation;
+  final Function(String?) onAccommodationSelected;
+
+  const AccommodationSelector({
+    super.key,
+    required this.selectedAccommodation,
+    required this.onAccommodationSelected,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.watch<CreatePackingListProvider>();
-
     // Helper to build a row of buttons
     Widget buildRow(List<String> keys) {
       return Row(
@@ -23,8 +26,8 @@ class AccommodationSelector extends StatelessWidget {
               child: SvgButtonColumn(
                 svgAsset: details['svgPath']!,
                 label: details['label']!,
-                isSelected: provider.accommodation == key,
-                onPressed: () => provider.updateAccommodation(key),
+                isSelected: selectedAccommodation == key,
+                onPressed: () => onAccommodationSelected(key),
               ),
             ),
           );

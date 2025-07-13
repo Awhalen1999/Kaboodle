@@ -9,7 +9,36 @@ import 'add_custom_item_bottom_sheet.dart';
 import 'package:kaboodle/core/constants/app_icons.dart';
 
 class PackingListBuilder extends StatelessWidget {
-  const PackingListBuilder({super.key});
+  final String? gender;
+  final String? tripPurpose;
+  final String? weatherCondition;
+  final String? accommodation;
+  final List<String> selectedSections;
+  final double tripLength;
+  final Map<String, PackingListItem>? existingItems;
+  final Function(PackingListItem) onItemAdded;
+  final Function(String) onItemRemoved;
+  final Function(PackingListItem) onItemUpdated;
+  final Function(String, String, int) onCustomItemAdded;
+  final Function(String, bool?) onCustomItemToggled;
+  final Function(CustomPackingItem) onCustomItemUpdated;
+
+  const PackingListBuilder({
+    super.key,
+    this.gender,
+    this.tripPurpose,
+    this.weatherCondition,
+    this.accommodation,
+    required this.selectedSections,
+    required this.tripLength,
+    this.existingItems,
+    required this.onItemAdded,
+    required this.onItemRemoved,
+    required this.onItemUpdated,
+    required this.onCustomItemAdded,
+    required this.onCustomItemToggled,
+    required this.onCustomItemUpdated,
+  });
 
   // Helper function that calculates the final quantity based on tripLength.
   // For fixed items, we return the baseQuantity.
@@ -79,8 +108,6 @@ class PackingListBuilder extends StatelessWidget {
   // Opens the modal widget for editing quantity and note.
   void _openCustomizationSheet(
       BuildContext context, PackingListItem packingItem) {
-    final provider = context.read<CreatePackingListProvider>();
-
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
@@ -95,7 +122,7 @@ class PackingListBuilder extends StatelessWidget {
                   newQuantity, // Will be null if quantity wasn't changed
               note: newNote.isEmpty ? null : newNote,
             );
-            provider.updateItem(updatedItem);
+            onItemUpdated(updatedItem);
           },
         );
       },
@@ -104,15 +131,13 @@ class PackingListBuilder extends StatelessWidget {
 
   // Opens the modal widget for adding custom items
   void _openAddCustomItemSheet(BuildContext context, String sectionKey) {
-    final customItemsProvider = context.read<CustomItemsProvider>();
-
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
         return AddCustomItemModal(
           sectionTitle: _formatSectionTitle(sectionKey),
           onAdd: (itemName, quantity) {
-            customItemsProvider.addCustomItem(itemName, quantity, sectionKey);
+            onCustomItemAdded(sectionKey, itemName, quantity);
           },
         );
       },
@@ -121,29 +146,39 @@ class PackingListBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Read current criteria from the provider.
+    // Use props if provided, otherwise fall back to provider
     final provider = context.watch<CreatePackingListProvider>();
     final customItemsProvider = context.watch<CustomItemsProvider>();
-    final String gender = provider.gender ?? '';
-    final String tripPurpose = provider.tripPurpose ?? '';
-    final String weather = provider.weatherCondition ?? '';
-    final String accommodation = provider.accommodation ?? '';
-    final List<String> selectedSections = provider.itemsActivities;
-    final double tripLength = provider.tripLength;
+
+    final String currentGender = gender ?? provider.gender ?? '';
+    final String currentTripPurpose = tripPurpose ?? provider.tripPurpose ?? '';
+    final String currentWeather =
+        weatherCondition ?? provider.weatherCondition ?? '';
+    final String currentAccommodation =
+        accommodation ?? provider.accommodation ?? '';
+    final List<String> currentSelectedSections = selectedSections.isNotEmpty
+        ? selectedSections
+        : provider.itemsActivities;
+    final double currentTripLength =
+        tripLength > 0 ? tripLength : provider.tripLength;
+
+    // Use existing items if provided, otherwise use provider items
+    final Map<String, PackingListItem> currentItems =
+        existingItems ?? provider.selectedItems;
 
     List<Widget> listWidgets = [];
 
-    for (var sectionKey in selectedSections) {
+    for (var sectionKey in currentSelectedSections) {
       final List<PackingItem>? sectionItems = packingItemsBySection[sectionKey];
       if (sectionItems == null || sectionItems.isEmpty) continue;
 
       final filteredItems = sectionItems.where((item) {
         return itemMatchesCriteria(
           item,
-          gender: gender,
-          tripPurpose: tripPurpose,
-          weather: weather,
-          accommodation: accommodation,
+          gender: currentGender,
+          tripPurpose: currentTripPurpose,
+          weather: currentWeather,
+          accommodation: currentAccommodation,
         );
       }).toList();
 
@@ -151,8 +186,11 @@ class PackingListBuilder extends StatelessWidget {
       final customItems =
           customItemsProvider.getCustomItemsForSection(sectionKey);
 
-      // Show section if it has filtered items OR custom items
-      if (filteredItems.isEmpty && customItems.isEmpty) continue;
+      // Show section if it has filtered items OR custom items OR existing items
+      if (filteredItems.isEmpty &&
+          customItems.isEmpty &&
+          !currentItems.values.any((item) => item.section == sectionKey))
+        continue;
 
       listWidgets.add(
         Padding(
@@ -179,64 +217,63 @@ class PackingListBuilder extends StatelessWidget {
         ),
       );
 
+      // First, show all existing items for this section (even if they don't match current criteria)
+      final existingItemsInSection = currentItems.values
+          .where((item) => item.section == sectionKey)
+          .toList();
+
+      for (var existingItem in existingItemsInSection) {
+        listWidgets.add(
+          CustomCheckboxListTile(
+            iconData: existingItem.icon,
+            text: existingItem.label,
+            quantity: existingItem.finalQuantity,
+            note: existingItem.note ?? '',
+            value: true, // Always true when item is in the list
+            onChanged: (bool? newValue) {
+              if (newValue == false) {
+                // User unselected this item - remove it from the list
+                onItemRemoved(existingItem.id);
+              }
+            },
+            onEdit: () => _openCustomizationSheet(context, existingItem),
+          ),
+        );
+      }
+
+      // Then show filtered items that aren't already in the list
       for (var item in filteredItems) {
-        // Check if this item is already selected
-        final existingPackingItem = provider.getItem(item.id);
+        // Check if this item is already in the existing items
+        if (currentItems.containsKey(item.id)) continue;
 
-        if (existingPackingItem != null) {
-          // Item is already selected - show it as selected (but not checked for packing)
-          listWidgets.add(
-            CustomCheckboxListTile(
-              iconData: existingPackingItem.icon,
-              text: existingPackingItem.label,
-              quantity: existingPackingItem.finalQuantity,
-              note: existingPackingItem.note ?? '',
-              value:
-                  true, // Always true when item is in the list (not isChecked)
-              onChanged: (bool? newValue) {
-                if (newValue == false) {
-                  // User unselected this item - remove it from the list
-                  provider.removeItem(item.id);
-                }
-                // If newValue is true, do nothing (item is already selected)
-              },
-              onEdit: () =>
-                  _openCustomizationSheet(context, existingPackingItem),
-            ),
-          );
-        } else {
-          // Item is not selected - show it as unselected
-          final calculatedQuantity = getCalculatedQuantity(item, tripLength);
+        // Item is not selected - show it as unselected
+        final calculatedQuantity =
+            getCalculatedQuantity(item, currentTripLength);
 
-          listWidgets.add(
-            CustomCheckboxListTile(
-              iconData: getIconByName(item.iconName),
-              text: item.label,
-              quantity: calculatedQuantity,
-              note: '',
-              value: false, // Not in the list yet
-              onChanged: (bool? newValue) {
-                if (newValue == true) {
-                  // User selected this item - add it to the list
-                  final packingItem =
-                      createPackingListItem(item, tripLength, sectionKey);
-                  provider.addItem(packingItem);
-                  // Mark it as checked for packing
-                  provider.toggleItemChecked(packingItem.id, true);
-                }
-              },
-              onEdit: () {
-                // Create the item first, then open edit modal
+        listWidgets.add(
+          CustomCheckboxListTile(
+            iconData: getIconByName(item.iconName),
+            text: item.label,
+            quantity: calculatedQuantity,
+            note: '',
+            value: false, // Not in the list yet
+            onChanged: (bool? newValue) {
+              if (newValue == true) {
+                // User selected this item - add it to the list
                 final packingItem =
-                    createPackingListItem(item, tripLength, sectionKey);
-                provider.addItem(packingItem);
-                // Mark it as checked for packing
-                provider.toggleItemChecked(packingItem.id, true);
-                _openCustomizationSheet(context, packingItem);
-              },
-            ),
-          );
-        }
+                    createPackingListItem(item, currentTripLength, sectionKey);
+                onItemAdded(packingItem);
+              }
+            },
+            onEdit: () {
+              // Create the item first, then open edit modal
+              final packingItem =
+                  createPackingListItem(item, currentTripLength, sectionKey);
+              onItemAdded(packingItem);
+              _openCustomizationSheet(context, packingItem);
+            },
+          ),
+        );
       }
 
       // Add custom items for this section
@@ -249,8 +286,7 @@ class PackingListBuilder extends StatelessWidget {
             note: customItem.note ?? '',
             value: customItem.isChecked,
             onChanged: (bool? newValue) {
-              customItemsProvider.toggleCustomItemChecked(
-                  customItem.id, newValue);
+              onCustomItemToggled(customItem.id, newValue);
             },
             onEdit: () {
               // Open edit modal for custom item
@@ -267,7 +303,7 @@ class PackingListBuilder extends StatelessWidget {
                         quantity: newQuantity ?? customItem.quantity,
                         note: newNote.isEmpty ? null : newNote,
                       );
-                      customItemsProvider.updateCustomItem(updatedItem);
+                      onCustomItemUpdated(updatedItem);
                     },
                   );
                 },
@@ -278,9 +314,7 @@ class PackingListBuilder extends StatelessWidget {
       }
     }
 
-    return ListView(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
+    return Column(
       children: listWidgets,
     );
   }

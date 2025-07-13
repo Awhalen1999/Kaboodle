@@ -1,16 +1,19 @@
 import 'package:kaboodle/core/constants/app_constants.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:kaboodle/features/createPackingList/provider/create_packing_list_provider.dart';
 import 'package:kaboodle/features/createPackingList/widgets/svg_button_row.dart';
 
 class WeatherConditionSelector extends StatelessWidget {
-  const WeatherConditionSelector({super.key});
+  final String? selectedWeather;
+  final Function(String?) onWeatherSelected;
+
+  const WeatherConditionSelector({
+    super.key,
+    required this.selectedWeather,
+    required this.onWeatherSelected,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.watch<CreatePackingListProvider>();
-
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 0),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -37,8 +40,8 @@ class WeatherConditionSelector extends StatelessWidget {
                 return SvgButtonRow(
                   svgAsset: details['svgPath']!,
                   label: details['label']!,
-                  isSelected: provider.weatherCondition == key,
-                  onPressed: () => provider.updateWeatherCondition(key),
+                  isSelected: selectedWeather == key,
+                  onPressed: () => onWeatherSelected(key),
                 );
               }).toList(),
             ),

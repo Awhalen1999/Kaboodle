@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:kaboodle/features/createPackingList/provider/create_packing_list_provider.dart';
 
 class TitleField extends StatefulWidget {
-  const TitleField({super.key});
+  final String initialValue;
+  final Function(String) onChanged;
+
+  const TitleField({
+    super.key,
+    required this.initialValue,
+    required this.onChanged,
+  });
 
   @override
   State<TitleField> createState() => _TitleFieldState();
@@ -15,12 +20,24 @@ class _TitleFieldState extends State<TitleField> {
   @override
   void initState() {
     super.initState();
-    final model = context.read<CreatePackingListProvider>();
-    _controller = TextEditingController(text: model.title);
+    _controller = TextEditingController(text: widget.initialValue);
+    _controller.addListener(_onTextChanged);
+  }
 
-    _controller.addListener(() {
-      model.updateTitle(_controller.text);
-    });
+  @override
+  void didUpdateWidget(TitleField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.initialValue != widget.initialValue) {
+      // Temporarily remove listener to avoid triggering callback during update
+      _controller.removeListener(_onTextChanged);
+      _controller.text = widget.initialValue;
+      // Re-add listener after updating text
+      _controller.addListener(_onTextChanged);
+    }
+  }
+
+  void _onTextChanged() {
+    widget.onChanged(_controller.text);
   }
 
   @override

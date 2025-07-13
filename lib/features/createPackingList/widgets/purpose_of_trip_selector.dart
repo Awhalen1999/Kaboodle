@@ -1,15 +1,19 @@
 import 'package:kaboodle/core/constants/app_constants.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:kaboodle/features/createPackingList/provider/create_packing_list_provider.dart';
 import 'package:kaboodle/features/createPackingList/widgets/svg_button_row.dart';
 
 class PurposeOfTripSelector extends StatelessWidget {
-  const PurposeOfTripSelector({super.key});
+  final String? selectedPurpose;
+  final Function(String?) onPurposeSelected;
+
+  const PurposeOfTripSelector({
+    super.key,
+    required this.selectedPurpose,
+    required this.onPurposeSelected,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final model = context.watch<CreatePackingListProvider>();
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 0),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -36,9 +40,9 @@ class PurposeOfTripSelector extends StatelessWidget {
                 return SvgButtonRow(
                   svgAsset: details['svgPath']!,
                   label: details['label']!,
-                  isSelected: model.tripPurpose == key,
+                  isSelected: selectedPurpose == key,
                   onPressed: () {
-                    model.updateTripPurpose(key);
+                    onPurposeSelected(key);
                   },
                 );
               }).toList(),

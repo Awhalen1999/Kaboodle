@@ -1,16 +1,19 @@
 import 'package:kaboodle/core/constants/app_constants.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:kaboodle/features/createPackingList/provider/create_packing_list_provider.dart';
 import 'package:kaboodle/shared/widgets/custom_svg_checkbox_list_tile.dart';
 
 class ItemsActivitiesSelector extends StatelessWidget {
-  const ItemsActivitiesSelector({super.key});
+  final List<String> selectedItems;
+  final Function(String) onItemToggled;
+
+  const ItemsActivitiesSelector({
+    super.key,
+    required this.selectedItems,
+    required this.onItemToggled,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.watch<CreatePackingListProvider>();
-
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 0),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -34,7 +37,7 @@ class ItemsActivitiesSelector extends StatelessWidget {
               children: activityDetails.entries.map((entry) {
                 final String itemId = entry.key;
                 final Map<String, dynamic> itemData = entry.value;
-                final bool isChecked = provider.isItemSelected(itemId);
+                final bool isChecked = selectedItems.contains(itemId);
 
                 return CustomSvgCheckboxListTile(
                   svgAsset: itemData['svgPath'] as String,
@@ -42,7 +45,7 @@ class ItemsActivitiesSelector extends StatelessWidget {
                   value: isChecked,
                   onChanged: (val) {
                     if (val != null) {
-                      provider.toggleItemActivity(itemId);
+                      onItemToggled(itemId);
                     }
                   },
                 );
