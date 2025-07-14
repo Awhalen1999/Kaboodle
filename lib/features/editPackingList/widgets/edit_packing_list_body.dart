@@ -180,7 +180,7 @@ class _EditPackingListBodyState extends State<EditPackingListBody> {
         }
 
         return Padding(
-          padding: const EdgeInsets.only(left: 4, right: 4, bottom: 16),
+          padding: const EdgeInsets.only(bottom: 32),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
