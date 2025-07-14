@@ -185,7 +185,7 @@ class _EditPackingListBodyState extends State<EditPackingListBody> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Edit $title",
+                "$title",
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: Theme.of(context).colorScheme.primary,
