@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
+import 'package:go_router/go_router.dart';
 import 'package:kaboodle/features/packingProcess/provider/packing_process_provider.dart';
 import 'package:kaboodle/features/packingProcess/widgets/packing_process_body.dart';
 import 'package:kaboodle/services/data/packing_list_cache.dart';
@@ -36,57 +37,14 @@ class _PackingProcessContent extends StatelessWidget {
           onPressed: () => Navigator.of(context).pop(),
         ),
         actions: [
-          Consumer<PackingProcessProvider>(
-            builder: (context, provider, child) {
-              return PopupMenuButton<String>(
-                icon: const Icon(Icons.more_vert),
-                onSelected: (value) {
-                  switch (value) {
-                    case 'check_all':
-                      provider.checkAllItems();
-                      break;
-                    case 'uncheck_all':
-                      provider.uncheckAllItems();
-                      break;
-                    case 'save':
-                      _saveProgress(context, provider);
-                      break;
-                  }
-                },
-                itemBuilder: (context) => [
-                  const PopupMenuItem(
-                    value: 'check_all',
-                    child: Row(
-                      children: [
-                        Icon(Icons.check_box),
-                        SizedBox(width: 8),
-                        Text('Check All'),
-                      ],
-                    ),
-                  ),
-                  const PopupMenuItem(
-                    value: 'uncheck_all',
-                    child: Row(
-                      children: [
-                        Icon(Icons.check_box_outline_blank),
-                        SizedBox(width: 8),
-                        Text('Uncheck All'),
-                      ],
-                    ),
-                  ),
-                  const PopupMenuItem(
-                    value: 'save',
-                    child: Row(
-                      children: [
-                        Icon(Icons.save),
-                        SizedBox(width: 8),
-                        Text('Save Progress'),
-                      ],
-                    ),
-                  ),
-                ],
-              );
-            },
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: IconButton(
+              icon: const Icon(Icons.close_rounded),
+              iconSize: 28,
+              color: Theme.of(context).colorScheme.onSurface,
+              onPressed: () => context.go('/my-packing-lists'),
+            ),
           ),
         ],
       ),

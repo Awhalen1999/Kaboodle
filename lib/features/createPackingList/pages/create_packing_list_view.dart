@@ -167,6 +167,7 @@ class _CreatePackingListViewState extends State<CreatePackingListView> {
             child: IconButton(
               icon: const Icon(Icons.close_rounded),
               iconSize: 28,
+              color: Theme.of(context).colorScheme.onSurface,
               onPressed: () => Navigator.of(context).pop(),
             ),
           ),

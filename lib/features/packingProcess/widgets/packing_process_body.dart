@@ -137,6 +137,58 @@ class PackingProcessBody extends StatelessWidget {
                                   ),
                             ),
                           ),
+                          Consumer<PackingProcessProvider>(
+                            builder: (context, provider, child) {
+                              return PopupMenuButton<String>(
+                                icon: const Icon(Icons.more_vert, size: 20),
+                                onSelected: (value) {
+                                  switch (value) {
+                                    case 'check_all':
+                                      provider.checkAllItems();
+                                      break;
+                                    case 'uncheck_all':
+                                      provider.uncheckAllItems();
+                                      break;
+                                    case 'save':
+                                      _saveProgress(context, provider);
+                                      break;
+                                  }
+                                },
+                                itemBuilder: (context) => [
+                                  const PopupMenuItem(
+                                    value: 'check_all',
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.check_box),
+                                        SizedBox(width: 8),
+                                        Text('Check All'),
+                                      ],
+                                    ),
+                                  ),
+                                  const PopupMenuItem(
+                                    value: 'uncheck_all',
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.check_box_outline_blank),
+                                        SizedBox(width: 8),
+                                        Text('Uncheck All'),
+                                      ],
+                                    ),
+                                  ),
+                                  const PopupMenuItem(
+                                    value: 'save',
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.save),
+                                        SizedBox(width: 8),
+                                        Text('Save Progress'),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
                         ],
                       ),
                     ),
@@ -171,5 +223,31 @@ class PackingProcessBody extends StatelessWidget {
         onEdit: null, // No edit functionality in packing process
       ),
     );
+  }
+
+  Future<void> _saveProgress(
+      BuildContext context, PackingProcessProvider provider) async {
+    try {
+      await provider.saveProgress();
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Progress saved successfully!'),
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error saving progress: $e'),
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: Theme.of(context).colorScheme.error,
+          ),
+        );
+      }
+    }
   }
 }
