@@ -259,14 +259,7 @@ class ListViewerBody extends StatelessWidget {
                       ),
                 ),
                 onPressed: () {
-                  // TODO: Navigate to packing process
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Packing process coming soon!'),
-                      behavior: SnackBarBehavior.floating,
-                      backgroundColor: Theme.of(context).colorScheme.primary,
-                    ),
-                  );
+                  context.push('/packing-process/$listId');
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),

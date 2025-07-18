@@ -7,6 +7,7 @@ import 'package:kaboodle/features/myPackingLists/pages/my_packing_lists_view.dar
 import 'package:kaboodle/features/profile/pages/profile_view.dart';
 import 'package:kaboodle/features/upcomingTrips/pages/upcoming_trips_view.dart';
 import 'package:kaboodle/features/editPackingList/pages/edit_packing_list_view.dart';
+import 'package:kaboodle/features/packingProcess/pages/packing_process_view.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kaboodle/services/auth/auth_gate.dart';
 
@@ -55,6 +56,12 @@ final router = GoRouter(
     GoRoute(
       path: '/edit-packing-list/:listId',
       builder: (context, state) => EditPackingListView(
+        listId: state.pathParameters['listId']!,
+      ),
+    ),
+    GoRoute(
+      path: '/packing-process/:listId',
+      builder: (context, state) => PackingProcessView(
         listId: state.pathParameters['listId']!,
       ),
     ),
