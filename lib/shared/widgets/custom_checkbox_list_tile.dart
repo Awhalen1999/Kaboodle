@@ -36,10 +36,7 @@ class CustomCheckboxListTile extends StatelessWidget {
           // Expanded InkWell wrapping the left and middle sections.
           Expanded(
             child: InkWell(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(12),
-                bottomLeft: Radius.circular(12),
-              ),
+              borderRadius: BorderRadius.circular(12),
               onTap: () {
                 onChanged?.call(!value);
               },
@@ -120,12 +117,13 @@ class CustomCheckboxListTile extends StatelessWidget {
             ),
           ),
           // Right container: holds the edit icon as an IconButton.
-          IconButton(
-            icon: const Icon(Icons.edit_rounded, size: 20),
-            onPressed: onEdit,
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            constraints: const BoxConstraints(),
-          ),
+          if (onEdit != null)
+            IconButton(
+              icon: const Icon(Icons.edit_rounded, size: 20),
+              onPressed: onEdit,
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              constraints: const BoxConstraints(),
+            ),
         ],
       ),
     );
