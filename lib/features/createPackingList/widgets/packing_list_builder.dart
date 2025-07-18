@@ -101,7 +101,7 @@ class PackingListBuilder extends StatelessWidget {
       section: sectionKey,
       baseQuantity: item.baseQuantity,
       calculatedQuantity: calculatedQuantity,
-      isChecked: true, // Items are checked by default when added
+      isChecked: false, // Items are not packed yet when added to list
       iconName: item.iconName,
     );
   }
@@ -230,13 +230,10 @@ class PackingListBuilder extends StatelessWidget {
             text: existingItem.label,
             quantity: existingItem.finalQuantity,
             note: existingItem.note ?? '',
-            value: existingItem.isChecked, // Use the actual checked state
+            value: true, // If it's in the list, it's selected
             onChanged: (bool? newValue) {
-              if (newValue == true) {
-                // User checked this item - mark as checked
-                onItemUpdated(existingItem.copyWith(isChecked: true));
-              } else if (newValue == false) {
-                // User unselected this item - mark as unchecked (don't remove)
+              if (newValue == false) {
+                // User unselected this item - remove it from the list
                 onItemRemoved(existingItem.id);
               }
             },
@@ -288,9 +285,12 @@ class PackingListBuilder extends StatelessWidget {
             text: customItem.label,
             quantity: customItem.quantity,
             note: customItem.note ?? '',
-            value: customItem.isChecked,
+            value: true, // If it's in the custom items list, it's selected
             onChanged: (bool? newValue) {
-              onCustomItemToggled(customItem.id, newValue);
+              if (newValue == false) {
+                // User unselected this custom item - remove it
+                onCustomItemToggled(customItem.id, false);
+              }
             },
             onEdit: () {
               // Open edit modal for custom item

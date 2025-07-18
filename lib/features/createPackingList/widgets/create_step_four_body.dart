@@ -41,8 +41,9 @@ class MainStepFourBody extends StatelessWidget {
 
     // Trip Items
     final regularItems =
-        provider.selectedItemsList.where((item) => item.isChecked).toList();
-    final customItems = customItemsProvider.getCheckedCustomItems();
+        provider.selectedItemsList; // All items in the list are selected
+    final customItems =
+        customItemsProvider.customItemsList; // All custom items are selected
     final allItems = [
       ...regularItems.map((item) => TripItemOverviewData(
             label: item.label,

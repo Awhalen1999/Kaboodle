@@ -276,8 +276,7 @@ class CreatePackingListProvider extends ChangeNotifier {
   // Get the complete packing list data for saving to Firestore
   Map<String, dynamic> getPackingListData(
       [CustomItemsProvider? customItemsProvider]) {
-    final checkedCustomItems =
-        customItemsProvider?.getCheckedCustomItems() ?? [];
+    final checkedCustomItems = customItemsProvider?.customItemsList ?? [];
 
     // Convert custom items to the same structure as regular items
     final convertedCustomItems = checkedCustomItems.map((customItem) {
@@ -307,8 +306,7 @@ class CreatePackingListProvider extends ChangeNotifier {
       'selectedSections': _itemsActivities,
       'items': [
         ..._selectedItems.values
-            .where((item) => item.isChecked) // Only include checked items
-            .map((item) => item.toMap()),
+            .map((item) => item.toMap()), // Include all selected items
         ...convertedCustomItems, // Add converted custom items
       ],
       'createdAt': DateTime.now().toIso8601String(),

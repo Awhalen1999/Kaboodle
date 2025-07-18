@@ -94,7 +94,7 @@ class CustomItemsProvider extends ChangeNotifier {
       label: itemName,
       section: section,
       quantity: quantity,
-      isChecked: true, // Custom items are checked by default when added
+      isChecked: false, // Custom items are not packed yet when added
       iconName: 'checkroom_rounded', // Default icon
     );
 
@@ -121,14 +121,11 @@ class CustomItemsProvider extends ChangeNotifier {
 
   // Toggle the checked state of a custom item
   void toggleCustomItemChecked(String itemId, bool? value) {
-    final item = _customItems[itemId];
-    if (item != null) {
-      final updatedItem = item.copyWith(isChecked: value ?? false);
-      _customItems[itemId] = updatedItem;
-      debugPrint(
-          "[CustomItemsProvider] Custom item ${item.label} checked: ${updatedItem.isChecked}");
-      notifyListeners();
+    if (value == false) {
+      // If unchecked, remove the item entirely
+      removeCustomItem(itemId);
     }
+    // If value is true, do nothing - item stays in the list
   }
 
   // Get custom items for a specific section
