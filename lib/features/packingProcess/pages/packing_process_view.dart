@@ -124,7 +124,11 @@ class _PackingProcessContent extends StatelessWidget {
                                     break;
                                   case 'finish':
                                     provider.checkAllItems();
-                                    _showCompletionDialog(context);
+                                    _saveProgress(context, provider).then((_) {
+                                      if (context.mounted) {
+                                        _showCompletionDialog(context);
+                                      }
+                                    });
                                     break;
                                 }
                               },
@@ -235,8 +239,12 @@ class _PackingProcessContent extends StatelessWidget {
                   if (provider.isComplete) {
                     return CustomButton(
                       buttonText: '🎉 All Packed!',
-                      onPressed: () {
-                        _showCompletionDialog(context);
+                      onPressed: () async {
+                        // Save progress before showing completion dialog
+                        await _saveProgress(context, provider);
+                        if (context.mounted) {
+                          _showCompletionDialog(context);
+                        }
                       },
                       textColor: Theme.of(context).colorScheme.onPrimary,
                       buttonColor: Colors.green,
