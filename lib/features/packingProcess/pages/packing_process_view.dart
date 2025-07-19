@@ -126,7 +126,8 @@ class _PackingProcessContent extends StatelessWidget {
                                     provider.checkAllItems();
                                     _saveProgress(context, provider).then((_) {
                                       if (context.mounted) {
-                                        _showCompletionDialog(context);
+                                        _showCompletionDialog(
+                                            context, provider);
                                       }
                                     });
                                     break;
@@ -243,7 +244,7 @@ class _PackingProcessContent extends StatelessWidget {
                         // Save progress before showing completion dialog
                         await _saveProgress(context, provider);
                         if (context.mounted) {
-                          _showCompletionDialog(context);
+                          _showCompletionDialog(context, provider);
                         }
                       },
                       textColor: Theme.of(context).colorScheme.onPrimary,
@@ -299,18 +300,21 @@ class _PackingProcessContent extends StatelessWidget {
     }
   }
 
-  void _showCompletionDialog(BuildContext context) {
+  void _showCompletionDialog(
+      BuildContext context, PackingProcessProvider provider) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => const _CompletionBottomSheet(),
+      builder: (context) => _CompletionBottomSheet(provider: provider),
     );
   }
 }
 
 class _CompletionBottomSheet extends StatefulWidget {
-  const _CompletionBottomSheet();
+  final PackingProcessProvider provider;
+
+  const _CompletionBottomSheet({required this.provider});
 
   @override
   State<_CompletionBottomSheet> createState() => _CompletionBottomSheetState();
@@ -443,9 +447,15 @@ class _CompletionBottomSheetState extends State<_CompletionBottomSheet> {
                       color: Theme.of(context).colorScheme.onPrimary,
                     ),
               ),
-              onPressed: () {
-                Navigator.pop(context);
-                context.go('/my-packing-lists');
+              onPressed: () async {
+                // Record completion and reset items for future use
+                widget.provider.uncheckAllItems();
+                await widget.provider.recordCompletion();
+
+                if (context.mounted) {
+                  Navigator.pop(context);
+                  context.go('/my-packing-lists');
+                }
               },
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16),

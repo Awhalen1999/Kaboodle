@@ -140,12 +140,13 @@ class PackingProcessProvider extends ChangeNotifier {
       // Handle the new lastCompleted array structure
       final currentLastCompleted = _listData!['lastCompleted'] as List? ?? [];
       final updatedLastCompleted = List<String>.from(currentLastCompleted);
-      
+
       final updatedListData = {
         ..._listData!,
         'items': updatedItems,
         'updatedAt': DateTime.now().toIso8601String(),
-        'lastCompleted': updatedLastCompleted, // Keep existing completion history
+        'lastCompleted':
+            updatedLastCompleted, // Keep existing completion history
       };
 
       // Update in cache
@@ -162,6 +163,68 @@ class PackingProcessProvider extends ChangeNotifier {
       _isSaving = false;
       notifyListeners();
       debugPrint('❌ Error saving progress: $e');
+      rethrow;
+    }
+  }
+
+  // Record list completion
+  Future<void> recordCompletion() async {
+    if (_listData == null) return;
+
+    try {
+      _isSaving = true;
+      notifyListeners();
+
+      // Update the items in the list data (with unchecked state)
+      final updatedItems = _packingItems.map((item) {
+        final itemMap = <String, dynamic>{
+          'id': item.id,
+          'label': item.label,
+          'section': 'packing', // We'll use a generic section for packing
+          'baseQuantity': item.quantity,
+          'calculatedQuantity': item.quantity,
+          'customQuantity': item.quantity,
+          'isChecked':
+              item.isChecked, // This will be false after uncheckAllItems()
+          'iconName': 'checkroom_rounded', // Default icon
+        };
+
+        // Only include note if it has content
+        if (item.note.isNotEmpty) {
+          itemMap['note'] = item.note;
+        }
+
+        return itemMap;
+      }).toList();
+
+      // Get current completion history
+      final currentLastCompleted = _listData!['lastCompleted'] as List? ?? [];
+      final updatedLastCompleted = List<String>.from(currentLastCompleted);
+
+      // Add current completion date
+      updatedLastCompleted.add(DateTime.now().toIso8601String());
+
+      final updatedListData = {
+        ..._listData!,
+        'items': updatedItems, // Include the unchecked items
+        'lastCompleted': updatedLastCompleted,
+        'updatedAt': DateTime.now().toIso8601String(),
+      };
+
+      // Update in cache
+      _cache.updateList(listId, updatedListData);
+
+      // Update in Firestore
+      await _firestoreService.updatePackingList(listId, updatedListData);
+
+      _isSaving = false;
+      notifyListeners();
+
+      debugPrint('📦 Completion recorded successfully');
+    } catch (e) {
+      _isSaving = false;
+      notifyListeners();
+      debugPrint('❌ Error recording completion: $e');
       rethrow;
     }
   }
