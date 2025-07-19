@@ -12,7 +12,7 @@ import 'package:kaboodle/features/createPackingList/provider/create_packing_list
 import 'package:kaboodle/features/createPackingList/provider/custom_items_provider.dart';
 
 class CreatePackingListView extends StatefulWidget {
-  const CreatePackingListView({Key? key}) : super(key: key);
+  const CreatePackingListView({super.key});
 
   @override
   State<CreatePackingListView> createState() => _CreatePackingListViewState();
