@@ -55,7 +55,6 @@ class _PackingProcessContent extends StatelessWidget {
             children: [
               // Header Container with Title and Menu
               Container(
-                margin: const EdgeInsets.only(bottom: 16),
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: Theme.of(context)

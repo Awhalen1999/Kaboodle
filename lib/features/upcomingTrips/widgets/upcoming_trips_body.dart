@@ -125,8 +125,7 @@ class _UpcomingTripsBodyState extends State<UpcomingTripsBody> {
                   daysUntil:
                       (daysUntil != null && daysUntil >= 0) ? daysUntil : null,
                   onTap: () {
-                    // todo: Pass the list ID to the viewer
-                    context.push('/list-viewer');
+                    context.push('/list-viewer/${listData['id']}');
                   },
                 );
               },

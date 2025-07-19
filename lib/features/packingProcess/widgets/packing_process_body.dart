@@ -79,7 +79,8 @@ class PackingProcessBody extends StatelessWidget {
             children: [
               // Header
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 4, vertical: 16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -91,16 +92,14 @@ class PackingProcessBody extends StatelessWidget {
                                 color: Theme.of(context).colorScheme.primary,
                               ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 8),
                     Text(
                       'Check off items as you pack them into your bag.',
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
-                    const SizedBox(height: 8),
                   ],
                 ),
               ),
-              const SizedBox(height: 16),
               // Items list
               ...provider.packingItems
                   .map((item) => _buildPackingItem(context, item, provider)),
