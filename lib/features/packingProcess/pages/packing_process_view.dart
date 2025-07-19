@@ -122,6 +122,10 @@ class _PackingProcessContent extends StatelessWidget {
                                   case 'save':
                                     _saveProgress(context, provider);
                                     break;
+                                  case 'finish':
+                                    provider.checkAllItems();
+                                    _showCompletionDialog(context);
+                                    break;
                                 }
                               },
                               itemBuilder: (context) => [
@@ -153,6 +157,16 @@ class _PackingProcessContent extends StatelessWidget {
                                       Icon(Icons.save, size: 18),
                                       SizedBox(width: 8),
                                       Text('Save Progress'),
+                                    ],
+                                  ),
+                                ),
+                                const PopupMenuItem(
+                                  value: 'finish',
+                                  child: Row(
+                                    children: [
+                                      Icon(Icons.check_circle, size: 18),
+                                      SizedBox(width: 8),
+                                      Text('Finish Packing'),
                                     ],
                                   ),
                                 ),
@@ -278,41 +292,191 @@ class _PackingProcessContent extends StatelessWidget {
   }
 
   void _showCompletionDialog(BuildContext context) {
-    showDialog(
+    showModalBottomSheet(
       context: context,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => const _CompletionBottomSheet(),
+    );
+  }
+}
+
+class _CompletionBottomSheet extends StatefulWidget {
+  const _CompletionBottomSheet();
+
+  @override
+  State<_CompletionBottomSheet> createState() => _CompletionBottomSheetState();
+}
+
+class _CompletionBottomSheetState extends State<_CompletionBottomSheet> {
+  bool _confirmDelete = false;
+
+  void _handleDelete() {
+    if (_confirmDelete) {
+      // TODO: Implement delete functionality
+      Navigator.of(context).pop(); // Close bottom sheet
+      Navigator.of(context).pop(); // Go back to list viewer
+    } else {
+      setState(() {
+        _confirmDelete = true;
+      });
+    }
+  }
+
+  void _resetConfirm() {
+    if (_confirmDelete) {
+      setState(() {
+        _confirmDelete = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.only(left: 24, right: 24, top: 24, bottom: 32),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
         ),
-        title: Row(
-          children: [
-            Icon(
-              Icons.celebration,
-              color: Colors.green,
-              size: 28,
-            ),
-            const SizedBox(width: 8),
-            const Text('Packing Complete!'),
-          ],
-        ),
-        content: const Text(
-          'Congratulations! You\'ve successfully packed all your items. Your list has been updated with your progress.',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Continue Packing'),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Row(
+                  children: [
+                    Text(
+                      'Packing Complete!',
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+              IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  _resetConfirm();
+                },
+                icon: Icon(
+                  Icons.close_rounded,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
+                style: IconButton.styleFrom(
+                  backgroundColor:
+                      Theme.of(context).colorScheme.surfaceContainer,
+                ),
+              ),
+            ],
           ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              Navigator.of(context).pop(); // Go back to list viewer
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              foregroundColor: Theme.of(context).colorScheme.onPrimary,
+          const SizedBox(height: 16),
+          // Message
+          Text(
+            'Congratulations! You\'ve successfully packed all your items. Your list has been updated with your progress.',
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
+          ),
+          const SizedBox(height: 32),
+          // Continue Packing Button
+          SizedBox(
+            width: double.infinity,
+            child: OutlinedButton.icon(
+              icon: Icon(
+                Icons.arrow_back,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              label: Text(
+                'Continue Packing',
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+                _resetConfirm();
+              },
+              style: OutlinedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                side: BorderSide(
+                  color: Theme.of(context).colorScheme.primary,
+                  width: 2,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
             ),
-            child: const Text('Done'),
+          ),
+          const SizedBox(height: 16),
+          // Finish and Keep Button
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton.icon(
+              icon: Icon(
+                Icons.home,
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
+              label: Text(
+                'Finish & Keep List',
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+                context.go('/my-packing-lists');
+              },
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+          // Finish and Delete Button
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton.icon(
+              icon: Icon(
+                Icons.delete,
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
+              label: Text(
+                _confirmDelete ? 'Are you sure?' : 'Finish & Delete List',
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
+              ),
+              onPressed: _handleDelete,
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                backgroundColor: _confirmDelete
+                    ? Theme.of(context).colorScheme.error
+                    : Theme.of(context).colorScheme.primary,
+                foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
           ),
         ],
       ),
