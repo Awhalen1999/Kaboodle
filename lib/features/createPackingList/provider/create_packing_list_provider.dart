@@ -311,7 +311,7 @@ class CreatePackingListProvider extends ChangeNotifier {
       ],
       'createdAt': DateTime.now().toIso8601String(),
       'updatedAt': DateTime.now().toIso8601String(),
-      'isCompleted': false,
+      'lastCompleted': [], // Array to track completion dates
     };
   }
 

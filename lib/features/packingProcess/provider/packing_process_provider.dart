@@ -137,11 +137,15 @@ class PackingProcessProvider extends ChangeNotifier {
         return itemMap;
       }).toList();
 
+      // Handle the new lastCompleted array structure
+      final currentLastCompleted = _listData!['lastCompleted'] as List? ?? [];
+      final updatedLastCompleted = List<String>.from(currentLastCompleted);
+      
       final updatedListData = {
         ..._listData!,
         'items': updatedItems,
         'updatedAt': DateTime.now().toIso8601String(),
-        'isCompleted': isComplete,
+        'lastCompleted': updatedLastCompleted, // Keep existing completion history
       };
 
       // Update in cache
