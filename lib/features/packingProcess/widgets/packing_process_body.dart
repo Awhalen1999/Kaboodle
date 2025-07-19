@@ -73,9 +73,6 @@ class PackingProcessBody extends StatelessWidget {
           );
         }
 
-        // Get list title for header
-        final listTitle = provider.listData?['title'] ?? 'Packing List';
-
         return SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -100,98 +97,6 @@ class PackingProcessBody extends StatelessWidget {
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
                     const SizedBox(height: 8),
-                    // List title card
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .primaryContainer
-                            .withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .primary
-                              .withOpacity(0.2),
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.checklist_rounded,
-                            color: Theme.of(context).colorScheme.primary,
-                            size: 20,
-                          ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Text(
-                              listTitle,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleMedium
-                                  ?.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                  ),
-                            ),
-                          ),
-                          Consumer<PackingProcessProvider>(
-                            builder: (context, provider, child) {
-                              return PopupMenuButton<String>(
-                                icon: const Icon(Icons.more_vert, size: 20),
-                                onSelected: (value) {
-                                  switch (value) {
-                                    case 'check_all':
-                                      provider.checkAllItems();
-                                      break;
-                                    case 'uncheck_all':
-                                      provider.uncheckAllItems();
-                                      break;
-                                    case 'save':
-                                      _saveProgress(context, provider);
-                                      break;
-                                  }
-                                },
-                                itemBuilder: (context) => [
-                                  const PopupMenuItem(
-                                    value: 'check_all',
-                                    child: Row(
-                                      children: [
-                                        Icon(Icons.check_box),
-                                        SizedBox(width: 8),
-                                        Text('Check All'),
-                                      ],
-                                    ),
-                                  ),
-                                  const PopupMenuItem(
-                                    value: 'uncheck_all',
-                                    child: Row(
-                                      children: [
-                                        Icon(Icons.check_box_outline_blank),
-                                        SizedBox(width: 8),
-                                        Text('Uncheck All'),
-                                      ],
-                                    ),
-                                  ),
-                                  const PopupMenuItem(
-                                    value: 'save',
-                                    child: Row(
-                                      children: [
-                                        Icon(Icons.save),
-                                        SizedBox(width: 8),
-                                        Text('Save Progress'),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
                   ],
                 ),
               ),
@@ -223,31 +128,5 @@ class PackingProcessBody extends StatelessWidget {
         onEdit: null, // No edit functionality in packing process
       ),
     );
-  }
-
-  Future<void> _saveProgress(
-      BuildContext context, PackingProcessProvider provider) async {
-    try {
-      await provider.saveProgress();
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text('Progress saved successfully!'),
-            behavior: SnackBarBehavior.floating,
-            backgroundColor: Colors.green,
-          ),
-        );
-      }
-    } catch (e) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error saving progress: $e'),
-            behavior: SnackBarBehavior.floating,
-            backgroundColor: Theme.of(context).colorScheme.error,
-          ),
-        );
-      }
-    }
   }
 }

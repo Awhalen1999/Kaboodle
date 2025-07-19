@@ -53,58 +53,165 @@ class _PackingProcessContent extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Column(
             children: [
-              // Progress indicator
-              Consumer<PackingProcessProvider>(
-                builder: (context, provider, child) {
-                  return Column(
-                    children: [
-                      StepProgressIndicator(
-                        totalSteps: provider.totalItems,
-                        currentStep: provider.checkedItems,
-                        size: 8,
-                        unselectedColor: Colors.grey.shade300,
-                        selectedGradientColor: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [
-                            Theme.of(context).colorScheme.secondary,
-                            Theme.of(context).colorScheme.primary,
+              // Header Container with Title and Menu
+              Container(
+                margin: const EdgeInsets.only(bottom: 16),
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Theme.of(context)
+                      .colorScheme
+                      .primaryContainer
+                      .withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: Theme.of(context)
+                        .colorScheme
+                        .primary
+                        .withValues(alpha: 0.2),
+                  ),
+                ),
+                child: Consumer<PackingProcessProvider>(
+                  builder: (context, provider, child) {
+                    final listTitle =
+                        provider.listData?['title'] ?? 'Packing List';
+
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Header Row with Title and Menu
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.checklist_rounded,
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                    size: 20,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: Text(
+                                      listTitle,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleMedium
+                                          ?.copyWith(
+                                            fontWeight: FontWeight.w600,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                          ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            // Menu Button
+                            PopupMenuButton<String>(
+                              icon: const Icon(Icons.more_vert, size: 20),
+                              onSelected: (value) {
+                                switch (value) {
+                                  case 'check_all':
+                                    provider.checkAllItems();
+                                    break;
+                                  case 'uncheck_all':
+                                    provider.uncheckAllItems();
+                                    break;
+                                  case 'save':
+                                    _saveProgress(context, provider);
+                                    break;
+                                }
+                              },
+                              itemBuilder: (context) => [
+                                const PopupMenuItem(
+                                  value: 'check_all',
+                                  child: Row(
+                                    children: [
+                                      Icon(Icons.check_box, size: 18),
+                                      SizedBox(width: 8),
+                                      Text('Check All'),
+                                    ],
+                                  ),
+                                ),
+                                const PopupMenuItem(
+                                  value: 'uncheck_all',
+                                  child: Row(
+                                    children: [
+                                      Icon(Icons.check_box_outline_blank,
+                                          size: 18),
+                                      SizedBox(width: 8),
+                                      Text('Uncheck All'),
+                                    ],
+                                  ),
+                                ),
+                                const PopupMenuItem(
+                                  value: 'save',
+                                  child: Row(
+                                    children: [
+                                      Icon(Icons.save, size: 18),
+                                      SizedBox(width: 8),
+                                      Text('Save Progress'),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
-                        roundedEdges: const Radius.circular(10),
-                      ),
-                      const SizedBox(height: 12),
-                      // Progress text
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            '${provider.checkedItems} of ${provider.totalItems} items packed',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                  color: Theme.of(context).colorScheme.primary,
-                                ),
+                        const SizedBox(height: 12),
+                        // Progress Bar
+                        StepProgressIndicator(
+                          totalSteps: provider.totalItems,
+                          currentStep: provider.checkedItems,
+                          size: 8,
+                          unselectedColor: Colors.grey.shade300,
+                          selectedGradientColor: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              Theme.of(context).colorScheme.secondary,
+                              Theme.of(context).colorScheme.primary,
+                            ],
                           ),
-                          Text(
-                            '${(provider.progressPercentage * 100).toInt()}%',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  color: Theme.of(context).colorScheme.primary,
-                                ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  );
-                },
+                          roundedEdges: const Radius.circular(10),
+                        ),
+                        const SizedBox(height: 8),
+                        // Progress text
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '${provider.checkedItems} of ${provider.totalItems} items packed',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurfaceVariant,
+                                  ),
+                            ),
+                            Text(
+                              '${(provider.progressPercentage * 100).toInt()}%',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                  ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    );
+                  },
+                ),
               ),
-              const SizedBox(height: 16),
               // Main content
               Expanded(
                 child: const PackingProcessBody(),
