@@ -10,6 +10,7 @@ class PackingProcessProvider extends ChangeNotifier {
 
   Map<String, dynamic>? _listData;
   List<PackingProcessItem> _packingItems = [];
+  List<PackingProcessItem> _originalItems = []; // Track original state
   bool _isLoading = true;
   String? _error;
   bool _isSaving = false;
@@ -30,6 +31,30 @@ class PackingProcessProvider extends ChangeNotifier {
   double get progressPercentage =>
       totalItems > 0 ? checkedItems / totalItems : 0.0;
   bool get isComplete => checkedItems == totalItems && totalItems > 0;
+
+  // Unsaved changes tracking
+  bool get hasUnsavedChanges {
+    if (_originalItems.isEmpty || _packingItems.isEmpty) return false;
+
+    for (int i = 0; i < _packingItems.length; i++) {
+      if (_packingItems[i].isChecked != _originalItems[i].isChecked) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  int get unsavedChangesCount {
+    if (_originalItems.isEmpty || _packingItems.isEmpty) return 0;
+
+    int count = 0;
+    for (int i = 0; i < _packingItems.length; i++) {
+      if (_packingItems[i].isChecked != _originalItems[i].isChecked) {
+        count++;
+      }
+    }
+    return count;
+  }
 
   // Load the packing list data
   Future<void> _loadPackingList() async {
@@ -65,6 +90,9 @@ class PackingProcessProvider extends ChangeNotifier {
           isChecked: item['isChecked'] as bool? ?? false,
         );
       }).toList();
+
+      // Store original state for unsaved changes tracking
+      _originalItems = _packingItems.map((item) => item.copyWith()).toList();
 
       _isLoading = false;
       notifyListeners();
@@ -156,6 +184,10 @@ class PackingProcessProvider extends ChangeNotifier {
       await _firestoreService.updatePackingList(listId, updatedListData);
 
       _isSaving = false;
+
+      // Update original state after successful save
+      _originalItems = _packingItems.map((item) => item.copyWith()).toList();
+
       notifyListeners();
 
       debugPrint('📦 Progress saved successfully');
@@ -218,6 +250,10 @@ class PackingProcessProvider extends ChangeNotifier {
       await _firestoreService.updatePackingList(listId, updatedListData);
 
       _isSaving = false;
+
+      // Update original state after successful completion
+      _originalItems = _packingItems.map((item) => item.copyWith()).toList();
+
       notifyListeners();
 
       debugPrint('📦 Completion recorded successfully');
