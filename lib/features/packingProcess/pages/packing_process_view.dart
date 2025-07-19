@@ -34,7 +34,8 @@ class _PackingProcessContent extends StatelessWidget {
         return WillPopScope(
           onWillPop: () async {
             if (provider.hasUnsavedChanges) {
-              _showUnsavedChangesDialog(context, provider);
+              _showUnsavedChangesDialog(context, provider,
+                  isBackNavigation: true);
               return false;
             }
             return true;
@@ -298,7 +299,7 @@ class _PackingProcessContent extends StatelessWidget {
   void _handleBackNavigation(
       BuildContext context, PackingProcessProvider provider) {
     if (provider.hasUnsavedChanges) {
-      _showUnsavedChangesDialog(context, provider);
+      _showUnsavedChangesDialog(context, provider, isBackNavigation: true);
     } else {
       Navigator.of(context).pop();
     }
@@ -307,14 +308,15 @@ class _PackingProcessContent extends StatelessWidget {
   void _handleCloseNavigation(
       BuildContext context, PackingProcessProvider provider) {
     if (provider.hasUnsavedChanges) {
-      _showUnsavedChangesDialog(context, provider);
+      _showUnsavedChangesDialog(context, provider, isBackNavigation: false);
     } else {
       context.go('/my-packing-lists');
     }
   }
 
   void _showUnsavedChangesDialog(
-      BuildContext context, PackingProcessProvider provider) {
+      BuildContext context, PackingProcessProvider provider,
+      {required bool isBackNavigation}) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -324,11 +326,19 @@ class _PackingProcessContent extends StatelessWidget {
         onSaveAndExit: () async {
           await _saveProgress(context, provider);
           if (context.mounted) {
-            context.go('/my-packing-lists');
+            if (isBackNavigation) {
+              Navigator.of(context).pop(); // Go back to previous page
+            } else {
+              context.go('/my-packing-lists'); // Exit to my lists page
+            }
           }
         },
         onExitWithoutSaving: () {
-          context.go('/my-packing-lists');
+          if (isBackNavigation) {
+            Navigator.of(context).pop(); // Go back to previous page
+          } else {
+            context.go('/my-packing-lists'); // Exit to my lists page
+          }
         },
       ),
     );
